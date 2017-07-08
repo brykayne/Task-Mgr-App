@@ -4,12 +4,32 @@
   "description": "A basic JavaScript Task Management Application to demonstrate JavaScript, CSS, and HTML concepts.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "watch-styles": "sass --watch styles/styles.scss:dist/styles.css",
+    "test": "babel-node spec/run.js",
+    "sass": "sass styles/styles.scss dist/styles.css",
+    "webpack": "webpack",
+    "build-run": "npm run webpack && npm run sass && http-server"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/brykayne/brykayne/Task-Mgr-App"
   },
   "author": "Bryan Kayne",
-  "license": "ISC"
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/brykayne/Task-Mgr-App/issues"
+  },
+  "homepage": "https://github.com/brykayne/Task-Mgr-App#readme",
+  "dependencies": {
+    "node-sass": "^4.5.3"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-core": "^6.25.0",
+    "babel-loader": "^6.4.1",
+    "babel-polyfill": "^6.23.0",
+    "babel-preset-es2015": "^6.24.1",
+    "uglify-js": "^2.8.29",
+    "webpack": "^1.15.0"
+  }
 }

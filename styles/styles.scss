@@ -1,0 +1,116 @@
+$font-stack:    Helvetica, sans-serif;
+
+$white: #FFFFFF;
+$yellow: #fdd835;
+$yellow-lighter:   lighten(#fdd835, 20%);
+$yellow-darker:    lighten(#fdd835, 70%);
+$black: #000000;
+$gray-darker:  lighten(#000, 13.5%);
+$gray-dark:    lighten(#000, 20%);
+$gray:         lighten(#000, 33.5%);
+$gray-light:   lighten(#000, 70.7%);
+$gray-lighter: lighten(#000, 93.5%);
+
+$HEADER_HEIGHT: 50px;
+
+// DOCUMENT STYLES
+
+h1,h2,h3,h4,h5,h6 {
+    margin: 0px;
+}
+
+body, html {
+    height: 100%;
+    padding: 0px;
+    margin: 0px;
+    font-family: $font-stack;
+}
+
+main {
+    height: calc(100%-#{$HEADER_HEIGHT});
+}
+
+// HEADER STYLES
+
+.header-title {
+    color: $black;
+    font-size: 20px;
+    margin: 0px;
+    line-height: $HEADER_HEIGHT;
+    text-align: center;
+
+}
+
+.header {
+    background-color: $yellow-darker;
+    height: $HEADER_HEIGHT;
+    margin: 0px;
+}
+
+// BOARD NAV
+
+$MYBOARD_ITEM_PADDING: 5px;
+$MYBOARD_ITEM_MARGIN: 10px;
+$MYBOARD_HEADER_HEIGHT: 30px;
+$MYBOARD_WIDTH: 220px;
+
+.myboard-nav {
+    background-color: $yellow-lighter;
+}
+
+.myboard-header {
+    color: $black;
+    font-size: 16px;
+    text-align: center;
+    height: $HEADER_HEIGHT;
+    line-height: $HEADER_HEIGHT;
+}
+
+.myboards {
+    margin: 0px;
+    padding: 0px;
+}
+
+.myboard-el {
+    color: $white;
+    background-color: $yellow-lighter;
+    list-style: none;
+    text-align: center;
+    padding-top: $MYBOARD_ITEM_PADDING;
+    padding-bottom: $MYBOARD_ITEM_PADDING;
+    margin-bottom: $MYBOARD_ITEM_MARGIN;
+    margin-left: $MYBOARD_ITEM_MARGIN;
+    margin-right: $MYBOARD_ITEM_MARGIN;
+    border-width: 2px;
+    border-style: solid;
+    border-color: solid;
+    border-color: transparent;
+    transition: border-color 200ms ease-in, opacity 200ms ease-in;
+    cursor: pointer;
+}
+
+.myboard-el:hover {
+    border-color: $gray;
+    transition: border-color 200ms ease-in;
+}
+
+.myboard-input {
+    margin-left: $MYBOARD_ITEM_MARGIN;
+    margin-right: $MYBOARD_ITEM_MARGIN;
+    margin-bottom: $MYBOARD_ITEM_MARGIN;
+    padding: $MYBOARD_ITEM_PADDING;
+    border-width: 2px;
+    border-style: solid;
+    border-color: $gray-light;
+    outline: 0px;
+    box-sizing: border-box;
+    width: calc(100% - #{$MYBOARD_ITEM_MARGIN}*2);
+    transition: border-color 200ms ease-in;
+}
+
+.myboard-input:hover, .myboard-input:focus {
+    border-color: $yellow;
+    transition: border-color 200ms ease-in;
+}
+
+//CONTENT SECTION

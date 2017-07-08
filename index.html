@@ -1,0 +1,52 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>JavaScript Task Mgr App</title>
+  <meta name="description" content="JavaScript Task Mgr Application">
+  <meta name="author" content="Bryan Kayne">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="./dist/styles.css">
+
+  <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+  <![endif]-->
+</head>
+
+<body>
+	<header class="header">
+		<h1 class="header-title">Task Mgr App</h1>
+	</header>
+  <main>
+      <nav class="myboard-nav">
+          <h2 class="myboard-header">My Boards</h2>
+          <form id="myBoardForm">
+              <input name="myboardInput" class="myboard-input" placeholder="New Board..." type="text" autocomplete="off">
+          </form>
+          <ul id="boardMenu" class="myboards">
+          </ul>
+      </nav>
+
+    <section class="content">
+        <div id="boardHeader" class="main-content board-header"></div>
+        <div id="selectedBoardEl" class="main-content active-board">
+            <form name="itemInput" class="task-input" placeholder="Add Task..." type="text" autocomplete="off">
+            </form>
+            <div id="statusToDo" class="board-column">
+                <ul id="toDoTasks"></ul>
+            </div>
+            <div id="statusInProgress" class="board-column">
+                <ul id="inProgressTasks"></ul>
+            </div>
+            <div id="statusDone" class="board-column">
+                <ul id="doneTasks"></ul>
+            </div>
+        </div>
+    </section>
+  </main>
+  <script src="./dist/bundle.js"></script>
+</body>
+</html>
