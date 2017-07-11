@@ -66,12 +66,14 @@
 	function setListeners(appData) {
 	    document.getElementById('myBoardsForm').addEventListener('submit', function (event) {
 	        event.preventDefault();
-	        addBoard(createBoard(event.target.myboardInput.value), appData);
+	        console.log(event);
+	        debugger;
+	        addBoard(createBoard(event.target.myboardsInput.value), appData);
 	    });
 
 	    document.getElementById('cardForm').addEventListener('submit', function (event) {
 	        event.preventDefault();
-	        addItem(createItem(event.target.cardInput.value), appData);
+	        addCard(createCard(event.target.cardInput.value), appData);
 	    });
 	}
 
@@ -113,14 +115,14 @@
 	function addBoard(board, appData) {
 	    appData.boards[board.name] = { name: board.name, cards: [] };
 	    console.log(appData);
-	    var myBoardsEl = document.getElementById('myLists');
+	    var myBoardsEl = document.getElementById('myBoards');
 	    var boardEl = boardtoBoardEl(board);
-	    addClass(boardEl, 'fade-in');
+	    //Add fade-in class here...
+	    boardEl.className += ' fade-in';
 	    myBoardsEl.appendChild(boardEl);
 	}
 
 	function selectedBoardToView(selectedBoard) {
-	    // let selectedBoardEl = document.getElementById('selectedBoardEl');
 	    var todoCardsEl = document.getElementById('toDoCards');
 	    for (var card in selectedBoard.cards) {
 	        todoCardsEl.appendChild(cardToCardEl(selectedBoard.cards[card]));
@@ -142,12 +144,12 @@
 	}
 
 	function addCard(card, appData) {
-	    appData.selectedBoard.cards.push(item);
+	    appData.selectedBoard.cards.push(card);
 	    console.log(appData);
-	    var myBoardsEl = document.getElementById('selectedBoard');
+	    var todoCardsEl = document.getElementById('toDoCards');
 	    var cardEl = cardToCardEl(card);
-	    addClass(cardEl, 'fade-in');
-	    myBoardsEl.appendChild(cardEl);
+	    // addClass(cardEl, 'fade-in');
+	    todoCardsEl.appendChild(cardEl);
 	}
 
 /***/ })
