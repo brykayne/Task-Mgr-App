@@ -5,27 +5,33 @@ body, html {
   height: 100%;
   padding: 0px;
   margin: 0px;
-  font-family: Helvetica, sans-serif; }
+  font-family: Arial, Helvetica, sans-serif; }
 
 main {
-  height: calc(100%-50px); }
+  height: calc(100% - 50px); }
 
 .header-title {
-  color: #000000;
-  font-size: 20px;
+  color: #FFFFFF;
+  font-size: 24px;
   margin: 0px;
   line-height: 50px;
-  text-align: center; }
+  text-align: center;
+  background-color: purple;
+  font-weight: 100; }
 
 .header {
-  background-color: white;
+  background-color: #fdd835;
   height: 50px;
   margin: 0px; }
 
-.myboard-nav {
-  background-color: #feec9a; }
+.myboards-nav {
+  background-color: #fdd835;
+  width: 220px;
+  height: 100%;
+  float: left;
+  overflow-y: auto; }
 
-.myboard-header {
+.myboards-header {
   color: #000000;
   font-size: 16px;
   text-align: center;
@@ -36,9 +42,9 @@ main {
   margin: 0px;
   padding: 0px; }
 
-.myboard-el {
-  color: #FFFFFF;
-  background-color: #feec9a;
+.myboards-el {
+  color: #333333;
+  background-color: #b4b4b4;
   list-style: none;
   text-align: center;
   padding-top: 5px;
@@ -53,11 +59,11 @@ main {
   transition: border-color 200ms ease-in, opacity 200ms ease-in;
   cursor: pointer; }
 
-.myboard-el:hover {
+.myboards-el:hover {
   border-color: #555555;
   transition: border-color 200ms ease-in; }
 
-.myboard-input {
+.myboards-input {
   margin-left: 10px;
   margin-right: 10px;
   margin-bottom: 10px;
@@ -70,8 +76,96 @@ main {
   width: calc(100% - 10px*2);
   transition: border-color 200ms ease-in; }
 
-.myboard-input:hover, .myboard-input:focus {
+.myboards-input:hover, .myboards-input:focus {
   border-color: #fdd835;
   transition: border-color 200ms ease-in; }
+
+.board {
+  background-color: #fdd835;
+  border-top: 1px black;
+  border-left: 1px black; }
+
+.board-header {
+  height: 50px;
+  text-align: center; }
+
+.main-board {
+  margin-top: 20px;
+  margin-right: auto;
+  width: 100%;
+  padding: 5px; }
+
+.board-title {
+  color: #000000;
+  font-size: 24px;
+  font-weight: 600;
+  display: inline-block; }
+
+.delete-board-button {
+  color: #000000;
+  background-color: #B20000;
+  padding: 6px 8px 6px 8px;
+  margin: 0px;
+  border: 0px;
+  cursor: pointer;
+  opacity: .2;
+  transition: opacity 200ms ease-in; }
+
+.delete-board-button:hover {
+  opacity: 1;
+  transition: opacity 200ms ease-in; }
+
+.delete-board-button:focus {
+  outline: 0px; }
+
+.pull-right {
+  float: right; }
+
+.pull-left {
+  float: left; }
+
+.column {
+  height: 100%;
+  width: calc(calc(100% - 220px) / 3);
+  display: inline-block;
+  border: 1px solid #000000;
+  background-color: #add8e6;
+  padding: 10px 10px 10px 10px;
+  margin: 5px 5px 5px 5px;
+  border-radius: 5px; }
+
+.card-el {
+  width: 100%;
+  height: auto;
+  min-height: 20px;
+  list-style: none;
+  background-color: #eeeeee;
+  margin-bottom: 15px;
+  margin-top: 10px;
+  color: #000000;
+  transition: border-color 200ms ease-in;
+  line-height: 30px;
+  border-radius: 2px;
+  padding-left: 3px; }
+
+li.card-el:hover {
+  border-color: #555555;
+  transition: border-color 200ms ease-in; }
+
+@media (min-width: 650px) {
+  .myboards-nav {
+    width: 220px;
+    height: 100%;
+    float: left;
+    overflow-y: auto; }
+
+  .board {
+    width: calc(100% - 220px);
+    float: right;
+    height: 100%;
+    overflow-y: auto; } }
+@media (max-width: 650px) {
+  .board {
+    padding: 10px; } }
 
 /*# sourceMappingURL=styles.css.map */

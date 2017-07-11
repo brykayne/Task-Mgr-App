@@ -2,51 +2,58 @@
 
 <html lang="en">
 <head>
-  <meta charset="utf-8">
+    <meta charset="utf-8">
 
-  <title>JavaScript Task Mgr App</title>
-  <meta name="description" content="JavaScript Task Mgr Application">
-  <meta name="author" content="Bryan Kayne">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Task Mgr App</title>
+    <meta name="description" content="JavaScript Task Mgr Application">
+    <meta name="author" content="Bryan Kayne">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link rel="stylesheet" href="./dist/styles.css">
+    <link rel="stylesheet" href="./dist/styles.css">
 
-  <!--[if lt IE 9]>
+    <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
-  <![endif]-->
+    <![endif]-->
 </head>
 
 <body>
-	<header class="header">
-		<h1 class="header-title">Task Mgr App</h1>
-	</header>
-  <main>
-      <nav class="myboard-nav">
-          <h2 class="myboard-header">My Boards</h2>
-          <form id="myBoardForm">
-              <input name="myboardInput" class="myboard-input" placeholder="New Board..." type="text" autocomplete="off">
-          </form>
-          <ul id="boardMenu" class="myboards">
-          </ul>
-      </nav>
-
-    <section class="content">
-        <div id="boardHeader" class="main-content board-header"></div>
-        <div id="selectedBoardEl" class="main-content active-board">
-            <form name="itemInput" class="task-input" placeholder="Add Task..." type="text" autocomplete="off">
+    <header class="header">
+        <h1 class="header-title">Task Manager App</h1>
+    </header>
+    <main>
+        <nav class="myboards-nav">
+            <h2 class="myboards-header">My Boards</h2>
+            <form id="myBoardsForm">
+                <input name="myboardsInput" class="myboards-input" placeholder="New Board..." type="text" autocomplete="off">
             </form>
-            <div id="statusToDo" class="board-column">
-                <ul id="toDoTasks"></ul>
+            <ul id="boardsMenu" class="myboards">
+                <li class="myboards-el">First Board</li>
+                <li class="myboards-el">Second Board</li>
+            </ul>
+        </nav>
+
+        <section class="board">
+            <div id="boardHeader" class="main-board board-header">
+                <h2 class="board-title">First Board</h2>
             </div>
-            <div id="statusInProgress" class="board-column">
-                <ul id="inProgressTasks"></ul>
+            <div id="selectedBoardEl" class="main-board">
+                <form name="cardInput" class="card-input" placeholder="Add Card..." type="text" autocomplete="off">
+                </form>
+                    <ul id="toDoCards" class="column">
+                        <li class="card-el">Test Card 1</li>
+                        <li class="card-el">Test Card 2</li>
+                    </ul>
+                    <ul id="inProgressCards" class="column">
+                        <li class="card-el">Test Card 3</li>
+                        <li class="card-el">Test Card 4</li>
+                    </ul>
+                    <ul id="doneCards" class="column">
+                        <li class="card-el">Test Card 5</li>
+                        <li class="card-el">Test Card 6</li>
+                    </ul>
             </div>
-            <div id="statusDone" class="board-column">
-                <ul id="doneTasks"></ul>
-            </div>
-        </div>
-    </section>
-  </main>
-  <script src="./dist/bundle.js"></script>
+        </section>
+    </main>
+    <script src="./dist/bundle.js"></script>
 </body>
 </html>

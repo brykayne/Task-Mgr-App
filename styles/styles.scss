@@ -1,15 +1,17 @@
-$font-stack:    Helvetica, sans-serif;
+$font-stack:    Arial, Helvetica, sans-serif;
 
 $white: #FFFFFF;
 $yellow: #fdd835;
 $yellow-lighter:   lighten(#fdd835, 20%);
 $yellow-darker:    lighten(#fdd835, 70%);
 $black: #000000;
+$red: #B20000;
 $gray-darker:  lighten(#000, 13.5%);
 $gray-dark:    lighten(#000, 20%);
 $gray:         lighten(#000, 33.5%);
 $gray-light:   lighten(#000, 70.7%);
 $gray-lighter: lighten(#000, 93.5%);
+$light-blue: #add8e6;
 
 $HEADER_HEIGHT: 50px;
 
@@ -27,38 +29,43 @@ body, html {
 }
 
 main {
-    height: calc(100%-#{$HEADER_HEIGHT});
+    height: calc(100% - #{$HEADER_HEIGHT});
 }
 
 // HEADER STYLES
 
 .header-title {
-    color: $black;
-    font-size: 20px;
+    color: $white;
+    font-size: 24px;
     margin: 0px;
     line-height: $HEADER_HEIGHT;
     text-align: center;
-
+    background-color: purple;
+    font-weight: 100;
 }
 
 .header {
-    background-color: $yellow-darker;
+    background-color: $yellow;
     height: $HEADER_HEIGHT;
     margin: 0px;
 }
 
 // BOARD NAV
 
-$MYBOARD_ITEM_PADDING: 5px;
-$MYBOARD_ITEM_MARGIN: 10px;
-$MYBOARD_HEADER_HEIGHT: 30px;
-$MYBOARD_WIDTH: 220px;
+$MYBOARDS_ITEM_PADDING: 5px;
+$MYBOARDS_ITEM_MARGIN: 10px;
+$MYBOARDS_HEADER_HEIGHT: 30px;
+$MYBOARDS_WIDTH: 220px;
 
-.myboard-nav {
-    background-color: $yellow-lighter;
+.myboards-nav {
+    background-color: $yellow;
+    width: $MYBOARDS_WIDTH;
+    height: 100%;
+    float: left;
+    overflow-y: auto;
 }
 
-.myboard-header {
+.myboards-header {
     color: $black;
     font-size: 16px;
     text-align: center;
@@ -71,16 +78,16 @@ $MYBOARD_WIDTH: 220px;
     padding: 0px;
 }
 
-.myboard-el {
-    color: $white;
-    background-color: $yellow-lighter;
+.myboards-el {
+    color: $gray-dark;
+    background-color: $gray-light;
     list-style: none;
     text-align: center;
-    padding-top: $MYBOARD_ITEM_PADDING;
-    padding-bottom: $MYBOARD_ITEM_PADDING;
-    margin-bottom: $MYBOARD_ITEM_MARGIN;
-    margin-left: $MYBOARD_ITEM_MARGIN;
-    margin-right: $MYBOARD_ITEM_MARGIN;
+    padding-top: $MYBOARDS_ITEM_PADDING;
+    padding-bottom: $MYBOARDS_ITEM_PADDING;
+    margin-bottom: $MYBOARDS_ITEM_MARGIN;
+    margin-left: $MYBOARDS_ITEM_MARGIN;
+    margin-right: $MYBOARDS_ITEM_MARGIN;
     border-width: 2px;
     border-style: solid;
     border-color: solid;
@@ -89,28 +96,143 @@ $MYBOARD_WIDTH: 220px;
     cursor: pointer;
 }
 
-.myboard-el:hover {
+.myboards-el:hover {
     border-color: $gray;
     transition: border-color 200ms ease-in;
 }
 
-.myboard-input {
-    margin-left: $MYBOARD_ITEM_MARGIN;
-    margin-right: $MYBOARD_ITEM_MARGIN;
-    margin-bottom: $MYBOARD_ITEM_MARGIN;
-    padding: $MYBOARD_ITEM_PADDING;
+.myboards-input {
+    margin-left: $MYBOARDS_ITEM_MARGIN;
+    margin-right: $MYBOARDS_ITEM_MARGIN;
+    margin-bottom: $MYBOARDS_ITEM_MARGIN;
+    padding: $MYBOARDS_ITEM_PADDING;
     border-width: 2px;
     border-style: solid;
     border-color: $gray-light;
     outline: 0px;
     box-sizing: border-box;
-    width: calc(100% - #{$MYBOARD_ITEM_MARGIN}*2);
+    width: calc(100% - #{$MYBOARDS_ITEM_MARGIN}*2);
     transition: border-color 200ms ease-in;
 }
 
-.myboard-input:hover, .myboard-input:focus {
+.myboards-input:hover, .myboards-input:focus {
     border-color: $yellow;
     transition: border-color 200ms ease-in;
 }
 
-//CONTENT SECTION
+//ACTIVE BOARD SECTION
+
+$ACTIVE_BOARD_MARGIN: 20px;
+$ACTIVE_BOARD_PADDING: 10px;
+$BOARD-WIDTH: calc(100% - #{$MYBOARDS_WIDTH});
+
+.board {
+    background-color: $yellow;
+    border-top: 1px black;
+    border-left: 1px black;
+}
+
+.board-header {
+    height: $HEADER_HEIGHT;
+    text-align: center;
+}
+
+.main-board {
+    margin-top: $ACTIVE_BOARD_MARGIN;
+    margin-right: auto;
+    width: 100%;
+    padding: 5px;
+}
+
+.board-title {
+    color: $black;
+    font-size: 24px;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.delete-board-button {
+    color: $black;
+    background-color: $red;
+    padding: 6px 8px 6px 8px;
+    margin: 0px;
+    border: 0px;
+    cursor: pointer;
+    opacity: .2;
+    transition: opacity 200ms ease-in;
+}
+
+.delete-board-button:hover {
+    opacity: 1;
+    transition: opacity 200ms ease-in;
+}
+
+.delete-board-button:focus {
+    outline: 0px;
+}
+
+.pull-right {
+    float: right;
+}
+
+.pull-left {
+    float: left;
+}
+
+.column {
+    height: 100%;
+    width: calc(#{$BOARD-WIDTH} / 3);
+    display: inline-block;
+    border: 1px solid $black;
+    background-color: $light-blue;
+    padding: 10px 10px 10px 10px;
+    margin: 5px 5px 5px 5px;
+    border-radius: 5px;
+}
+
+.card-el {
+    width: 100%;
+    height: auto;
+    min-height: 20px;
+    list-style: none;
+    background-color: $gray-lighter;
+    // padding: $ACTIVE_BOARD_PADDING;
+    margin-bottom: 15px;
+    margin-top: 10px;
+    color: $black;
+    transition: border-color 200ms ease-in;
+    line-height: 30px;
+    border-radius: 2px;
+    padding-left: 3px;
+}
+
+li.card-el:hover {
+    border-color: $gray;
+    transition: border-color 200ms ease-in;
+}
+
+//MEDIA QUERIES FOR MOBIlE/SMALLER SCREENS
+
+@media (min-width: 650px) {
+    .myboards-nav {
+        width: $MYBOARDS_WIDTH;
+        height: 100%;
+        float: left;
+        overflow-y: auto;
+    }
+    .board {
+        width: calc(100% - #{$MYBOARDS_WIDTH});
+        float: right;
+        height: 100%;
+        overflow-y: auto;
+    }
+}
+
+@media (max-width: 650px) {
+    .myboards-nav {
+
+    }
+    .board {
+        padding: 10px;
+    }
+}
