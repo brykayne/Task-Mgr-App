@@ -26,7 +26,7 @@
             <form id="myBoardsForm">
                 <input name="myboardsInput" class="myboards-input" placeholder="New Board..." type="text" autocomplete="off">
             </form>
-            <ul id="boardsMenu" class="myboards">
+            <ul id="myBoards" class="myboards">
                 <li class="myboards-el">First Board</li>
                 <li class="myboards-el">Second Board</li>
             </ul>
@@ -37,8 +37,11 @@
                 <h2 class="board-title">First Board</h2>
             </div>
             <div id="selectedBoardEl" class="main-board">
-                <form name="cardInput" class="card-input" placeholder="Add Card..." type="text" autocomplete="off">
+                <div>
+                <form id="cardForm">
+                    <input name="cardInput" class="card-input" placeholder="Add Card..." type="text" autocomplete="off">
                 </form>
+                </div>
                     <ul id="toDoCards" class="column">
                         <li class="card-el">Test Card 1</li>
                         <li class="card-el">Test Card 2</li>

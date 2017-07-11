@@ -44,7 +44,111 @@
 /* 0 */
 /***/ (function(module, exports) {
 
-	"use strict";
+	'use strict';
+
+	document.onreadystatechange = function () {
+	    if (document.readyState === 'interactive') {
+	        main();
+	    }
+	};
+
+	function main() {
+	    var boards = getBoards();
+	    var appData = {
+	        boards: boards,
+	        selectedBoard: boards[Object.keys(boards)[0]]
+	    };
+	    setListeners(appData);
+	    boardsToView(appData.boards);
+	    selectedBoardToView(appData.selectedBoard);
+	}
+
+	function setListeners(appData) {
+	    document.getElementById('myBoardsForm').addEventListener('submit', function (event) {
+	        event.preventDefault();
+	        addBoard(createBoard(event.target.myboardInput.value), appData);
+	    });
+
+	    document.getElementById('cardForm').addEventListener('submit', function (event) {
+	        event.preventDefault();
+	        addItem(createItem(event.target.cardInput.value), appData);
+	    });
+	}
+
+	function getBoards() {
+	    var boards = {
+	        'Agenda': {
+	            name: 'Agenda',
+	            cards: [{ name: 'Clean room.' }]
+	        },
+	        'List of Things': {
+	            name: 'List of Things',
+	            cards: [{ name: 'Do other things.' }]
+	        }
+	    };
+
+	    return boards;
+	}
+
+	function boardsToView(boards) {
+	    var myBoardsEl = document.getElementById('myBoards');
+	    for (var board in boards) {
+	        myBoardsEl.appendChild(boardtoBoardEl(boards[board]));
+	    }
+	}
+
+	function boardtoBoardEl(board) {
+	    var boardEl = document.createElement('li');
+	    boardEl.innerHTML = board.name;
+	    boardEl.className = "myboards-el";
+	    return boardEl;
+	}
+
+	function createBoard(name) {
+	    return {
+	        name: name
+	    };
+	}
+
+	function addBoard(board, appData) {
+	    appData.boards[board.name] = { name: board.name, cards: [] };
+	    console.log(appData);
+	    var myBoardsEl = document.getElementById('myLists');
+	    var boardEl = boardtoBoardEl(board);
+	    addClass(boardEl, 'fade-in');
+	    myBoardsEl.appendChild(boardEl);
+	}
+
+	function selectedBoardToView(selectedBoard) {
+	    // let selectedBoardEl = document.getElementById('selectedBoardEl');
+	    var todoCardsEl = document.getElementById('toDoCards');
+	    for (var card in selectedBoard.cards) {
+	        todoCardsEl.appendChild(cardToCardEl(selectedBoard.cards[card]));
+	    }
+	}
+
+	function cardToCardEl(card) {
+	    var cardEl = document.createElement('li');
+	    cardEl.innerHTML = card.name;
+	    cardEl.className = 'card-el';
+	    return cardEl;
+	}
+
+	function createCard(name) {
+	    return {
+	        name: name,
+	        cards: []
+	    };
+	}
+
+	function addCard(card, appData) {
+	    appData.selectedBoard.cards.push(item);
+	    console.log(appData);
+	    var myBoardsEl = document.getElementById('selectedBoard');
+	    var cardEl = cardToCardEl(card);
+	    addClass(cardEl, 'fade-in');
+	    myBoardsEl.appendChild(cardEl);
+	}
 
 /***/ })
 /******/ ]);

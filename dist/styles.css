@@ -101,6 +101,24 @@ main {
   font-weight: 600;
   display: inline-block; }
 
+.card-input {
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  padding: 5px;
+  border-width: 2px;
+  border-style: solid;
+  border-color: #b4b4b4;
+  outline: 0px;
+  box-sizing: border-box;
+  width: 250px;
+  transition: border-color 200ms ease-in;
+  line-height: 20px; }
+
+.card-input:hover, .card-input:focus {
+  border-color: #fdd835;
+  transition: border-color 200ms ease-in; }
+
 .delete-board-button {
   color: #000000;
   background-color: #B20000;
@@ -151,6 +169,9 @@ main {
 li.card-el:hover {
   border-color: #555555;
   transition: border-color 200ms ease-in; }
+
+.active-board-card {
+  color: #add8e6; }
 
 @media (min-width: 650px) {
   .myboards-nav {

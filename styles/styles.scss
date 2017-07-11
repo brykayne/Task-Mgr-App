@@ -151,6 +151,26 @@ $BOARD-WIDTH: calc(100% - #{$MYBOARDS_WIDTH});
     display: inline-block;
 }
 
+.card-input {
+    margin-left: $MYBOARDS_ITEM_MARGIN;
+    margin-right: $MYBOARDS_ITEM_MARGIN;
+    margin-bottom: $MYBOARDS_ITEM_MARGIN;
+    padding: $MYBOARDS_ITEM_PADDING;
+    border-width: 2px;
+    border-style: solid;
+    border-color: $gray-light;
+    outline: 0px;
+    box-sizing: border-box;
+    width: 250px;
+    transition: border-color 200ms ease-in;
+    line-height: 20px;
+}
+
+.card-input:hover, .card-input:focus {
+    border-color: $yellow;
+    transition: border-color 200ms ease-in;
+}
+
 .delete-board-button {
     color: $black;
     background-color: $red;
@@ -209,6 +229,10 @@ $BOARD-WIDTH: calc(100% - #{$MYBOARDS_WIDTH});
 li.card-el:hover {
     border-color: $gray;
     transition: border-color 200ms ease-in;
+}
+
+.active-board-card {
+    color: $light-blue;
 }
 
 //MEDIA QUERIES FOR MOBIlE/SMALLER SCREENS
