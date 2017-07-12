@@ -11,28 +11,28 @@ main {
   height: calc(100% - 50px); }
 
 .header-title {
-  color: #FFFFFF;
+  color: #222222;
   font-size: 24px;
   margin: 0px;
   line-height: 50px;
   text-align: center;
-  background-color: purple;
+  background-color: #add8e6;
   font-weight: 100; }
 
 .header {
-  background-color: #fdd835;
+  background-color: #add8e6;
   height: 50px;
   margin: 0px; }
 
 .myboards-nav {
-  background-color: #fdd835;
+  background-color: #eeeeee;
   width: 220px;
   height: 100%;
   float: left;
   overflow-y: auto; }
 
 .myboards-header {
-  color: #000000;
+  color: #222222;
   font-size: 16px;
   text-align: center;
   height: 50px;
@@ -41,6 +41,23 @@ main {
 .myboards {
   margin: 0px;
   padding: 0px; }
+
+.myboards-input {
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  padding: 5px;
+  border-width: 2px;
+  border-style: solid;
+  border-color: #b4b4b4;
+  outline: 0px;
+  box-sizing: border-box;
+  width: calc(100% - 10px*2);
+  transition: border-color 200ms ease-in; }
+
+.myboards-input:hover, .myboards-input:focus {
+  border-color: #add8e6;
+  transition: border-color 200ms ease-in; }
 
 .myboards-el {
   color: #333333;
@@ -63,84 +80,94 @@ main {
   border-color: #555555;
   transition: border-color 200ms ease-in; }
 
-.myboards-input {
+.active-board-item-selected {
+  color: #b4b4b4;
+  background-color: #FFFFFF;
+  list-style: none;
+  text-align: center;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
   margin-left: 10px;
   margin-right: 10px;
-  margin-bottom: 10px;
-  padding: 5px;
   border-width: 2px;
   border-style: solid;
-  border-color: #b4b4b4;
-  outline: 0px;
-  box-sizing: border-box;
-  width: calc(100% - 10px*2);
-  transition: border-color 200ms ease-in; }
-
-.myboards-input:hover, .myboards-input:focus {
-  border-color: #fdd835;
-  transition: border-color 200ms ease-in; }
+  border-color: solid;
+  border-color: transparent;
+  transition: border-color 200ms ease-in, opacity 200ms ease-in;
+  cursor: pointer; }
 
 .board {
-  background-color: #fdd835;
+  background-color: #FFFFFF;
   border-top: 1px black;
-  border-left: 1px black; }
+  border-left: 1px black;
+  margin: 0px;
+  padding: 0px; }
 
 .board-header {
   height: 50px;
   text-align: center; }
 
-.main-board {
-  margin-top: 20px;
-  margin-right: auto;
-  width: 100%;
-  padding: 5px; }
-
 .board-title {
-  color: #000000;
-  font-size: 24px;
+  font-size: 16px;
+  color: #222222;
+  line-height: 50px;
   font-weight: 600;
   display: inline-block; }
 
+.board-content {
+  margin-right: auto;
+  padding: 5px; }
+
+.board-tray {
+  padding: 10px; }
+
 .card-input {
+  float: left;
   margin-left: 10px;
   margin-right: 10px;
   margin-bottom: 10px;
-  padding: 5px;
+  padding: 10px 10px;
   border-width: 2px;
   border-style: solid;
   border-color: #b4b4b4;
   outline: 0px;
   box-sizing: border-box;
-  width: 250px;
+  width: 150px;
   transition: border-color 200ms ease-in;
-  line-height: 20px; }
+  line-height: 16px; }
 
 .card-input:hover, .card-input:focus {
-  border-color: #fdd835;
+  border-color: #add8e6;
   transition: border-color 200ms ease-in; }
 
-.delete-board-button {
-  color: #000000;
-  background-color: #B20000;
-  padding: 6px 8px 6px 8px;
-  margin: 0px;
-  border: 0px;
-  cursor: pointer;
-  opacity: .2;
-  transition: opacity 200ms ease-in; }
-
-.delete-board-button:hover {
-  opacity: 1;
-  transition: opacity 200ms ease-in; }
-
-.delete-board-button:focus {
-  outline: 0px; }
-
-.pull-right {
+.card-buttons {
   float: right; }
 
-.pull-left {
-  float: left; }
+.forward-btn {
+  background-color: #b4b4b4;
+  color: #FFFFFF;
+  border: none;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 12px;
+  margin: 4px 2px;
+  cursor: pointer; }
+
+.backward-btn {
+  background-color: #b4b4b4;
+  color: #FFFFFF;
+  border: none;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 12px;
+  margin: 4px 2px;
+  cursor: pointer; }
+
+.board-columns {
+  margin-top: 50px; }
 
 .column {
   height: 100%;
@@ -149,29 +176,57 @@ main {
   border: 1px solid #000000;
   background-color: #add8e6;
   padding: 10px 10px 10px 10px;
-  margin: 5px 5px 5px 5px;
-  border-radius: 5px; }
+  margin: 5px 5px 5px 5px; }
+
+.column-el {
+  list-style: none;
+  padding: 0; }
 
 .card-el {
   width: 100%;
   height: auto;
-  min-height: 20px;
-  list-style: none;
+  min-height: 30px;
   background-color: #eeeeee;
   margin-bottom: 15px;
   margin-top: 10px;
-  color: #000000;
+  color: #222222;
   transition: border-color 200ms ease-in;
   line-height: 30px;
   border-radius: 2px;
-  padding-left: 3px; }
+  padding-left: 3px;
+  overflow: hidden; }
 
-li.card-el:hover {
+.card-el:hover {
   border-color: #555555;
   transition: border-color 200ms ease-in; }
 
 .active-board-card {
-  color: #add8e6; }
+  color: #add8e6;
+  border-color: #add8e6;
+  transition: border-color 200ms ease-in; }
+
+.pull-right {
+  float: right; }
+
+.pull-left {
+  float: left; }
+
+@keyframes fadein {
+  0% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
+.fade-in {
+  opacity: 1;
+  animation: fadein 200ms linear; }
+
+@keyframes fadeout {
+  50% {
+    opacity: 0; }
+  100% {
+    opacity: 0; } }
+.fadeout-el {
+  animation: fadeout 800ms linear; }
 
 @media (min-width: 650px) {
   .myboards-nav {

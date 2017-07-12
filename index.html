@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 
 <html lang="en">
 <head>
@@ -9,7 +9,9 @@
     <meta name="author" content="Bryan Kayne">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <link rel="stylesheet" href="./styles/styles.css">
     <link rel="stylesheet" href="./dist/styles.css">
+
 
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
@@ -31,25 +33,43 @@
         </nav>
 
         <section class="board">
-            <div id="boardHeader" class="main-board board-header">
+            <div id="boardHeader" class="board-header">
                 <h2 class="board-title">First Board</h2>
             </div>
-            <div id="selectedBoardEl" class="main-board">
-                <div>
-                <form id="cardForm">
-                    <input name="cardInput" class="card-input" placeholder="Add Card..." type="text" autocomplete="off">
-                </form>
+            <div id="selectedBoardEl" class="board-content">
+                <div class="board-tray">
+                    <form id="cardForm">
+                        <input name="cardInput" class="card-input" placeholder="Add Card..." type="text" autocomplete="off">
+                    </form>
+                    <div class="card-buttons">
+                        <button class="forward-btn">Forward</button>
+                        <button class="backward-btn">Backward</button>
+                    </div>
                 </div>
-                    <ul id="toDoCards" class="column">
-                        <li class="card-el">Add Card above!</li>
-                    </ul>
-                    <ul id="inProgressCards" class="column">
-                    </ul>
-                    <ul id="doneCards" class="column">
-                    </ul>
+                <div class="board-columns">
+                    <div class="column">
+                        <ul id="toDoCards" class="column-el">
+                            <li class="card-el">Add Card above!</li>
+                            <li class="active-board-card">I'm active!</li>
+                        </ul>
+                    </div>
+
+                    <div class="column">
+                        <ul id="inProgressCards" class="column-el">
+                            <!-- <li class="card-el">Add Card above!</li> -->
+                        </ul>
+                    </div>
+
+                    <div class="column">
+                        <ul id="doneCards" class="column-el">
+                            <!-- <li class="card-el">Add Card above!</li> -->
+                        </ul>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
+    <script src="./scripts/util.js"></script>
     <script src="./dist/bundle.js"></script>
 </body>
 </html>

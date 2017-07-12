@@ -35,22 +35,22 @@ main {
 // HEADER STYLES
 
 .header-title {
-    color: $white;
+    color: $gray-darker;
     font-size: 24px;
     margin: 0px;
     line-height: $HEADER_HEIGHT;
     text-align: center;
-    background-color: purple;
+    background-color: $light-blue;
     font-weight: 100;
 }
 
 .header {
-    background-color: $yellow;
+    background-color: $light-blue;
     height: $HEADER_HEIGHT;
     margin: 0px;
 }
 
-// BOARD NAV
+// MYBOARDS NAV
 
 $MYBOARDS_ITEM_PADDING: 5px;
 $MYBOARDS_ITEM_MARGIN: 10px;
@@ -58,7 +58,7 @@ $MYBOARDS_HEADER_HEIGHT: 30px;
 $MYBOARDS_WIDTH: 220px;
 
 .myboards-nav {
-    background-color: $yellow;
+    background-color: $gray-lighter;
     width: $MYBOARDS_WIDTH;
     height: 100%;
     float: left;
@@ -66,7 +66,7 @@ $MYBOARDS_WIDTH: 220px;
 }
 
 .myboards-header {
-    color: $black;
+    color: $gray-darker;
     font-size: 16px;
     text-align: center;
     height: $HEADER_HEIGHT;
@@ -76,6 +76,25 @@ $MYBOARDS_WIDTH: 220px;
 .myboards {
     margin: 0px;
     padding: 0px;
+}
+
+.myboards-input {
+    margin-left: $MYBOARDS_ITEM_MARGIN;
+    margin-right: $MYBOARDS_ITEM_MARGIN;
+    margin-bottom: $MYBOARDS_ITEM_MARGIN;
+    padding: $MYBOARDS_ITEM_PADDING;
+    border-width: 2px;
+    border-style: solid;
+    border-color: $gray-light;
+    outline: 0px;
+    box-sizing: border-box;
+    width: calc(100% - #{$MYBOARDS_ITEM_MARGIN}*2);
+    transition: border-color 200ms ease-in;
+}
+
+.myboards-input:hover, .myboards-input:focus {
+    border-color: $light-blue;
+    transition: border-color 200ms ease-in;
 }
 
 .myboards-el {
@@ -101,24 +120,24 @@ $MYBOARDS_WIDTH: 220px;
     transition: border-color 200ms ease-in;
 }
 
-.myboards-input {
+.active-board-item-selected {
+    color: $gray-light;
+    background-color: $white;
+    list-style: none;
+    text-align: center;
+    padding-top: $MYBOARDS_ITEM_PADDING;
+    padding-bottom: $MYBOARDS_ITEM_PADDING;
+    margin-bottom: $MYBOARDS_ITEM_MARGIN;
     margin-left: $MYBOARDS_ITEM_MARGIN;
     margin-right: $MYBOARDS_ITEM_MARGIN;
-    margin-bottom: $MYBOARDS_ITEM_MARGIN;
-    padding: $MYBOARDS_ITEM_PADDING;
     border-width: 2px;
     border-style: solid;
-    border-color: $gray-light;
-    outline: 0px;
-    box-sizing: border-box;
-    width: calc(100% - #{$MYBOARDS_ITEM_MARGIN}*2);
-    transition: border-color 200ms ease-in;
+    border-color: solid;
+    border-color: transparent;
+    transition: border-color 200ms ease-in, opacity 200ms ease-in;
+    cursor: pointer;
 }
 
-.myboards-input:hover, .myboards-input:focus {
-    border-color: $yellow;
-    transition: border-color 200ms ease-in;
-}
 
 //ACTIVE BOARD SECTION
 
@@ -127,9 +146,11 @@ $ACTIVE_BOARD_PADDING: 10px;
 $BOARD-WIDTH: calc(100% - #{$MYBOARDS_WIDTH});
 
 .board {
-    background-color: $yellow;
+    background-color: $white;
     border-top: 1px black;
-    border-left: 1px black;
+    border-left: 1px black; //is this correct?
+    margin: 0px;
+    padding: 0px;
 }
 
 .board-header {
@@ -137,66 +158,76 @@ $BOARD-WIDTH: calc(100% - #{$MYBOARDS_WIDTH});
     text-align: center;
 }
 
-.main-board {
-    margin-top: $ACTIVE_BOARD_MARGIN;
-    margin-right: auto;
-    width: 100%;
-    padding: 5px;
-}
-
 .board-title {
-    color: $black;
-    font-size: 24px;
+    font-size: 16px;
+    color: $gray-darker;
+    line-height: $HEADER_HEIGHT;
     font-weight: 600;
     display: inline-block;
 }
 
+.board-content {
+    margin-right: auto;
+    // width: 100%;
+    padding: 5px;
+}
+
+.board-tray {
+    padding: 10px;
+}
+
 .card-input {
+    float: left;
     margin-left: $MYBOARDS_ITEM_MARGIN;
     margin-right: $MYBOARDS_ITEM_MARGIN;
     margin-bottom: $MYBOARDS_ITEM_MARGIN;
-    padding: $MYBOARDS_ITEM_PADDING;
+    padding: 10px 10px;
     border-width: 2px;
     border-style: solid;
     border-color: $gray-light;
     outline: 0px;
     box-sizing: border-box;
-    width: 250px;
+    width: 150px;
     transition: border-color 200ms ease-in;
-    line-height: 20px;
+    line-height: 16px;
+
 }
 
 .card-input:hover, .card-input:focus {
-    border-color: $yellow;
+    border-color: $light-blue;
     transition: border-color 200ms ease-in;
 }
 
-.delete-board-button {
-    color: $black;
-    background-color: $red;
-    padding: 6px 8px 6px 8px;
-    margin: 0px;
-    border: 0px;
-    cursor: pointer;
-    opacity: .2;
-    transition: opacity 200ms ease-in;
-}
-
-.delete-board-button:hover {
-    opacity: 1;
-    transition: opacity 200ms ease-in;
-}
-
-.delete-board-button:focus {
-    outline: 0px;
-}
-
-.pull-right {
+.card-buttons {
     float: right;
 }
 
-.pull-left {
-    float: left;
+.forward-btn {
+    background-color: $gray-light;
+    color: $white;
+    border: none;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 12px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.backward-btn {
+    background-color: $gray-light;
+    color: $white;
+    border: none;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 12px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.board-columns {
+    margin-top: 50px;
 }
 
 .column {
@@ -207,33 +238,96 @@ $BOARD-WIDTH: calc(100% - #{$MYBOARDS_WIDTH});
     background-color: $light-blue;
     padding: 10px 10px 10px 10px;
     margin: 5px 5px 5px 5px;
-    border-radius: 5px;
+    // border-radius: 5px;
+}
+
+//UL that houses cards
+.column-el {
+    list-style: none;
+    padding: 0;
 }
 
 .card-el {
     width: 100%;
     height: auto;
-    min-height: 20px;
-    list-style: none;
+    min-height: 30px;
     background-color: $gray-lighter;
     // padding: $ACTIVE_BOARD_PADDING;
     margin-bottom: 15px;
     margin-top: 10px;
-    color: $black;
+    color: $gray-darker;
     transition: border-color 200ms ease-in;
     line-height: 30px;
     border-radius: 2px;
     padding-left: 3px;
+    overflow: hidden;
 }
 
-li.card-el:hover {
+.card-el:hover {
     border-color: $gray;
     transition: border-color 200ms ease-in;
 }
 
 .active-board-card {
     color: $light-blue;
+    border-color: $light-blue;
+    transition: border-color 200ms ease-in;
 }
+
+
+//Review this later:
+// .active-board-item-selected {
+//     border-color: $gray !important;
+//     transition: border-color 200ms ease-in;
+// }
+//
+// .delete-board-button {
+//     color: $black;
+//     background-color: $red;
+//     padding: 6px 8px 6px 8px;
+//     margin: 0px;
+//     border: 0px;
+//     cursor: pointer;
+//     opacity: .2;
+//     transition: opacity 200ms ease-in;
+// }
+//
+// .delete-board-button:hover {
+//     opacity: 1;
+//     transition: opacity 200ms ease-in;
+// }
+//
+// .delete-board-button:focus {
+//     outline: 0px;
+// }
+
+.pull-right {
+    float: right;
+}
+
+.pull-left {
+    float: left;
+}
+
+@keyframes fadein {
+    0% {opacity:0;}
+    100% {opacity:1;}
+}
+
+.fade-in {
+    opacity:1;
+    animation : fadein 200ms linear;
+}
+
+@keyframes fadeout {
+    50% {opacity:0;}
+    100% {opacity:0;}
+}
+
+.fadeout-el {
+    animation : fadeout 800ms linear;
+}
+
 
 //MEDIA QUERIES FOR MOBIlE/SMALLER SCREENS
 

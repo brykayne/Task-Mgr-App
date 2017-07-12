@@ -56,18 +56,19 @@
 	    var boards = getBoards();
 	    var appData = {
 	        boards: boards,
-	        selectedBoard: boards[Object.keys(boards)[0]]
+	        selectedBoard: boards[Object.keys(boards)[0]],
+	        selectedBoardEl: null
 	    };
 	    setListeners(appData);
 	    boardsToView(appData.boards);
 	    selectedBoardToView(appData.selectedBoard);
+	    selectBoard(document.getElementById('myBoards').firstElementChild, appData);
 	}
 
 	function setListeners(appData) {
 	    document.getElementById('myBoardsForm').addEventListener('submit', function (event) {
 	        event.preventDefault();
 	        console.log(event);
-	        debugger;
 	        addBoard(createBoard(event.target.myboardsInput.value), appData);
 	    });
 
@@ -75,17 +76,25 @@
 	        event.preventDefault();
 	        addCard(createCard(event.target.cardInput.value), appData);
 	    });
+
+	    document.getElementById('myBoards').addEventListener('click', function (event) {
+	        event.preventDefault();
+	        if (event.target.tagName === 'LI') {
+	            console.log(event.target.getAttribute('data-board'));
+	            selectBoard(event.target, appData);
+	        }
+	    });
 	}
 
 	function getBoards() {
 	    var boards = {
 	        'Agenda': {
 	            name: 'Agenda',
-	            cards: [{ name: 'Clean room.' }]
+	            cards: [{ name: 'Clean room.', position: 0, isComplete: false, isDeleted: false }]
 	        },
 	        'List of Things': {
 	            name: 'List of Things',
-	            cards: [{ name: 'Do other things.' }]
+	            cards: [{ name: 'Do other things.', position: 0, isComplete: false, isDeleted: false }]
 	        }
 	    };
 
@@ -102,13 +111,15 @@
 	function boardtoBoardEl(board) {
 	    var boardEl = document.createElement('li');
 	    boardEl.innerHTML = board.name;
-	    boardEl.className = "myboards-el";
+	    boardEl.setAttribute('data-board', JSON.stringify(board));
+	    addClass(boardEl, "myboards-el");
 	    return boardEl;
 	}
 
 	function createBoard(name) {
 	    return {
-	        name: name
+	        name: name,
+	        cards: []
 	    };
 	}
 
@@ -118,12 +129,15 @@
 	    var myBoardsEl = document.getElementById('myBoards');
 	    var boardEl = boardtoBoardEl(board);
 	    //Add fade-in class here...
-	    boardEl.className += ' fade-in';
+	    addClass(boardEl, 'fade-in');
 	    myBoardsEl.appendChild(boardEl);
+	    selectBoard(boardEl, appData);
 	}
 
 	function selectedBoardToView(selectedBoard) {
 	    var todoCardsEl = document.getElementById('toDoCards');
+	    todoCardsEl.innerHTML = '';
+	    //Will need to clear other columns when add in move card functionality
 	    for (var card in selectedBoard.cards) {
 	        todoCardsEl.appendChild(cardToCardEl(selectedBoard.cards[card]));
 	    }
@@ -132,25 +146,48 @@
 	function cardToCardEl(card) {
 	    var cardEl = document.createElement('li');
 	    cardEl.innerHTML = card.name;
-	    cardEl.className = 'card-el';
+	    addClass(cardEl, 'card-el');
 	    return cardEl;
 	}
 
 	function createCard(name) {
 	    return {
 	        name: name,
-	        cards: []
+	        position: 0,
+	        //where 0 = starting, 1 = in progress, 2 = complete
+	        isComplete: false,
+	        isDeleted: false
 	    };
 	}
 
 	function addCard(card, appData) {
 	    appData.selectedBoard.cards.push(card);
+	    appData.selectedBoardEl.setAttribute('data-board', JSON.stringify(appData.selectedBoard));
+	    console.log(JSON.stringify(appData.selectedBoard));
 	    console.log(appData);
 	    var todoCardsEl = document.getElementById('toDoCards');
 	    var cardEl = cardToCardEl(card);
-	    // addClass(cardEl, 'fade-in');
+	    addClass(cardEl, 'fade-in');
 	    todoCardsEl.appendChild(cardEl);
 	}
+
+	function selectBoard(boardEl, appData) {
+	    if (appData.selectedBoardEl != null) {
+	        removeClass(appData.selectedBoardEl, 'active-board-item-selected');
+	    }
+	    appData.selectedBoardEl = boardEl;
+	    addClass(boardEl, 'active-board-item-selected');
+	    appData.selectedBoard = JSON.parse(boardEl.getAttribute('data-board'));
+	    selectedBoardToView(appData.selectedBoard);
+	}
+
+	// function cardForward(cardEl, appData) {
+	//
+	// }
+	//
+	// function cardBackward(cardEl, appData) {
+	//
+	// }
 
 /***/ })
 /******/ ]);
