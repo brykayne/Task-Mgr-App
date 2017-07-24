@@ -20,7 +20,6 @@ function main() {
 function setListeners(appData) {
     document.getElementById('myBoardsForm').addEventListener('submit', function(event) {
         event.preventDefault();
-        console.log(event);
         addBoard(createBoard(event.target.myboardsInput.value), appData);
     });
 
@@ -32,9 +31,19 @@ function setListeners(appData) {
     document.getElementById('myBoards').addEventListener('click', function(event) {
         event.preventDefault();
         if(event.target.tagName === 'LI') {
-            console.log(event.target.getAttribute('data-board'));
             selectBoard(event.target, appData);
         }
+    });
+
+    document.getElementById('forwardBtn').addEventListener('click', function(event) {
+        event.preventDefault();
+        console.log('forward clicked!');
+        //Pseudo-code for pushing card forward:
+        //1. Click card to select
+        //2. Make active card (style, appData)
+        //3. Click forward button
+        //4. Update appData object
+        //5. show card moved to new column
     });
 }
 
@@ -52,7 +61,9 @@ function getBoards() {
         {
             name: 'List of Things',
             cards:[
-                {name: 'Do other things.', position: 0, isComplete: false, isDeleted: false}
+                {name: 'Do other things.', position: 0, isComplete: false, isDeleted: false},
+                {name: 'In progresssss.', position: 1, isComplete: false, isDeleted: false},
+                {name: 'Done!', position: 2, isComplete: true, isDeleted: false}
             ]
         }
     };
@@ -84,7 +95,6 @@ function createBoard(name) {
 
 function addBoard(board, appData) {
     appData.boards[board.name] = {name:board.name, cards:[]};
-    console.log(appData);
     let myBoardsEl = document.getElementById('myBoards');
     let boardEl = boardtoBoardEl(board);
     //Add fade-in class here...
@@ -95,11 +105,24 @@ function addBoard(board, appData) {
 
 function selectedBoardToView(selectedBoard) {
     let todoCardsEl = document.getElementById('toDoCards');
+    let inProgressCardsEl = document.getElementById('inProgressCards');
+    let doneCardsEl = document.getElementById('doneCards');
     todoCardsEl.innerHTML = '';
-    //Will need to clear other columns when add in move card functionality
+    inProgressCardsEl.innerHTML = '';
+    doneCardsEl.innerHTML = '';
+
     for(let card in selectedBoard.cards) {
-        todoCardsEl.appendChild(cardToCardEl(selectedBoard.cards[card]));
-    }
+        console.log(selectedBoard.cards[card]);
+        if (selectedBoard.cards[card].position == 0) {
+            todoCardsEl.appendChild(cardToCardEl(selectedBoard.cards[card]));
+        } else if (selectedBoard.cards[card].position == 1) {
+            inProgressCardsEl.appendChild(cardToCardEl(selectedBoard.cards[card]));
+        } else if (selectedBoard.cards[card].position == 2) {
+            doneCardsEl.appendChild(cardToCardEl(selectedBoard.cards[card]));
+        } else {
+            console.log('Position could not be found');
+        };
+    };
 }
 
 function cardToCardEl(card) {
@@ -122,7 +145,6 @@ function createCard(name) {
 function addCard(card, appData) {
     appData.selectedBoard.cards.push(card);
     appData.selectedBoardEl.setAttribute('data-board',JSON.stringify(appData.selectedBoard));
-    console.log(JSON.stringify(appData.selectedBoard));
     console.log(appData);
     let todoCardsEl = document.getElementById('toDoCards');
     let cardEl = cardToCardEl(card);

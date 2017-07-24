@@ -84,6 +84,17 @@
 	            selectBoard(event.target, appData);
 	        }
 	    });
+
+	    document.getElementById('forwardBtn').addEventListener('click', function (event) {
+	        event.preventDefault();
+	        console.log('forward clicked!');
+	        //Pseudo-code for pushing card forward:
+	        //1. Click card to select
+	        //2. Make active card (style, appData)
+	        //3. Click forward button
+	        //4. Update appData object
+	        //5. show card moved to new column
+	    });
 	}
 
 	function getBoards() {
@@ -94,7 +105,7 @@
 	        },
 	        'List of Things': {
 	            name: 'List of Things',
-	            cards: [{ name: 'Do other things.', position: 0, isComplete: false, isDeleted: false }]
+	            cards: [{ name: 'Do other things.', position: 0, isComplete: false, isDeleted: false }, { name: 'In progresssss.', position: 1, isComplete: false, isDeleted: false }, { name: 'Done!', position: 2, isComplete: true, isDeleted: false }]
 	        }
 	    };
 
@@ -136,11 +147,24 @@
 
 	function selectedBoardToView(selectedBoard) {
 	    var todoCardsEl = document.getElementById('toDoCards');
+	    var inProgressCardsEl = document.getElementById('inProgressCards');
+	    var doneCardsEl = document.getElementById('doneCards');
 	    todoCardsEl.innerHTML = '';
-	    //Will need to clear other columns when add in move card functionality
+	    inProgressCardsEl.innerHTML = '';
+	    doneCardsEl.innerHTML = '';
+
 	    for (var card in selectedBoard.cards) {
-	        todoCardsEl.appendChild(cardToCardEl(selectedBoard.cards[card]));
-	    }
+	        console.log(selectedBoard.cards[card]);
+	        if (selectedBoard.cards[card].position == 0) {
+	            todoCardsEl.appendChild(cardToCardEl(selectedBoard.cards[card]));
+	        } else if (selectedBoard.cards[card].position == 1) {
+	            inProgressCardsEl.appendChild(cardToCardEl(selectedBoard.cards[card]));
+	        } else if (selectedBoard.cards[card].position == 2) {
+	            doneCardsEl.appendChild(cardToCardEl(selectedBoard.cards[card]));
+	        } else {
+	            console.log('Position could not be found');
+	        };
+	    };
 	}
 
 	function cardToCardEl(card) {
