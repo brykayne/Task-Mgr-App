@@ -52,6 +52,10 @@
 	    }
 	};
 
+	//To Do:
+	//1. Verify appData.selectedBoard, selectedBoardEl
+	//2. SelectedCard functionality
+
 	function main() {
 	    var boards = getBoards();
 	    var appData = {
@@ -88,13 +92,13 @@
 
 	    document.getElementById('selectedBoard').addEventListener('click', function (event) {
 	        //41
-
+	        debugger;
 	        //Add unique id to each card: https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
-	        // if(event.target.tagName === 'LI') {
-	        //     // selectCard(event.target,)
-	        //     console.log('woah! Board LI hit.')
-	        //
-	        // }
+	        if (event.target.tagName === 'LI') {
+	            selectCard(event.target, appData);
+	        } else if (event.target.id === 'deleteBtn') {
+	            deleteCard(appData.selectedCardEl, appData);
+	        }
 	    });
 
 	    document.getElementById('forwardBtn').addEventListener('click', function (event) {
@@ -169,16 +173,15 @@
 
 	    //Might need if(!appData.selectedList.items[item].isDeleted)
 
-
-	    for (var _card in appData.selectedBoard.cards) {
-	        console.log(appData.selectedBoard.cards[_card]);
-	        if (!appData.selectedBoard.cards[_card].isDeleted) {
-	            if (appData.selectedBoard.cards[_card].position == 0) {
-	                todoCardsEl.appendChild(cardToCardEl(appData.selectedBoard.cards[_card]));
-	            } else if (appData.selectedBoard.cards[_card].position == 1) {
-	                inProgressCardsEl.appendChild(cardToCardEl(appData.selectedBoard.cards[_card]));
-	            } else if (appData.selectedBoard.cards[_card].position == 2) {
-	                doneCardsEl.appendChild(cardToCardEl(appData.selectedBoard.cards[_card]));
+	    for (var card in appData.selectedBoard.cards) {
+	        // console.log(appData.selectedBoard.cards[card]);
+	        if (!appData.selectedBoard.cards[card].isDeleted) {
+	            if (appData.selectedBoard.cards[card].position == 0) {
+	                todoCardsEl.appendChild(cardToCardEl(appData.selectedBoard.cards[card], card));
+	            } else if (appData.selectedBoard.cards[card].position == 1) {
+	                inProgressCardsEl.appendChild(cardToCardEl(appData.selectedBoard.cards[card], card));
+	            } else if (appData.selectedBoard.cards[card].position == 2) {
+	                doneCardsEl.appendChild(cardToCardEl(appData.selectedBoard.cards[card], card));
 	            } else {
 	                console.log('Position could not be found');
 	            };
@@ -221,7 +224,7 @@
 	}
 
 	function selectBoard(boardEl, appData) {
-	    debugger;
+
 	    appData.selectedCardEl = null; //162
 	    appData.selectedCard = null;
 	    appData.selectedBoard = appData.boards[boardEl.getAttribute('data-board-name')];
@@ -230,7 +233,6 @@
 	    }
 	    appData.selectedBoardEl = boardEl;
 	    addClass(appData.selectedBoardEl, 'active-board-item-selected');
-	    // appData.selectedBoard = JSON.parse(boardEl.getAttribute('data-board-name'));
 	    selectedBoardToView(appData);
 	}
 
@@ -241,7 +243,7 @@
 	    };
 	    appData.selectedCardEl = cardEl;
 	    addClass(cardEl, 'active-board-item-selected');
-	    appData.selectedCard = JSON.parse(card.getAttribute('data-card'));
+	    appData.selectedCard = JSON.parse(cardEl.getAttribute('data-card'));
 	    //card details view
 	}
 
