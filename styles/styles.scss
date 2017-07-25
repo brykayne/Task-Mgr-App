@@ -226,6 +226,23 @@ $BOARD-WIDTH: calc(100% - #{$MYBOARDS_WIDTH});
     cursor: pointer;
 }
 
+.delete-btn {
+    background-color: $gray-light;
+    color: $red;
+    border: none;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 12px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.delete-btn:hover {
+    opacity: 1;
+    transition: opacity 200ms linear;
+}
+
 .board-columns {
     margin-top: 50px;
 }
@@ -313,20 +330,18 @@ $BOARD-WIDTH: calc(100% - #{$MYBOARDS_WIDTH});
     0% {opacity:0;}
     100% {opacity:1;}
 }
-
 .fade-in {
     opacity:1;
     animation : fadein 200ms linear;
 }
 
 @keyframes fadeout {
-    50% {opacity:0;}
-    100% {opacity:0;}
-}
-
-.fadeout-el {
-    animation : fadeout 800ms linear;
-}
+    50% {
+        opacity: 0; }
+    100% {
+        opacity: 0; } }
+    .fadeout-el {
+        animation: fadeout 800ms linear; }
 
 
 //MEDIA QUERIES FOR MOBIlE/SMALLER SCREENS
