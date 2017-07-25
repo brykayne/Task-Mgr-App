@@ -77,12 +77,12 @@ main {
   cursor: pointer; }
 
 .myboards-el:hover {
-  border-color: #555555;
+  border-color: #add8e6;
   transition: border-color 200ms ease-in; }
 
 .active-board-item-selected {
-  color: #b4b4b4;
-  background-color: #FFFFFF;
+  color: #333333;
+  background-color: #b4b4b4;
   list-style: none;
   text-align: center;
   padding-top: 5px;
@@ -92,8 +92,7 @@ main {
   margin-right: 10px;
   border-width: 2px;
   border-style: solid;
-  border-color: solid;
-  border-color: transparent;
+  border-color: #222222;
   transition: border-color 200ms ease-in, opacity 200ms ease-in;
   cursor: pointer; }
 
@@ -182,10 +181,12 @@ main {
   transition: opacity 200ms linear; }
 
 .board-columns {
-  margin-top: 50px; }
+  margin-top: 65px;
+  vertical-align: top; }
 
 .column {
   height: 100%;
+  vertical-align: top;
   width: calc(calc(100% - 220px) / 3);
   display: inline-block;
   border: 1px solid #000000;
@@ -200,16 +201,16 @@ main {
 .card-el {
   width: 100%;
   height: auto;
-  min-height: 30px;
   background-color: #eeeeee;
+  padding: 5px 5px 5px 5px;
   margin-bottom: 15px;
   margin-top: 10px;
   color: #222222;
   transition: border-color 200ms ease-in;
-  line-height: 30px;
   border-radius: 2px;
   padding-left: 3px;
-  overflow: hidden; }
+  overflow: hidden;
+  font-size: 14px; }
 
 .card-el:hover {
   border-color: #555555;

@@ -116,13 +116,13 @@ $MYBOARDS_WIDTH: 220px;
 }
 
 .myboards-el:hover {
-    border-color: $gray;
+    border-color: $light-blue;
     transition: border-color 200ms ease-in;
 }
 
 .active-board-item-selected {
-    color: $gray-light;
-    background-color: $white;
+    color: $gray-dark;
+    background-color: $gray-light;
     list-style: none;
     text-align: center;
     padding-top: $MYBOARDS_ITEM_PADDING;
@@ -132,8 +132,7 @@ $MYBOARDS_WIDTH: 220px;
     margin-right: $MYBOARDS_ITEM_MARGIN;
     border-width: 2px;
     border-style: solid;
-    border-color: solid;
-    border-color: transparent;
+    border-color: $gray-darker;
     transition: border-color 200ms ease-in, opacity 200ms ease-in;
     cursor: pointer;
 }
@@ -244,11 +243,13 @@ $BOARD-WIDTH: calc(100% - #{$MYBOARDS_WIDTH});
 }
 
 .board-columns {
-    margin-top: 50px;
+    margin-top: 65px;
+    vertical-align: top;
 }
 
 .column {
     height: 100%;
+    vertical-align: top;
     width: calc(#{$BOARD-WIDTH} / 3);
     display: inline-block;
     border: 1px solid $black;
@@ -267,17 +268,17 @@ $BOARD-WIDTH: calc(100% - #{$MYBOARDS_WIDTH});
 .card-el {
     width: 100%;
     height: auto;
-    min-height: 30px;
     background-color: $gray-lighter;
-    // padding: $ACTIVE_BOARD_PADDING;
+    padding: 5px 5px 5px 5px;
     margin-bottom: 15px;
     margin-top: 10px;
     color: $gray-darker;
     transition: border-color 200ms ease-in;
-    line-height: 30px;
+    // line-height: 30px;
     border-radius: 2px;
     padding-left: 3px;
     overflow: hidden;
+    font-size: 14px;
 }
 
 .card-el:hover {

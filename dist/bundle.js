@@ -92,7 +92,6 @@
 
 	    document.getElementById('selectedBoard').addEventListener('click', function (event) {
 	        //41
-	        debugger;
 	        //Add unique id to each card: https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
 	        if (event.target.tagName === 'LI') {
 	            selectCard(event.target, appData);
