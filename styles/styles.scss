@@ -17,6 +17,10 @@ $HEADER_HEIGHT: 50px;
 
 // DOCUMENT STYLES
 
+* {
+    box-sizing: border-box;
+}
+
 h1,h2,h3,h4,h5,h6 {
     margin: 0px;
 }
@@ -137,6 +141,11 @@ $MYBOARDS_WIDTH: 220px;
     cursor: pointer;
 }
 
+.active-board-item-selected:hover {
+    border-color: $light-blue;
+    transition: border-color 200ms ease-in;
+}
+
 
 //ACTIVE BOARD SECTION
 
@@ -147,7 +156,7 @@ $BOARD-WIDTH: calc(100% - #{$MYBOARDS_WIDTH});
 .board {
     background-color: $white;
     border-top: 1px black;
-    border-left: 1px black; //is this correct?
+    border-left: 1px black;
     margin: 0px;
     padding: 0px;
 }
@@ -166,30 +175,25 @@ $BOARD-WIDTH: calc(100% - #{$MYBOARDS_WIDTH});
 }
 
 .board-content {
-    margin-right: auto;
-    // width: 100%;
     padding: 5px;
 }
 
 .board-tray {
     padding: 10px;
+    vertical-align: bottom;
+    height: 100px;
 }
 
 .card-input {
     float: left;
-    margin-left: $MYBOARDS_ITEM_MARGIN;
-    margin-right: $MYBOARDS_ITEM_MARGIN;
-    margin-bottom: $MYBOARDS_ITEM_MARGIN;
     padding: 10px 10px;
     border-width: 2px;
     border-style: solid;
     border-color: $gray-light;
     outline: 0px;
     box-sizing: border-box;
-    width: 150px;
+    width: 300px;
     transition: border-color 200ms ease-in;
-    line-height: 16px;
-
 }
 
 .card-input:hover, .card-input:focus {
@@ -205,11 +209,12 @@ $BOARD-WIDTH: calc(100% - #{$MYBOARDS_WIDTH});
     background-color: $gray-light;
     color: $white;
     border: none;
-    padding: 15px 32px;
+    padding: 10px 10px;
     text-align: center;
     text-decoration: none;
-    font-size: 12px;
+    font-size: 14px;
     margin: 4px 2px;
+    margin-top: 0px;
     cursor: pointer;
 }
 
@@ -217,11 +222,12 @@ $BOARD-WIDTH: calc(100% - #{$MYBOARDS_WIDTH});
     background-color: $gray-light;
     color: $white;
     border: none;
-    padding: 15px 32px;
+    padding: 10px 10px;
     text-align: center;
     text-decoration: none;
-    font-size: 12px;
+    font-size: 14px;
     margin: 4px 2px;
+    margin-top: 0px;
     cursor: pointer;
 }
 
@@ -229,11 +235,12 @@ $BOARD-WIDTH: calc(100% - #{$MYBOARDS_WIDTH});
     background-color: $gray-light;
     color: $red;
     border: none;
-    padding: 15px 32px;
+    padding: 10px 10px;
     text-align: center;
     text-decoration: none;
-    font-size: 12px;
+    font-size: 14px;
     margin: 4px 2px;
+    margin-top: 0px;
     cursor: pointer;
 }
 
@@ -243,14 +250,22 @@ $BOARD-WIDTH: calc(100% - #{$MYBOARDS_WIDTH});
 }
 
 .board-columns {
-    margin-top: 65px;
     vertical-align: top;
+}
+
+.column-header {
+    font-size: 14px;
+    color: $gray-darker;
+    line-height: ($HEADER_HEIGHT / 2);
+    font-weight: 600;
+    text-align: center;
 }
 
 .column {
     height: 100%;
     vertical-align: top;
-    width: calc(#{$BOARD-WIDTH} / 3);
+    // width: calc(#{$BOARD-WIDTH} / 3);
+    width: (100% / 3.3);
     display: inline-block;
     border: 1px solid $black;
     background-color: $light-blue;
@@ -272,13 +287,15 @@ $BOARD-WIDTH: calc(100% - #{$MYBOARDS_WIDTH});
     padding: 5px 5px 5px 5px;
     margin-bottom: 15px;
     margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
     color: $gray-darker;
     transition: border-color 200ms ease-in;
-    // line-height: 30px;
     border-radius: 2px;
     padding-left: 3px;
     overflow: hidden;
     font-size: 14px;
+    display: block;
 }
 
 .card-el:hover {
@@ -291,33 +308,6 @@ $BOARD-WIDTH: calc(100% - #{$MYBOARDS_WIDTH});
     border-color: $light-blue;
     transition: border-color 200ms ease-in;
 }
-
-
-//Review this later:
-// .active-board-item-selected {
-//     border-color: $gray !important;
-//     transition: border-color 200ms ease-in;
-// }
-//
-// .delete-board-button {
-//     color: $black;
-//     background-color: $red;
-//     padding: 6px 8px 6px 8px;
-//     margin: 0px;
-//     border: 0px;
-//     cursor: pointer;
-//     opacity: .2;
-//     transition: opacity 200ms ease-in;
-// }
-//
-// .delete-board-button:hover {
-//     opacity: 1;
-//     transition: opacity 200ms ease-in;
-// }
-//
-// .delete-board-button:focus {
-//     outline: 0px;
-// }
 
 .pull-right {
     float: right;

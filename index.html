@@ -34,22 +34,22 @@
 
         <section class="board">
             <div id="boardHeader" class="board-header">
-                <h2 class="board-title">First Board</h2>
+                <h2 id="boardTitle" class="board-title"></h2>
             </div>
             <div id="selectedBoard" class="board-content">
                 <div class="board-tray">
                     <form id="cardForm">
                         <input name="cardInput" class="card-input" placeholder="Add Card..." type="text" autocomplete="off">
-                        <div class="card-buttons">
-                            <button id="forwardBtn" class="forward-btn">Forward</button>
-                            <button id="backwardBtn" class="backward-btn">Backward</button>
-                            <button id="deleteBtn" class="delete-btn">X</button>
-                        </div>
                     </form>
-
+                    <div class="card-buttons">
+                        <button id="forwardBtn" class="forward-btn">Forward</button>
+                        <button id="backwardBtn" class="backward-btn">Backward</button>
+                        <button id="deleteBtn" class="delete-btn">X</button>
+                    </div>
                 </div>
                 <div class="board-columns">
                     <div class="column">
+                        <h2 class="column-header">To Do</h2>
                         <ul id="toDoCards" class="column-el">
                             <li class="card-el">Add Card above!</li>
                             <li class="active-board-card">I'm active!</li>
@@ -57,12 +57,14 @@
                     </div>
 
                     <div class="column">
+                        <h2 class="column-header">In Progress</h2>
                         <ul id="inProgressCards" class="column-el">
                             <!-- <li class="card-el">Add Card above!</li> -->
                         </ul>
                     </div>
 
                     <div class="column">
+                        <h2 class="column-header">Done</h2>
                         <ul id="doneCards" class="column-el">
                             <!-- <li class="card-el">Add Card above!</li> -->
                         </ul>

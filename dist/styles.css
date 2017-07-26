@@ -1,3 +1,6 @@
+* {
+  box-sizing: border-box; }
+
 h1, h2, h3, h4, h5, h6 {
   margin: 0px; }
 
@@ -96,6 +99,10 @@ main {
   transition: border-color 200ms ease-in, opacity 200ms ease-in;
   cursor: pointer; }
 
+.active-board-item-selected:hover {
+  border-color: #add8e6;
+  transition: border-color 200ms ease-in; }
+
 .board {
   background-color: #FFFFFF;
   border-top: 1px black;
@@ -115,26 +122,23 @@ main {
   display: inline-block; }
 
 .board-content {
-  margin-right: auto;
   padding: 5px; }
 
 .board-tray {
-  padding: 10px; }
+  padding: 10px;
+  vertical-align: bottom;
+  height: 100px; }
 
 .card-input {
   float: left;
-  margin-left: 10px;
-  margin-right: 10px;
-  margin-bottom: 10px;
   padding: 10px 10px;
   border-width: 2px;
   border-style: solid;
   border-color: #b4b4b4;
   outline: 0px;
   box-sizing: border-box;
-  width: 150px;
-  transition: border-color 200ms ease-in;
-  line-height: 16px; }
+  width: 300px;
+  transition: border-color 200ms ease-in; }
 
 .card-input:hover, .card-input:focus {
   border-color: #add8e6;
@@ -147,33 +151,36 @@ main {
   background-color: #b4b4b4;
   color: #FFFFFF;
   border: none;
-  padding: 15px 32px;
+  padding: 10px 10px;
   text-align: center;
   text-decoration: none;
-  font-size: 12px;
+  font-size: 14px;
   margin: 4px 2px;
+  margin-top: 0px;
   cursor: pointer; }
 
 .backward-btn {
   background-color: #b4b4b4;
   color: #FFFFFF;
   border: none;
-  padding: 15px 32px;
+  padding: 10px 10px;
   text-align: center;
   text-decoration: none;
-  font-size: 12px;
+  font-size: 14px;
   margin: 4px 2px;
+  margin-top: 0px;
   cursor: pointer; }
 
 .delete-btn {
   background-color: #b4b4b4;
   color: #B20000;
   border: none;
-  padding: 15px 32px;
+  padding: 10px 10px;
   text-align: center;
   text-decoration: none;
-  font-size: 12px;
+  font-size: 14px;
   margin: 4px 2px;
+  margin-top: 0px;
   cursor: pointer; }
 
 .delete-btn:hover {
@@ -181,13 +188,19 @@ main {
   transition: opacity 200ms linear; }
 
 .board-columns {
-  margin-top: 65px;
   vertical-align: top; }
+
+.column-header {
+  font-size: 14px;
+  color: #222222;
+  line-height: 25px;
+  font-weight: 600;
+  text-align: center; }
 
 .column {
   height: 100%;
   vertical-align: top;
-  width: calc(calc(100% - 220px) / 3);
+  width: 30.30303%;
   display: inline-block;
   border: 1px solid #000000;
   background-color: #add8e6;
@@ -205,12 +218,15 @@ main {
   padding: 5px 5px 5px 5px;
   margin-bottom: 15px;
   margin-top: 10px;
+  margin-left: auto;
+  margin-right: auto;
   color: #222222;
   transition: border-color 200ms ease-in;
   border-radius: 2px;
   padding-left: 3px;
   overflow: hidden;
-  font-size: 14px; }
+  font-size: 14px;
+  display: block; }
 
 .card-el:hover {
   border-color: #555555;

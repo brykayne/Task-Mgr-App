@@ -103,12 +103,13 @@
 	    document.getElementById('forwardBtn').addEventListener('click', function (event) {
 	        event.preventDefault();
 	        console.log('forward clicked!');
-	        //Pseudo-code for pushing card forward:
-	        //1. Click card to select
-	        //2. Make active card (style, appData)
-	        //3. Click forward button
-	        //4. Update appData object
-	        //5. show card moved to new column
+	        moveCardForward(appData.selectedCardEl, appData);
+	    });
+
+	    document.getElementById('backwardBtn').addEventListener('click', function (event) {
+	        event.preventDefault();
+	        console.log('Backward clicked!');
+	        moveCardBackward(appData.selectedCardEl, appData);
 	    });
 	}
 
@@ -166,24 +167,27 @@
 	    var todoCardsEl = document.getElementById('toDoCards');
 	    var inProgressCardsEl = document.getElementById('inProgressCards');
 	    var doneCardsEl = document.getElementById('doneCards');
+	    var boardTitleEl = document.getElementById('boardTitle');
 	    todoCardsEl.innerHTML = '';
 	    inProgressCardsEl.innerHTML = '';
 	    doneCardsEl.innerHTML = '';
+	    boardTitleEl.innerHTML = '';
 
-	    //Might need if(!appData.selectedList.items[item].isDeleted)
-
+	    //Display board title
+	    boardTitleEl.innerHTML = appData.selectedBoard.name;
+	    //Display cards in columns
 	    for (var card in appData.selectedBoard.cards) {
-	        // console.log(appData.selectedBoard.cards[card]);
-	        if (!appData.selectedBoard.cards[card].isDeleted) {
-	            if (appData.selectedBoard.cards[card].position == 0) {
-	                todoCardsEl.appendChild(cardToCardEl(appData.selectedBoard.cards[card], card));
-	            } else if (appData.selectedBoard.cards[card].position == 1) {
-	                inProgressCardsEl.appendChild(cardToCardEl(appData.selectedBoard.cards[card], card));
-	            } else if (appData.selectedBoard.cards[card].position == 2) {
-	                doneCardsEl.appendChild(cardToCardEl(appData.selectedBoard.cards[card], card));
-	            } else {
-	                console.log('Position could not be found');
-	            };
+	        if (appData.selectedBoard.cards[card].isDeleted) {
+	            continue; // or some equivalent
+	        };
+	        if (appData.selectedBoard.cards[card].position == 0) {
+	            todoCardsEl.appendChild(cardToCardEl(appData.selectedBoard.cards[card], card));
+	        } else if (appData.selectedBoard.cards[card].position == 1) {
+	            inProgressCardsEl.appendChild(cardToCardEl(appData.selectedBoard.cards[card], card));
+	        } else if (appData.selectedBoard.cards[card].position == 2) {
+	            doneCardsEl.appendChild(cardToCardEl(appData.selectedBoard.cards[card], card));
+	        } else {
+	            console.log('Position could not be found');
 	        };
 	    };
 	}
@@ -252,6 +256,34 @@
 	    window.setTimeout(function () {
 	        cardEl.remove();
 	    }, 500);
+	}
+
+	function moveCardForward(cardEl, appData) {
+	    //if card is selected and user clicks forward, increase selected card position by 1 then move it on the board
+
+	    var currentCardPos = appData.selectedBoard.cards[cardEl.getAttribute('data-ar-pos')].position;
+	    //hard coding column count in if... for now...
+	    if (currentCardPos <= 1) {
+	        currentCardPos += 1;
+	    } else if (currentCardPos < 0) {
+	        currentCardPos = 0;
+	    } else if (currentCardPos >= 3) {
+	        currentCardPos = 2;
+	    };
+	    appData.selectedBoard.cards[cardEl.getAttribute('data-ar-pos')].position = currentCardPos;
+	    selectedBoardToView(appData);
+	}
+
+	function moveCardBackward(cardEl, appData) {
+	    var currentCardPos = appData.selectedBoard.cards[cardEl.getAttribute('data-ar-pos')].position;
+	    //hard coding column count for now...
+	    if (currentCardPos > 0) {
+	        currentCardPos -= 1;
+	    } else if (currentCardPos <= 0) {
+	        currentCardPos = 0;
+	    };
+	    appData.selectedBoard.cards[cardEl.getAttribute('data-ar-pos')].position = currentCardPos;
+	    selectedBoardToView(appData);
 	}
 
 /***/ })
