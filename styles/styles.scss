@@ -166,6 +166,26 @@ $BOARD-WIDTH: calc(100% - #{$MYBOARDS_WIDTH});
     text-align: center;
 }
 
+.delete-board-btn {
+    background-color: $gray-light;
+    color: $white;
+    opacity: .8;
+    padding: 10px 10px;
+    margin: 0px;
+    border: 0px;
+    cursor: pointer;
+    transition: opacity 200ms ease-in;
+}
+
+.delete-board-btn:hover {
+    opacity: 1;
+    transition: opacity 200ms ease-in;
+}
+
+.delete-board-btn:focus {
+    outline: 0px;
+}
+
 .board-title {
     font-size: 16px;
     color: $gray-darker;
@@ -208,6 +228,7 @@ $BOARD-WIDTH: calc(100% - #{$MYBOARDS_WIDTH});
 .forward-btn {
     background-color: $gray-light;
     color: $white;
+    opacity: .8;
     border: none;
     padding: 10px 10px;
     text-align: center;
@@ -216,11 +237,17 @@ $BOARD-WIDTH: calc(100% - #{$MYBOARDS_WIDTH});
     margin: 4px 2px;
     margin-top: 0px;
     cursor: pointer;
+}
+
+.forward-btn:hover {
+    opacity: 1;
+    transition: opacity 200ms linear;
 }
 
 .backward-btn {
     background-color: $gray-light;
     color: $white;
+    opacity: .8;
     border: none;
     padding: 10px 10px;
     text-align: center;
@@ -231,8 +258,14 @@ $BOARD-WIDTH: calc(100% - #{$MYBOARDS_WIDTH});
     cursor: pointer;
 }
 
+.backward-btn:hover {
+    opacity: 1;
+    transition: opacity 200ms linear;
+}
+
 .delete-btn {
     background-color: $gray-light;
+    opacity: .8;
     color: $red;
     border: none;
     padding: 10px 10px;

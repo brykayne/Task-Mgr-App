@@ -35,14 +35,14 @@ function setListeners(appData) {
         event.target.reset();
     });
 
-    document.getElementById('myBoards').addEventListener('click', function(event) {
+    document.getElementById('myBoardsEl').addEventListener('click', function(event) {
         event.preventDefault();
         if(event.target.tagName === 'LI') {
             selectBoard(event.target, appData);
         }
     });
 
-    document.getElementById('selectedBoard').addEventListener('click', function(event) {
+    document.getElementById('selectedBoardEl').addEventListener('click', function(event) {
         //41
         //Add unique id to each card: https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
         if(event.target.tagName === 'LI') {
@@ -90,7 +90,7 @@ function getBoards() {
 }
 
 function boardsToView(appData) {
-    let myBoardsEl = document.getElementById('myBoards');
+    let myBoardsEl = document.getElementById('myBoardsEl');
     for(let board in appData.boards) {
         myBoardsEl.appendChild(boardtoBoardEl(appData.boards[board]));
     };
@@ -117,7 +117,7 @@ function createBoard(name) {
 
 function addBoard(board, appData) {
     appData.boards[board.name] = {name:board.name, cards:[]};
-    let myBoardsEl = document.getElementById('myBoards');
+    let myBoardsEl = document.getElementById('myBoardsEl');
     let boardEl = boardtoBoardEl(board);
     addClass(boardEl, 'fade-in');
     myBoardsEl.appendChild(boardEl);
