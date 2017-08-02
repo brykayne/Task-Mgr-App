@@ -313,13 +313,13 @@ Actions:
 */
 function updateSelectedBoardView(board) {
 
-    //need to create board through pure JS still.
 
-    let selectedBoardTitle = document.getElementById('selectedBoardTitle');
-
-    selectedBoardTitle.innerHTML = ''
     //Display board title
+    let selectedBoardTitle = document.getElementById('selectedBoardTitle');
     selectedBoardTitle.innerHTML = board.name;
+    //set board columns to nothing
+    let boardColumnsEl = document.getElementById('boardColumns');
+    boardColumnsEl.innerHTML = '';
     updateSelectedBoardColumnsView(board);
     updateSelectedBoardColumnsCardsView(board);
 
@@ -330,7 +330,6 @@ function updateSelectedBoardColumnsCardsView(board) {
     let boardCards = board.cards;
     let cardsToAdd = [];
 
-    debugger;
     let columnsEl = [];
     for (i = 0; i < board.columns.length; i++) {
         columnsEl[i] = document.getElementById('column' + i);
@@ -349,8 +348,6 @@ function updateSelectedBoardColumnsCardsView(board) {
         console.log("cardName:"+cardsToAdd[i].name+" pos:"+ cardsToAdd[i].column);
     }
 
-    debugger;
-
     for (var i = 0, len = cardsToAdd.length; i < len; i++) {
         for (var j = 0, len2 = columnsEl.length; j < len2; j++) {
             if (('column' + cardsToAdd[i].column) === columnsEl[j].id) {
@@ -367,11 +364,11 @@ function updateSelectedBoardColumnsCardsView(board) {
 }
 
 function updateSelectedBoardColumnsView(board) {
-    let selectedBoardColumnsEl = document.getElementById('boardColumns');
-    selectedBoardColumnsEl.innerHTML = '';
+    let boardColumnsEl = document.getElementById('boardColumns');
+    boardColumnsEl.innerHTML = '';
     for(let column in board.columns) {
         if (board.columns[column].columnIsDeleted === false) {
-            selectedBoardEl.appendChild(columnToColumnEl(board.columns[column], column));
+            boardColumnsEl.appendChild(columnToColumnEl(board.columns[column], board.columns[column].columnPosition));
         };
     }
 }

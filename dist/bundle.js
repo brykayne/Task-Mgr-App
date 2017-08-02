@@ -326,13 +326,12 @@
 	*/
 	function updateSelectedBoardView(board) {
 
-	    //need to create board through pure JS still.
-
-	    var selectedBoardTitle = document.getElementById('selectedBoardTitle');
-
-	    selectedBoardTitle.innerHTML = '';
 	    //Display board title
+	    var selectedBoardTitle = document.getElementById('selectedBoardTitle');
 	    selectedBoardTitle.innerHTML = board.name;
+	    //set board columns to nothing
+	    var boardColumnsEl = document.getElementById('boardColumns');
+	    boardColumnsEl.innerHTML = '';
 	    updateSelectedBoardColumnsView(board);
 	    updateSelectedBoardColumnsCardsView(board);
 	}
@@ -342,7 +341,6 @@
 	    var boardCards = board.cards;
 	    var cardsToAdd = [];
 
-	    debugger;
 	    var columnsEl = [];
 	    for (i = 0; i < board.columns.length; i++) {
 	        columnsEl[i] = document.getElementById('column' + i);
@@ -361,8 +359,6 @@
 	        console.log("cardName:" + cardsToAdd[i].name + " pos:" + cardsToAdd[i].column);
 	    }
 
-	    debugger;
-
 	    for (var i = 0, len = cardsToAdd.length; i < len; i++) {
 	        for (var j = 0, len2 = columnsEl.length; j < len2; j++) {
 	            if ('column' + cardsToAdd[i].column === columnsEl[j].id) {
@@ -378,11 +374,11 @@
 	}
 
 	function updateSelectedBoardColumnsView(board) {
-	    var selectedBoardColumnsEl = document.getElementById('boardColumns');
-	    selectedBoardColumnsEl.innerHTML = '';
+	    var boardColumnsEl = document.getElementById('boardColumns');
+	    boardColumnsEl.innerHTML = '';
 	    for (var column in board.columns) {
 	        if (board.columns[column].columnIsDeleted === false) {
-	            selectedBoardEl.appendChild(columnToColumnEl(board.columns[column], column));
+	            boardColumnsEl.appendChild(columnToColumnEl(board.columns[column], board.columns[column].columnPosition));
 	        };
 	    }
 	}
