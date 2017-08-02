@@ -114,7 +114,7 @@ main {
   height: 50px;
   text-align: center; }
 
-.delete-board-btn {
+.board-delete-btn {
   background-color: #b4b4b4;
   color: #FFFFFF;
   opacity: .8;
@@ -124,11 +124,11 @@ main {
   cursor: pointer;
   transition: opacity 200ms ease-in; }
 
-.delete-board-btn:hover {
+.board-delete-btn:hover {
   opacity: 1;
   transition: opacity 200ms ease-in; }
 
-.delete-board-btn:focus {
+.board-delete-btn:focus {
   outline: 0px; }
 
 .board-title {
@@ -164,7 +164,7 @@ main {
 .card-buttons {
   float: right; }
 
-.forward-btn {
+.card-forward-btn {
   background-color: #b4b4b4;
   color: #FFFFFF;
   opacity: .8;
@@ -177,11 +177,11 @@ main {
   margin-top: 0px;
   cursor: pointer; }
 
-.forward-btn:hover {
+.card-forward-btn:hover {
   opacity: 1;
   transition: opacity 200ms linear; }
 
-.backward-btn {
+.card-backward-btn {
   background-color: #b4b4b4;
   color: #FFFFFF;
   opacity: .8;
@@ -194,11 +194,11 @@ main {
   margin-top: 0px;
   cursor: pointer; }
 
-.backward-btn:hover {
+.card-backward-btn:hover {
   opacity: 1;
   transition: opacity 200ms linear; }
 
-.delete-btn {
+.card-delete-btn {
   background-color: #b4b4b4;
   opacity: .8;
   color: #B20000;
@@ -211,7 +211,7 @@ main {
   margin-top: 0px;
   cursor: pointer; }
 
-.delete-btn:hover {
+.card-delete-btn:hover {
   opacity: 1;
   transition: opacity 200ms linear; }
 

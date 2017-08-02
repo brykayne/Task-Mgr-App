@@ -28,7 +28,7 @@
             <form id="myBoardsForm">
                 <input name="myboardsInput" class="myboards-input" placeholder="New Board..." type="text" autocomplete="off">
             </form>
-            <ul id="myBoardsEl" class="myboards">
+            <ul id="myBoardsListEl" class="myboards">
             </ul>
         </nav>
 
@@ -38,20 +38,20 @@
                     <input name="cardInput" class="card-input" placeholder="Add Card..." type="text" autocomplete="off">
                 </form>
                 <div class="card-buttons">
-                    <button id="forwardBtn" class="forward-btn">Forward</button>
-                    <button id="backwardBtn" class="backward-btn">Backward</button>
-                    <button id="deleteBtn" class="delete-btn">X</button>
+                    <button id="cardForwardBtn" class="card-forward-btn">Forward</button>
+                    <button id="cardBackwardBtn" class="card-backward-btn">Backward</button>
+                    <button id="cardDeleteBtn" class="card-delete-btn">X</button>
                 </div>
             </div>
 
             <div id="selectedBoardEl" class="board-content">
                 <div id="boardHeader" class="board-header">
-                    <h2 id="boardTitle" class="board-title"></h2>
-                    <button class="delete-board-btn pull-right">Delete Board</button>
+                    <h2 id="selectedBoardTitle" class="board-title"></h2>
+                    <button class="board-delete-btn pull-right" data-el-type="boardCardDeleteBtn">Delete Board</button>
                 </div>
-                <div class="board-columns">
+                <div id="boardColumns" class="board-columns">
                     <div class="column">
-                        <h2 class="column-header">To Do</h2>
+                        <h2 id="columnTitle" class="column-header">To Do</h2>
                         <ul id="toDoCards" class="column-el">
                             <li class="card-el">Add Card above!</li>
                             <li class="active-board-card">I'm active!</li>

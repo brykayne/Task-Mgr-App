@@ -166,7 +166,7 @@ $BOARD-WIDTH: calc(100% - #{$MYBOARDS_WIDTH});
     text-align: center;
 }
 
-.delete-board-btn {
+.board-delete-btn {
     background-color: $gray-light;
     color: $white;
     opacity: .8;
@@ -177,12 +177,12 @@ $BOARD-WIDTH: calc(100% - #{$MYBOARDS_WIDTH});
     transition: opacity 200ms ease-in;
 }
 
-.delete-board-btn:hover {
+.board-delete-btn:hover {
     opacity: 1;
     transition: opacity 200ms ease-in;
 }
 
-.delete-board-btn:focus {
+.board-delete-btn:focus {
     outline: 0px;
 }
 
@@ -225,7 +225,7 @@ $BOARD-WIDTH: calc(100% - #{$MYBOARDS_WIDTH});
     float: right;
 }
 
-.forward-btn {
+.card-forward-btn {
     background-color: $gray-light;
     color: $white;
     opacity: .8;
@@ -239,12 +239,12 @@ $BOARD-WIDTH: calc(100% - #{$MYBOARDS_WIDTH});
     cursor: pointer;
 }
 
-.forward-btn:hover {
+.card-forward-btn:hover {
     opacity: 1;
     transition: opacity 200ms linear;
 }
 
-.backward-btn {
+.card-backward-btn {
     background-color: $gray-light;
     color: $white;
     opacity: .8;
@@ -258,12 +258,12 @@ $BOARD-WIDTH: calc(100% - #{$MYBOARDS_WIDTH});
     cursor: pointer;
 }
 
-.backward-btn:hover {
+.card-backward-btn:hover {
     opacity: 1;
     transition: opacity 200ms linear;
 }
 
-.delete-btn {
+.card-delete-btn {
     background-color: $gray-light;
     opacity: .8;
     color: $red;
@@ -277,7 +277,7 @@ $BOARD-WIDTH: calc(100% - #{$MYBOARDS_WIDTH});
     cursor: pointer;
 }
 
-.delete-btn:hover {
+.card-delete-btn:hover {
     opacity: 1;
     transition: opacity 200ms linear;
 }
