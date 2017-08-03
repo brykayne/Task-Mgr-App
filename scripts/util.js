@@ -19,3 +19,10 @@ function removeClass(el, className) {
     el.className=el.className.replace(reg, ' ')
   }
 }
+
+//Purpose: to console log cards that are added to view for testing purposes.
+function logCardsToAddToView(cardsToAddToView) {
+    for (var i = 0, len = cardsToAddToView.length; i < len; i++) {
+        console.log("cardName:"+cardsToAddToView[i].name+" pos:"+ cardsToAddToView[i].column);
+    }
+}

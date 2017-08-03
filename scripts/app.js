@@ -19,8 +19,6 @@ function main() {
     setMyBoardsListView(appData.boards, appData.myBoardsListEl);
     updateSelectedBoardInModel(appData.selectedBoard.name, appData.myBoardsListEl.firstElementChild, appData);
     setListeners(appData);
-    // boardsToView(appData);
-    // selectedBoardToView(appData);
 }
 
 function setListeners(appData) {
@@ -257,7 +255,7 @@ function addBoardToBoardsInModel(board, boards) {
 }
 
 /*
-Purpose: To add a board to the myBoards List on the left nav (doesn't touch model)
+Purpose: To add a board to the myBoards List view on the left nav (doesn't touch model)
 Consumes: a board object
 Produces: a myBoards List item (html element)
 */
@@ -268,6 +266,15 @@ function addBoardToMyBoardsListView(board) {
     myBoardsListEl.appendChild(myBoardEl);
     return myBoardEl;
 }
+
+//////////////////////////////////////////////
+///////UPDATE SELECTED BOARD FUNCTIONS////////
+//////////////////////////////////////////////
+
+/*
+The purpose of these functions are to facilitate the action of user selecting a
+board and displaying the board. This includes displaying columns.
+*/
 
 /*
 Purpose: To update appData with the selectedBoard, then trigger view update
@@ -295,12 +302,6 @@ function updateSelectedBoardInModel(boardName, selectedBoardEl, appData) {
     updateSelectedBoardView(appData.selectedBoard);
 }
 
-
-
-//////////////////////////////////////////////
-///////UPDATE SELECTED BOARD FUNCTIONS////////
-//////////////////////////////////////////////
-
 /*
 Purpose: To update the view based on the selected Board
 Consumes: a board object
@@ -313,55 +314,67 @@ Actions:
 */
 function updateSelectedBoardView(board) {
 
-
-    //Display board title
     let selectedBoardTitle = document.getElementById('selectedBoardTitle');
     selectedBoardTitle.innerHTML = board.name;
-    //set board columns to nothing
+
     let boardColumnsEl = document.getElementById('boardColumns');
     boardColumnsEl.innerHTML = '';
     updateSelectedBoardColumnsView(board);
     updateSelectedBoardColumnsCardsView(board);
-
 }
 
+/*
+Purpose: To add cards to view based on their appData.cards.card.column
+Consumes: a board object
+Produces: nothing
+Actions:
+-- Builds a cardsToAddToView array of cards and their respective columns by
+matching cards with real column numbers that exist in the board.
+-- Appends cardsToAddToView to the DOM.
+
+This was the hardest challenge thus far, to figure out with no unique IDs, how
+to determine which values match each other from the columnPosition to the card's
+column.
+*/
 function updateSelectedBoardColumnsCardsView(board) {
-    let boardColumns = board.columns;
-    let boardCards = board.cards;
-    let cardsToAdd = [];
+
+    let cardsToAddToView = [];
 
     let columnsEl = [];
     for (i = 0; i < board.columns.length; i++) {
         columnsEl[i] = document.getElementById('column' + i);
     }
 
-    for (var i = 0, len = boardColumns.length; i < len; i++) {
-        for (var j = 0, len2 = boardCards.length; j < len2; j++) {
-            if (boardColumns[i].columnPosition === boardCards[j].column) {
-                cardsToAdd.push(boardCards[j])
-                len2=boardCards.length;
+    for (var i = 0, len = board.columns.length; i < len; i++) {
+        for (var j = 0, len2 = board.cards.length; j < len2; j++) {
+            if (board.columns[i].columnPosition === board.cards[j].column) {
+                cardsToAddToView.push(board.cards[j])
+                len2=board.cards.length;
             }
         }
     }
 
-    for (var i = 0, len = cardsToAdd.length; i < len; i++) {
-        console.log("cardName:"+cardsToAdd[i].name+" pos:"+ cardsToAdd[i].column);
-    }
+    // logCardsToAddToView(cardsToAddToView)
 
-    for (var i = 0, len = cardsToAdd.length; i < len; i++) {
+    for (var i = 0, len = cardsToAddToView.length; i < len; i++) {
         for (var j = 0, len2 = columnsEl.length; j < len2; j++) {
-            if (('column' + cardsToAdd[i].column) === columnsEl[j].id) {
-                columnsEl[j].appendChild(cardToCardEl(cardsToAdd[i], i));
+            if (('column' + cardsToAddToView[i].column) === columnsEl[j].id) {
+                columnsEl[j].appendChild(cardToCardEl(cardsToAddToView[i], i));
                 len2=columnsEl.length;
             }
         }
     }
 
-    // Column example: {columnName: 'To Do', columnPosition: 0, columnIsDeleted: false},
-    // Card example: {name: '1 Clean room.', rank: 0, column: 0, isComplete: false, isDeleted: false}
-    // columnsEl[j].appendChild(cardToCardEl(board.cards[i], card));
-
 }
+
+/*
+Purpose: To add columns to view based on their appData.boards.columns
+Consumes: a board object
+Produces: nothing
+Actions:
+-- Removes boardColumns from view
+-- Appends columns if they are not deleted.
+*/
 
 function updateSelectedBoardColumnsView(board) {
     let boardColumnsEl = document.getElementById('boardColumns');
@@ -411,14 +424,21 @@ Purpose: to add column to board in model
 */
 
 function addColumnToBoardInModel(board, column) {
-
+    boards[board.name].columns.push(column);
+    return boards[board.name];
 }
 
 /*
-Purpose: to add column to board view
+Purpose: to add column to board view without selecting a new board
 */
-function addColumnToBoardView(board) {
-
+function addColumnToBoardView(column, columnPosition) {
+    let boardColumnsEl = document.getElementById('boardColumns');
+    let columnEl = columnToColumnEl(column, columnPosition);
+    addClass(columnEl, 'fade-in');
+    //Additional css classes if columnn count is greater than x?
+    boardColumnsEl.appendChild(columnEl);
+    window.setTimeout(function(){removeClass(cardToCardEl, 'fade-in')}, 200);
+    return columnEl;
 }
 
 /*
@@ -426,7 +446,7 @@ Purpose: update the selected column in the model and trigger view changes
 */
 
 function updateSelectedColumnInModel(columnName, selectedColumnEl, appData) {
-
+//Line 261 https://github.com/wkashdan/todo-app/commit/ Oct 19th 
 }
 
 
