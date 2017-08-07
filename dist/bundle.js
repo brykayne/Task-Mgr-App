@@ -112,29 +112,29 @@
 	        }
 	    });
 
-	    // document.getElementById('selectedBoardEl').addEventListener('click', function(event) {
-	    //
-	    //     let targ = event.target;
-	    //     if(targ.hasAttribute('data-el-type')) {
-	    //
-	    //         switch(targ.getAttribute('data-el-type')) {
-	    //             case 'boardCardEl' :
-	    //                 selectCardInModel(targ.getAttribute('data-ar-pos'), targ, appData);
-	    //                 break;
-	    //             case 'boardCardName' :
-	    //                 selectCardInModel(targ.parentElement.getAttribute('data-ar-pos'),
-	    //                 targ.parentElement,
-	    //                 appData);
-	    //                 break;
-	    //             case 'boardCardDeleteBtn' :
-	    //                 deleteCard(targ.parentElement.getAttribute('data-ar-pos'),
-	    //                 targ.parentElement,
-	    //                 appData.selectedBoard.cards);
-	    //                 break;
-	    //         }
-	    //     }
-	    // });
-	    //
+	    document.getElementById('selectedBoardEl').addEventListener('click', function (event) {
+
+	        var targ = event.target;
+
+	        if (targ.hasAttribute('data-el-type')) {
+
+	            switch (targ.getAttribute('data-el-type')) {
+	                case 'cardEl':
+	                    selectCardInModel(targ.getAttribute('data-ar-pos'), targ, appData);
+	                    break;
+	                // case 'cardName' :
+	                //     selectCardInModel(targ.parentElement.getAttribute('data-ar-pos'),
+	                //     targ.parentElement,
+	                //     appData);
+	                //     break;
+	                case 'cardDeleteBtn':
+	                    debugger;
+	                    deleteCard(targ.parentElement.getAttribute('data-ar-pos'), targ.parentElement, appData.selectedBoard.cards);
+	                    break;
+	            }
+	        }
+	    });
+
 	    // document.getElementById('selectedBoardEl').addEventListener('click', function(event) {
 	    //     let targ = event.target;
 	    //
@@ -493,7 +493,7 @@
 	    //Additional css classes if columnn count is greater than x?
 	    boardColumnsEl.appendChild(columnEl);
 	    window.setTimeout(function () {
-	        removeClass(cardToCardEl, 'fade-in');
+	        removeClass(columnEl, 'fade-in');
 	    }, 200);
 	    return columnEl;
 	}
@@ -517,11 +517,11 @@
 	Produces: a card html element
 	*/
 
-	function cardToCardEl(card, arRank) {
+	function cardToCardEl(card, cardRank) {
 	    var cardEl = document.createElement('li');
 	    cardEl.innerHTML = card.name;
-	    cardEl.setAttribute('data-ar-pos', arRank);
-	    cardEl.setAttribute('data-el-type', 'boardCardEl');
+	    cardEl.setAttribute('data-ar-pos', cardRank);
+	    cardEl.setAttribute('data-el-type', 'cardEl');
 	    addClass(cardEl, 'card-el');
 	    return cardEl;
 	}
@@ -577,12 +577,12 @@
 	-- Updates the selected card view
 	*/
 	function selectCardInModel(cardRank, cardEl, appData) {
-	    var prevCardEl = appData.selectedCardEl;
+	    var prevSelectedCardEl = appData.selectedCardEl;
 
-	    appData.selectedCard = appData.selectedCard.cards[cardRank];
+	    appData.selectedCard = appData.selectedBoard.cards[cardRank];
 	    appData.selectedCardEl = cardEl;
 
-	    updateSelectedCardView(prevCardEl, cardEl);
+	    updateSelectedCardView(prevSelectedCardEl, cardEl);
 	}
 
 	/*
@@ -595,9 +595,9 @@
 
 	function updateSelectedCardView(prevCardEl, cardEl) {
 	    if (prevCardEl != null) {
-	        removeClass(prevCardEl, 'active-board-card-selected');
+	        removeClass(prevCardEl, 'active-card');
 	    }
-	    addClass(cardEl, 'active-board-card-selected');
+	    addClass(cardEl, 'active-card');
 	}
 
 	/*

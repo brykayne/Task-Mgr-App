@@ -33,24 +33,22 @@
         </nav>
 
         <section class="board">
-            <div class="board-tray">
-                <form id="cardForm">
-                    <input name="cardInput" class="card-input" placeholder="Add Card..." type="text" autocomplete="off">
-                </form>
-                <div class="card-buttons">
-                    <button id="cardForwardBtn" class="card-forward-btn">Forward</button>
-                    <button id="cardBackwardBtn" class="card-backward-btn">Backward</button>
-                    <button id="cardDeleteBtn" class="card-delete-btn">X</button>
-                </div>
-            </div>
-
             <div id="selectedBoardEl" class="board-content">
                 <div id="boardHeader" class="board-header">
                     <h2 id="selectedBoardTitle" class="board-title"></h2>
-                    <button class="board-delete-btn pull-right" data-el-type="boardCardDeleteBtn">Delete Board</button>
-                    <button class="board-add-column-btn pull-right">Add Column</button>
-                    <button class="board-remove-column-btn pull-right">Remove Column</button>
-
+                    <button class="board-delete-btn pull-right" data-el-type="boardDeleteBtn">Delete Board</button>
+                    <button class="board-add-column-btn pull-right" data-el-type="addColumnBtn">Add Column</button>
+                    <button class="board-remove-column-btn pull-right" data-el-type="removeColumnBtn">Remove Column</button>
+                </div>
+                <div id="cardHeader" class="board-tray">
+                    <form id="cardForm">
+                        <input name="cardInput" class="card-input" placeholder="Add Card..." type="text" autocomplete="off">
+                    </form>
+                    <div id="cardButtons" class="card-buttons">
+                        <button id="cardForwardBtn" data-el-type="cardForwardBtn" class="card-forward-btn">Forward</button>
+                        <button id="cardBackwardBtn" data-el-type="cardBackwardBtn" class="card-backward-btn">Backward</button>
+                        <button id="cardDeleteBtn" data-el-type="cardDeleteBtn" class="card-delete-btn">X</button>
+                    </div>
                 </div>
                 <div id="boardColumns" class="board-columns">
                     <div class="column">

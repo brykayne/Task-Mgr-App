@@ -69,29 +69,59 @@ function setListeners(appData) {
         }
     });
 
-    // document.getElementById('selectedBoardEl').addEventListener('click', function(event) {
-    //
-    //     let targ = event.target;
-    //     if(targ.hasAttribute('data-el-type')) {
-    //
-    //         switch(targ.getAttribute('data-el-type')) {
-    //             case 'boardCardEl' :
-    //                 selectCardInModel(targ.getAttribute('data-ar-pos'), targ, appData);
-    //                 break;
-    //             case 'boardCardName' :
-    //                 selectCardInModel(targ.parentElement.getAttribute('data-ar-pos'),
-    //                 targ.parentElement,
-    //                 appData);
-    //                 break;
-    //             case 'boardCardDeleteBtn' :
-    //                 deleteCard(targ.parentElement.getAttribute('data-ar-pos'),
-    //                 targ.parentElement,
-    //                 appData.selectedBoard.cards);
-    //                 break;
-    //         }
-    //     }
-    // });
-    //
+    //All Board Listeners
+    document.getElementById('boardHeader').addEventListener('click', function(event) {
+        event.preventDefault;
+
+        //DeleteBoard
+
+        //AddColumn
+
+        //Remove Column (if one remaining, do not delete)
+    })
+
+    //All Card action Listeners
+    document.getElementById('cardButtons').addEventListener('click', function(event) {
+        event.preventDefault;
+
+        //Card forward
+
+        //Card Backward
+
+        //Card Delete
+
+    })
+
+    //Select/Edit Card, Select/Edit Column
+
+    document.getElementById('')
+
+
+    document.getElementById('selectedBoardEl').addEventListener('click', function(event) {
+
+        let targ = event.target;
+
+        if(targ.hasAttribute('data-el-type')) {
+
+            switch(targ.getAttribute('data-el-type')) {
+                case 'cardEl' :
+                    selectCardInModel(targ.getAttribute('data-ar-pos'), targ, appData);
+                    break;
+                // case 'cardName' :
+                //     selectCardInModel(targ.parentElement.getAttribute('data-ar-pos'),
+                //     targ.parentElement,
+                //     appData);
+                //     break;
+                case 'cardDeleteBtn' :
+                debugger;
+                    deleteCard(targ.parentElement.getAttribute('data-ar-pos'),
+                    targ.parentElement,
+                    appData.selectedBoard.cards);
+                    break;
+            }
+        }
+    });
+
     // document.getElementById('selectedBoardEl').addEventListener('click', function(event) {
     //     let targ = event.target;
     //
@@ -474,7 +504,7 @@ function addColumnToBoardView(column, columnPosition) {
     addClass(columnEl, 'fade-in');
     //Additional css classes if columnn count is greater than x?
     boardColumnsEl.appendChild(columnEl);
-    window.setTimeout(function(){removeClass(cardToCardEl, 'fade-in')}, 200);
+    window.setTimeout(function(){removeClass(columnEl, 'fade-in')}, 200);
     return columnEl;
 }
 
@@ -499,11 +529,11 @@ Consumes: a card object, a card's rank in the list (number)
 Produces: a card html element
 */
 
-function cardToCardEl(card, arRank) {
+function cardToCardEl(card, cardRank) {
     let cardEl = document.createElement('li');
     cardEl.innerHTML = card.name;
-    cardEl.setAttribute('data-ar-pos', arRank);
-    cardEl.setAttribute('data-el-type', 'boardCardEl');
+    cardEl.setAttribute('data-ar-pos', cardRank);
+    cardEl.setAttribute('data-el-type', 'cardEl');
     addClass(cardEl, 'card-el');
     return cardEl;
 }
@@ -558,12 +588,12 @@ MIGHT NEED FIXING
 -- Updates the selected card view
 */
 function selectCardInModel(cardRank, cardEl, appData) {
-    let prevCardEl = appData.selectedCardEl;
+    let prevSelectedCardEl = appData.selectedCardEl;
 
-    appData.selectedCard = appData.selectedCard.cards[cardRank];
+    appData.selectedCard = appData.selectedBoard.cards[cardRank];
     appData.selectedCardEl = cardEl;
 
-    updateSelectedCardView(prevCardEl, cardEl);
+    updateSelectedCardView(prevSelectedCardEl, cardEl);
 }
 
 /*
@@ -576,9 +606,9 @@ and adds styling to newly selected card element
 
 function updateSelectedCardView(prevCardEl, cardEl) {
     if(prevCardEl != null) {
-        removeClass(prevCardEl, 'active-board-card-selected');
+        removeClass(prevCardEl, 'active-card');
     }
-    addClass(cardEl, 'active-board-card-selected');
+    addClass(cardEl, 'active-card');
 }
 
 /*

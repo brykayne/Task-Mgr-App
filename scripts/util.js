@@ -20,6 +20,13 @@ function removeClass(el, className) {
   }
 }
 
+function ascendingOrder(array) {
+    array.sort(function(a, b) {
+        return a - b;
+    });
+}
+
+
 //Purpose: to console log cards that are added to view for testing purposes.
 function logCardsToAddToView(cardsToAddToView) {
     for (var i = 0, len = cardsToAddToView.length; i < len; i++) {

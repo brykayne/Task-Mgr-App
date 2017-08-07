@@ -385,10 +385,16 @@ $BOARD-WIDTH: calc(100% - #{$MYBOARDS_WIDTH});
     transition: border-color 200ms ease-in;
 }
 
-.active-board-card {
-    color: $light-blue;
-    border-color: $light-blue;
-    transition: border-color 200ms ease-in;
+.active-card {
+    color: $gray-dark;
+    background-color: $gray-light;
+    list-style: none;
+    text-align: center;
+    border-width: 2px;
+    border-style: solid;
+    border-color: $gray-darker;
+    transition: border-color 200ms ease-in, opacity 200ms ease-in;
+    cursor: pointer;
 }
 
 .pull-right {
