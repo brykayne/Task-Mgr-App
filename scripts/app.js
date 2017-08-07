@@ -22,6 +22,11 @@ function main() {
 }
 
 function setListeners(appData) {
+    /*
+    Purpose: Listens for submit on myBoardsForm. If submitted, checks to see if board name
+    already exists. If it does, alert pops up and user cannot create board. if board name
+    does not exist, a board is created in appData and the view is updated as well.
+    */
     document.getElementById('myBoardsForm').addEventListener('submit', function(event) {
         event.preventDefault();
         let boardName = event.target.myboardsInput.value;
@@ -29,6 +34,7 @@ function setListeners(appData) {
             let myBoard = addBoardToBoardsInModel(
                 createBoard(boardName),
                 appData.boards);
+            let myColumn = addColumnToBoardInModel(createColumn('To Do', 0), appData.boards, myBoard);
             let myBoardEl = addBoardToMyBoardsListView(myBoard);
             updateSelectedBoardInModel(myBoard.name, myBoardEl, appData);
             event.target.reset();
@@ -37,17 +43,23 @@ function setListeners(appData) {
         }
     });
 
+    /*
+    Purpose: To listen for submission of card form, if card is added, add card to
+    model and then add the card to the view.
+    */
     document.getElementById('cardForm').addEventListener('submit', function(event) {
         event.preventDefault();
         // addCard(createCard(event.target.cardInput.value), appData);
-        let boardCard = addBoardCardToBoard(
+        let card = addCardToBoardInModel(
             createCard(event.target.cardInput.value),
             appData.selectedBoard.cards);
-        let cardPos = appData.selectedBoard.cards.length - 1;
+        let cardRank = appData.selectedBoard.cards.length - 1;
+        let cardColumn = card.column;
         //might want to change cardPos to column number and cardPos in column
-        let boardCardEl = addBoardCardToView(boardCard, cardPos);
+        let cardEl = addCardToView(card, cardRank, cardColumn, appData.selectedBoard.columns);
         event.target.reset();
     });
+
 
     document.getElementById('myBoardsListEl').addEventListener('click', function(event) {
         event.preventDefault();
@@ -57,58 +69,58 @@ function setListeners(appData) {
         }
     });
 
-    document.getElementById('selectedBoardEl').addEventListener('click', function(event) {
-
-        let targ = event.target;
-        if(targ.hasAttribute('data-el-type')) {
-
-            switch(targ.getAttribute('data-el-type')) {
-                case 'boardCardEl' :
-                    selectCard(targ.getAttribute('data-ar-pos'), targ, appData);
-                    break;
-                case 'boardCardName' :
-                    selectCard(targ.parentElement.getAttribute('data-ar-pos'),
-                    targ.parentElement,
-                    appData);
-                    break;
-                case 'boardCardDeleteBtn' :
-                    deleteCard(targ.parentElement.getAttribute('data-ar-pos'),
-                    targ.parentElement,
-                    appData.selectedBoard.cards);
-                    break;
-            }
-        }
-    });
-
-    document.getElementById('selectedBoardEl').addEventListener('click', function(event) {
-        let targ = event.target;
-
-        if(targ.hasAttribute('data-el-type') &&
-            targ.getAttribute('data-el-type') === 'boardCardDeleteBtn' &&
-            Object.keys(appData.boards).length > 1) {
-                delete appData.boards[appData.selectedBoard.name];
-                addClass(appData.selectedBoardEl, 'fadeout-el');
-                window.setTimeout(function() {
-                    appData.selectedBoardEl.remove();
-                    let myBoardEl = document.getElementById('myBoardsListEl').firstElementChild;
-                    updateSelectedBoardInModel(Object.keys(appData.boards[0], myBoardEl, appData));
-                }, 500)
-            } else {
-                alert('You only have one board left! Do not delete it!');
-            }
-    });
-
-    document.getElementById('cardForwardBtn').addEventListener('click', function(event) {
-        event.preventDefault();
-        console.log('forward clicked!');
-        moveCardForward(appData.selectedCardEl, appData);
-    });
-
-    document.getElementById('cardBackwardBtn').addEventListener('click', function(event) {
-        event.preventDefault();
-        console.log('Backward clicked!');
-        moveCardBackward(appData.selectedCardEl, appData)
-    });
+    // document.getElementById('selectedBoardEl').addEventListener('click', function(event) {
+    //
+    //     let targ = event.target;
+    //     if(targ.hasAttribute('data-el-type')) {
+    //
+    //         switch(targ.getAttribute('data-el-type')) {
+    //             case 'boardCardEl' :
+    //                 selectCardInModel(targ.getAttribute('data-ar-pos'), targ, appData);
+    //                 break;
+    //             case 'boardCardName' :
+    //                 selectCardInModel(targ.parentElement.getAttribute('data-ar-pos'),
+    //                 targ.parentElement,
+    //                 appData);
+    //                 break;
+    //             case 'boardCardDeleteBtn' :
+    //                 deleteCard(targ.parentElement.getAttribute('data-ar-pos'),
+    //                 targ.parentElement,
+    //                 appData.selectedBoard.cards);
+    //                 break;
+    //         }
+    //     }
+    // });
+    //
+    // document.getElementById('selectedBoardEl').addEventListener('click', function(event) {
+    //     let targ = event.target;
+    //
+    //     if(targ.hasAttribute('data-el-type') &&
+    //         targ.getAttribute('data-el-type') === 'boardCardDeleteBtn' &&
+    //         Object.keys(appData.boards).length > 1) {
+    //             delete appData.boards[appData.selectedBoard.name];
+    //             addClass(appData.selectedBoardEl, 'fadeout-el');
+    //             window.setTimeout(function() {
+    //                 appData.selectedBoardEl.remove();
+    //                 let myBoardEl = document.getElementById('myBoardsListEl').firstElementChild;
+    //                 updateSelectedBoardInModel(Object.keys(appData.boards[0], myBoardEl, appData));
+    //             }, 500)
+    //         } else {
+    //             alert('You only have one board left! Do not delete it!');
+    //         }
+    // });
+    //
+    // document.getElementById('cardForwardBtn').addEventListener('click', function(event) {
+    //     event.preventDefault();
+    //     console.log('forward clicked!');
+    //     moveCardForward(appData.selectedCardEl, appData);
+    // });
+    //
+    // document.getElementById('cardBackwardBtn').addEventListener('click', function(event) {
+    //     event.preventDefault();
+    //     console.log('Backward clicked!');
+    //     moveCardBackward(appData.selectedCardEl, appData)
+    // });
 };
 
 function getBoards() {
@@ -303,6 +315,21 @@ function updateSelectedBoardInModel(boardName, selectedBoardEl, appData) {
 }
 
 /*
+Purpose: Updates the classes of myBoardEl's when selected
+Consumes: a previously selected board html el and a selectedBoard html el
+Produces: Nothing
+Actions: Removes class from previously selected MyBoards element and adds
+a class to the newly selected myBoards element.
+*/
+function updateSelectedMyBoardListElView(prevEl, selectedBoardEl) {
+    //Need to check these classes...
+    if(prevEl != null) {
+        removeClass(prevEl, 'active-board-item-selected');
+    }
+    addClass(selectedBoardEl, 'active-board-item-selected');
+}
+
+/*
 Purpose: To update the view based on the selected Board
 Consumes: a board object
 Produces: nothing
@@ -340,9 +367,10 @@ function updateSelectedBoardColumnsCardsView(board) {
 
     let cardsToAddToView = [];
 
-    let columnsEl = [];
+    //get uls of columns added to board.
+    let ulsEl = [];
     for (i = 0; i < board.columns.length; i++) {
-        columnsEl[i] = document.getElementById('column' + i);
+        ulsEl[i] = document.getElementById('ul' + i);
     }
 
     for (var i = 0, len = board.columns.length; i < len; i++) {
@@ -357,14 +385,13 @@ function updateSelectedBoardColumnsCardsView(board) {
     // logCardsToAddToView(cardsToAddToView)
 
     for (var i = 0, len = cardsToAddToView.length; i < len; i++) {
-        for (var j = 0, len2 = columnsEl.length; j < len2; j++) {
-            if (('column' + cardsToAddToView[i].column) === columnsEl[j].id) {
-                columnsEl[j].appendChild(cardToCardEl(cardsToAddToView[i], i));
-                len2=columnsEl.length;
+        for (var j = 0, len2 = ulsEl.length; j < len2; j++) {
+            if (('ul' + cardsToAddToView[i].column) === ulsEl[j].id) {
+                ulsEl[j].appendChild(cardToCardEl(cardsToAddToView[i], i));
+                len2=ulsEl.length;
             }
         }
     }
-
 }
 
 /*
@@ -386,13 +413,16 @@ function updateSelectedBoardColumnsView(board) {
     }
 }
 
+
 //////////////////////////////////////////////
 ////////////BOARD COLUMN FUNCTIONS////////////
 //////////////////////////////////////////////
 
+//GOING TO NEED SELECT COLUMN FUNCTIONS
+
 /*
 Purpose: To create a board column HTML element
-Consumes: a column object, a desired column position (not needed?)
+Consumes: a column object, a desired column position
 Produces: a column html element
 */
 function columnToColumnEl(column, columnPosition) {
@@ -404,7 +434,7 @@ function columnToColumnEl(column, columnPosition) {
     columnEl.setAttribute('id', 'column' + columnPosition);
     columnTitleEl.setAttribute('data-el-type', 'columnTitle');
     columnCardListEl.setAttribute('data-el-type', 'columnCardListEl');
-    columnCardListEl.setAttribute('id', columnPosition);
+    columnCardListEl.setAttribute('id', 'ul' + columnPosition);
 
     addClass(columnCardListEl, 'column-el');
     addClass(columnTitleEl, 'column-header');
@@ -420,16 +450,23 @@ function columnToColumnEl(column, columnPosition) {
 }
 
 /*
+COME BACK TO THIS POST CARD-REMAKE
 Purpose: to add column to board in model
+Consumes: a board object, a column object
+Produces: the board in which the user added a column to
+Actions: adds column to the model
 */
 
-function addColumnToBoardInModel(board, column) {
+function addColumnToBoardInModel(column, boards, board) {
     boards[board.name].columns.push(column);
     return boards[board.name];
 }
 
 /*
+COME BACK TO THIS POST CARD-REMAKE
 Purpose: to add column to board view without selecting a new board
+Consumes: a column object and a columnPosition (number)
+Produces: a column html element
 */
 function addColumnToBoardView(column, columnPosition) {
     let boardColumnsEl = document.getElementById('boardColumns');
@@ -442,13 +479,25 @@ function addColumnToBoardView(column, columnPosition) {
 }
 
 /*
+COME BACK TO THIS POST CARD-REMAKE
 Purpose: update the selected column in the model and trigger view changes
 */
 
 function updateSelectedColumnInModel(columnName, selectedColumnEl, appData) {
-//Line 261 https://github.com/wkashdan/todo-app/commit/ Oct 19th 
+//Line 261 https://github.com/wkashdan/todo-app/commit/ Oct 19th
 }
 
+
+
+//////////////////////////////////////////////
+////////////////CARD FUNCTIONS////////////////
+//////////////////////////////////////////////
+
+/*
+Purpose: to create a card html element
+Consumes: a card object, a card's rank in the list (number)
+Produces: a card html element
+*/
 
 function cardToCardEl(card, arRank) {
     let cardEl = document.createElement('li');
@@ -460,43 +509,70 @@ function cardToCardEl(card, arRank) {
 }
 
 
-
-function addBoardCardToBoard(boardCard, cards) {
-    cards.push(boardCard);
+/*
+Purpose: to add a card to a board in the model.
+Consumes: a card object, a cards array of objects (for a given board)
+Produces: the card object most recently pushed to array (length - 1)
+*/
+function addCardToBoardInModel(card, cards) {
+    cards.push(card);
     return cards[cards.length - 1];
 }
 
-function addBoardCardToView(boardCard, arPos) {
-    let selectedBoardEl = document.getElementById('selectedBoardEl');
-    let boardCardEl = cardToCardEl(boardCard, arPos);
-    addClass(boardCardEl, 'fade-in');
-    selectedBoardEl.appendChild(boardCardEl);
-    window.setTimeout(function(){removeClass(boardCardEl, 'fade-in')}, 200);
-    return boardCardEl;
+/*
+Purpose: to add a card to a board in the view.
+Consumes: a card object, a card's column (number), and a board's columns array of objects
+Produces: the card object most recently pushed to array (length - 1)
+*/
+function addCardToView(card, cardRank, cardColumn, columns) {
+    //This isn't the best way to do this. Need to remodel because
+    //I'm iterating through all columns, should just find one column that
+    //matches card column.
+
+    var boardColumnsEl = document.getElementById('boardColumns');
+    let ulsEl = boardColumns.querySelectorAll('ul');
+    console.log('ulsEl', ulsEl);
+
+    let cardEl = cardToCardEl(card, cardRank);
+    addClass(cardEl, 'fade-in');
+
+    for (let j = 0, len2 = ulsEl.length; j < len2; j++) {
+        if (('ul' + card.column) === ulsEl[j].id) {
+            ulsEl[j].appendChild(cardEl);
+            len2=ulsEl.length;
+        }
+    }
+
+    window.setTimeout(function(){removeClass(cardEl, 'fade-in')}, 200);
+    return cardEl;
 }
-
-
-
-//Need to check these classes...
 
 /*
-Purpose: Updates the classes of myBoardEl's when selected
+Purpose: Set the card that's selected in AppData, then update the view
+Consumes: Card Rank (number), card html element, and appData object
+Produces: nothing
+Actions:
+-- Sets previous card element to the previously selected card element
+-- Sets selected card/selected card element based off of card rank...
+MIGHT NEED FIXING
+-- Updates the selected card view
 */
-function updateSelectedMyBoardListElView(prevEl, selectedBoardEl) {
-    if(prevEl != null) {
-        removeClass(prevEl, 'active-board-item-selected');
-    }
-    addClass(selectedBoardEl, 'active-board-item-selected');
-}
-
-function selectCard(cardPos, cardEl, appData) {
+function selectCardInModel(cardRank, cardEl, appData) {
     let prevCardEl = appData.selectedCardEl;
 
-    appData.selectedCard = appData.selectedCard.cards[cardPos];
+    appData.selectedCard = appData.selectedCard.cards[cardRank];
     appData.selectedCardEl = cardEl;
 
     updateSelectedCardView(prevCardEl, cardEl);
 }
+
+/*
+Purpose: Update selected card element view
+Consumes: Previous selected card html element and card html element
+Produces: nothing
+Actions: Removes active styling from previously selected card element
+and adds styling to newly selected card element
+*/
 
 function updateSelectedCardView(prevCardEl, cardEl) {
     if(prevCardEl != null) {
@@ -505,13 +581,28 @@ function updateSelectedCardView(prevCardEl, cardEl) {
     addClass(cardEl, 'active-board-card-selected');
 }
 
-
-function deleteCard(cardPos, cardEl, cards) {
-    cards[cardPos].isDeleted = true;
+/*
+Purpose: Marks a card as deleted and applies a fadeout class
+Consumes: a cardRank (number), card html element, and array of cards
+Produces: nothing
+Actions: Ads fadeout style to card and marks card as deleted in appData
+*/
+function deleteCard(cardRank, cardEl, cards) {
+    cards[cardRank].isDeleted = true;
     addClass(cardEl, 'fadeout-el');
     window.setTimeout(function(){cardEl.remove();},500);
 }
 
+/*
+Purpose: To move a card forward
+Consumes: Card html element and appData
+Produces: nothing
+Actions:
+-- gets current card position (NEEDS FIXING)
+-- Modifies card position based on columns (NEEDS FIXING)
+-- Updates appData with card's new columnPosition (NEEDS FIXING)
+-- Updates board view
+*/
 function moveCardForward(cardEl, appData) {
 
     var currentCardPos = appData.selectedBoard.cards[cardEl.getAttribute('data-ar-pos')].column;
@@ -527,6 +618,17 @@ function moveCardForward(cardEl, appData) {
     selectedBoardToView(appData)
 }
 
+
+/*
+Purpose: To move a card backwards a column
+Consumes: Card html element and appData
+Produces: nothing
+Actions:
+-- gets current card position (NEEDS FIXING)
+-- Modifies card position based on columns (NEEDS FIXING)
+-- Updates appData with card's new columnPosition (NEEDS FIXING)
+-- Updates board view
+*/
 function moveCardBackward(cardEl, appData) {
     var currentCardPos = appData.selectedBoard.cards[cardEl.getAttribute('data-ar-pos')].column;
     //hard coding column count for now...

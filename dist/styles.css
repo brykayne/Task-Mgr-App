@@ -122,14 +122,57 @@ main {
   margin: 0px;
   border: 0px;
   cursor: pointer;
-  transition: opacity 200ms ease-in; }
+  transition: opacity 200ms ease-in;
+  margin: 4px 2px; }
 
 .board-delete-btn:hover {
   opacity: 1;
-  transition: opacity 200ms ease-in; }
+  transition: opacity 200ms ease-in;
+  margin: 4px 2px; }
 
 .board-delete-btn:focus {
-  outline: 0px; }
+  outline: 0px;
+  margin: 4px 2px; }
+
+.board-add-column-btn {
+  background-color: #b4b4b4;
+  color: #FFFFFF;
+  opacity: .8;
+  padding: 10px 10px;
+  margin: 0px;
+  border: 0px;
+  cursor: pointer;
+  transition: opacity 200ms ease-in;
+  margin: 4px 2px; }
+
+.board-add-column-btn {
+  opacity: 1;
+  transition: opacity 200ms ease-in;
+  margin: 4px 2px; }
+
+.board-add-column-btn:focus {
+  outline: 0px;
+  margin: 4px 2px; }
+
+.board-remove-column-btn {
+  background-color: #b4b4b4;
+  color: #FFFFFF;
+  opacity: .8;
+  padding: 10px 10px;
+  margin: 0px;
+  border: 0px;
+  cursor: pointer;
+  transition: opacity 200ms ease-in;
+  margin: 4px 2px; }
+
+.board-remove-column-btn {
+  opacity: 1;
+  transition: opacity 200ms ease-in;
+  margin: 4px 2px; }
+
+.board-remove-column-btn:focus {
+  outline: 0px;
+  margin: 4px 2px; }
 
 .board-title {
   font-size: 16px;
