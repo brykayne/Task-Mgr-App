@@ -69,33 +69,46 @@ function setListeners(appData) {
         }
     });
 
+    document.getElementById('boardDeleteBtn').addEventListener('click', function(event) {
+        event.preventDefault();
+
+        let targ = event.target;
+        if(Object.keys(appData.boards).length > 1) {
+                delete appData.boards[appData.selectedBoard.name];
+                addClass(appData.selectedBoardEl, 'fadeout-el');
+                window.setTimeout(function() {
+                    appData.selectedBoardEl.remove();
+                    let myBoardEl = document.getElementById('myBoardsListEl').firstElementChild;
+                    updateSelectedBoardInModel(Object.keys(appData.boards)[0], myBoardEl, appData);
+                }, 500)
+            } else {
+                alert('You only have one board left! Do not delete it!');
+            }
+    });
     //All Board Listeners
-    document.getElementById('boardHeader').addEventListener('click', function(event) {
-        event.preventDefault;
-
-        //DeleteBoard
-
-        //AddColumn
-
-        //Remove Column (if one remaining, do not delete)
-    })
+    // document.getElementById('boardHeader').addEventListener('click', function(event) {
+    //     event.preventDefault;
+    //
+    //     //DeleteBoard
+    //
+    //     //AddColumn
+    //
+    //     //Remove Column (if one remaining, do not delete)
+    // })
 
     //All Card action Listeners
-    document.getElementById('cardButtons').addEventListener('click', function(event) {
-        event.preventDefault;
-
-        //Card forward
-
-        //Card Backward
-
-        //Card Delete
-
-    })
+    // document.getElementById('cardButtons').addEventListener('click', function(event) {
+    //     event.preventDefault;
+    //
+    //     //Card forward
+    //
+    //     //Card Backward
+    //
+    //     //Card Delete
+    //
+    // })
 
     //Select/Edit Card, Select/Edit Column
-
-    document.getElementById('')
-
 
     document.getElementById('selectedBoardEl').addEventListener('click', function(event) {
 
@@ -125,19 +138,7 @@ function setListeners(appData) {
     // document.getElementById('selectedBoardEl').addEventListener('click', function(event) {
     //     let targ = event.target;
     //
-    //     if(targ.hasAttribute('data-el-type') &&
-    //         targ.getAttribute('data-el-type') === 'boardCardDeleteBtn' &&
-    //         Object.keys(appData.boards).length > 1) {
-    //             delete appData.boards[appData.selectedBoard.name];
-    //             addClass(appData.selectedBoardEl, 'fadeout-el');
-    //             window.setTimeout(function() {
-    //                 appData.selectedBoardEl.remove();
-    //                 let myBoardEl = document.getElementById('myBoardsListEl').firstElementChild;
-    //                 updateSelectedBoardInModel(Object.keys(appData.boards[0], myBoardEl, appData));
-    //             }, 500)
-    //         } else {
-    //             alert('You only have one board left! Do not delete it!');
-    //         }
+
     // });
     //
     // document.getElementById('cardForwardBtn').addEventListener('click', function(event) {
