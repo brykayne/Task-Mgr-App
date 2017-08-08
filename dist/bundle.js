@@ -138,6 +138,30 @@
 	        var column = addColumnToBoardInModel(createColumn('Rename Me', columnPos), appData.boards, board);
 	        addColumnToBoardView(column, columnPos);
 	    });
+
+	    document.getElementById('removeColumnBtn').addEventListener('click', function (event) {
+	        event.preventDefault();
+
+	        var boardName = event.target.parentElement.firstElementChild.innerText;
+	        var board = appData.boards[boardName];
+
+	        var selectedColumn = appData.selectedColumn;
+	        var selectedColumnEl = appData.selectedColumnEl;
+	    });
+
+	    document.getElementById('cardDeleteBtn').addEventListener('click', function (event) {
+	        event.preventDefault();
+
+	        var boardName = event.target.parentElement.firstElementChild.innerText;
+	        var board = appData.boards[boardName];
+
+	        var selectedCard = appData.selectedCard;
+	        var selectedCardEl = appData.selectedCardEl;
+
+	        debugger;
+	        deleteCard(selectedCardEl.getAttribute('data-ar-pos'), selectedCardEl, appData.selectedBoard.cards);
+	    });
+
 	    //All Board Listeners
 	    // document.getElementById('boardHeader').addEventListener('click', function(event) {
 	    //     event.preventDefault;
@@ -178,10 +202,6 @@
 	                //     targ.parentElement,
 	                //     appData);
 	                //     break;
-	                case 'cardDeleteBtn':
-	                    debugger;
-	                    deleteCard(targ.parentElement.getAttribute('data-ar-pos'), targ.parentElement, appData.selectedBoard.cards);
-	                    break;
 	                case 'columnEl':
 	                    debugger;
 	                    selectColumnInModel(targ.getAttribute('data-ar-pos'), targ, appData);
@@ -448,10 +468,12 @@
 	    // logCardsToAddToView(cardsToAddToView)
 
 	    for (var i = 0, len = cardsToAddToView.length; i < len; i++) {
-	        for (var j = 0, len2 = ulsEl.length; j < len2; j++) {
-	            if ('ul' + cardsToAddToView[i].column === ulsEl[j].id) {
-	                ulsEl[j].appendChild(cardToCardEl(cardsToAddToView[i], i));
-	                len2 = ulsEl.length;
+	        if (cardsToAddToView[i].isDeleted === false) {
+	            for (var j = 0, len2 = ulsEl.length; j < len2; j++) {
+	                if ('ul' + cardsToAddToView[i].column === ulsEl[j].id) {
+	                    ulsEl[j].appendChild(cardToCardEl(cardsToAddToView[i], i));
+	                    len2 = ulsEl.length;
+	                }
 	            }
 	        }
 	    }

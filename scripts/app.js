@@ -94,7 +94,35 @@ function setListeners(appData) {
 
         let column = addColumnToBoardInModel(createColumn('Rename Me', columnPos), appData.boards, board);
         addColumnToBoardView(column, columnPos);
+    });
+
+    document.getElementById('removeColumnBtn').addEventListener('click', function(event) {
+        event.preventDefault();
+
+        let boardName = event.target.parentElement.firstElementChild.innerText;
+        let board = appData.boards[boardName];
+
+        let selectedColumn = appData.selectedColumn;
+        let selectedColumnEl = appData.selectedColumnEl;
+
+
     })
+
+    document.getElementById('cardDeleteBtn').addEventListener('click', function(event) {
+        event.preventDefault();
+
+        let boardName = event.target.parentElement.firstElementChild.innerText;
+        let board = appData.boards[boardName];
+
+        let selectedCard = appData.selectedCard;
+        let selectedCardEl = appData.selectedCardEl;
+
+        debugger;
+        deleteCard(selectedCardEl.getAttribute('data-ar-pos'),
+        selectedCardEl,
+        appData.selectedBoard.cards);
+    })
+
     //All Board Listeners
     // document.getElementById('boardHeader').addEventListener('click', function(event) {
     //     event.preventDefault;
@@ -135,12 +163,6 @@ function setListeners(appData) {
                 //     targ.parentElement,
                 //     appData);
                 //     break;
-                case 'cardDeleteBtn' :
-                    debugger;
-                    deleteCard(targ.parentElement.getAttribute('data-ar-pos'),
-                    targ.parentElement,
-                    appData.selectedBoard.cards);
-                    break;
                 case 'columnEl' :
                     debugger;
                     selectColumnInModel(targ.getAttribute('data-ar-pos'), targ, appData);
@@ -429,14 +451,17 @@ function updateSelectedBoardColumnsCardsView(board) {
 
     // logCardsToAddToView(cardsToAddToView)
 
-    for (var i = 0, len = cardsToAddToView.length; i < len; i++) {
-        for (var j = 0, len2 = ulsEl.length; j < len2; j++) {
-            if (('ul' + cardsToAddToView[i].column) === ulsEl[j].id) {
-                ulsEl[j].appendChild(cardToCardEl(cardsToAddToView[i], i));
-                len2=ulsEl.length;
+        for (var i = 0, len = cardsToAddToView.length; i < len; i++) {
+            if (cardsToAddToView[i].isDeleted === false) {
+                for (var j = 0, len2 = ulsEl.length; j < len2; j++) {
+                    if (('ul' + cardsToAddToView[i].column) === ulsEl[j].id) {
+                        ulsEl[j].appendChild(cardToCardEl(cardsToAddToView[i], i));
+                        len2=ulsEl.length;
+                    }
+                }
             }
         }
-    }
+
 }
 
 /*
