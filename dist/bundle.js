@@ -95,7 +95,6 @@
 	    */
 	    document.getElementById('cardForm').addEventListener('submit', function (event) {
 	        event.preventDefault();
-	        // addCard(createCard(event.target.cardInput.value), appData);
 	        var card = addCardToBoardInModel(createCard(event.target.cardInput.value), appData.selectedBoard.cards);
 	        var cardRank = appData.selectedBoard.cards.length - 1;
 	        var cardColumn = card.column;
@@ -114,20 +113,30 @@
 
 	    document.getElementById('boardDeleteBtn').addEventListener('click', function (event) {
 	        event.preventDefault();
-
-	        var targ = event.target;
 	        if (Object.keys(appData.boards).length > 1) {
 	            delete appData.boards[appData.selectedBoard.name];
 	            addClass(appData.selectedBoardEl, 'fadeout-el');
 	            window.setTimeout(function () {
 	                appData.selectedBoardEl.remove();
 	                var myBoardEl = document.getElementById('myBoardsListEl').firstElementChild;
-	                debugger;
 	                updateSelectedBoardInModel(Object.keys(appData.boards)[0], myBoardEl, appData);
 	            }, 500);
 	        } else {
 	            alert('You only have one board left! Do not delete it!');
 	        }
+	    });
+
+	    document.getElementById('addColumnBtn').addEventListener('click', function (event) {
+	        event.preventDefault();
+	        debugger;
+	        var targetEl = event.target;
+	        var boardName = targetEl.parentElement.firstElementChild.innerText;
+
+	        var board = appData.boards[boardName];
+	        var columnPos = board.columns.length;
+
+	        var column = addColumnToBoardInModel(createColumn('Rename Me', columnPos), appData.boards, board);
+	        addColumnToBoardView(column, columnPos);
 	    });
 	    //All Board Listeners
 	    // document.getElementById('boardHeader').addEventListener('click', function(event) {
@@ -172,6 +181,10 @@
 	                case 'cardDeleteBtn':
 	                    debugger;
 	                    deleteCard(targ.parentElement.getAttribute('data-ar-pos'), targ.parentElement, appData.selectedBoard.cards);
+	                    break;
+	                case 'columnEl':
+	                    debugger;
+	                    selectColumnInModel(targ.getAttribute('data-ar-pos'), targ, appData);
 	                    break;
 	            }
 	        }
@@ -476,12 +489,16 @@
 	*/
 	function columnToColumnEl(column, columnPosition) {
 	    var columnEl = document.createElement('div');
-	    var columnTitleEl = document.createElement('h2');
+	    //let columnTitleEl = document.createElement('h2');
+	    var columnTitleEl = document.createElement('input');
 	    var columnCardListEl = document.createElement('ul');
 
 	    columnEl.setAttribute('data-el-type', 'columnEl');
 	    columnEl.setAttribute('id', 'column' + columnPosition);
+	    columnEl.setAttribute('data-ar-pos', columnPosition);
 	    columnTitleEl.setAttribute('data-el-type', 'columnTitle');
+	    columnTitleEl.setAttribute('id', 'title' + columnPosition);
+	    columnTitleEl.disabled = true;
 	    columnCardListEl.setAttribute('data-el-type', 'columnCardListEl');
 	    columnCardListEl.setAttribute('id', 'ul' + columnPosition);
 
@@ -489,7 +506,7 @@
 	    addClass(columnTitleEl, 'column-header');
 	    addClass(columnEl, 'column');
 
-	    columnTitleEl.innerHTML = column.columnName;
+	    columnTitleEl.value = column.columnName;
 
 	    columnEl.appendChild(columnTitleEl);
 	    columnEl.appendChild(columnCardListEl);
@@ -507,7 +524,7 @@
 
 	function addColumnToBoardInModel(column, boards, board) {
 	    boards[board.name].columns.push(column);
-	    return boards[board.name];
+	    return column;
 	}
 
 	/*
@@ -613,6 +630,22 @@
 	    appData.selectedCardEl = cardEl;
 
 	    updateSelectedCardView(prevSelectedCardEl, cardEl);
+	}
+
+	function selectColumnInModel(columnPos, columnEl, appData) {
+	    var prevSelectedColumnEl = appData.selectedColumnEl;
+
+	    appData.selectedColumn = appData.selectedBoard.columns[columnPos];
+	    appData.selectedColumnEl = columnEl;
+
+	    updateSelectedColumnView(prevSelectedColumnEl, columnEl);
+	}
+
+	function updateSelectedColumnView(prevColumnEl, columnEl) {
+	    if (prevColumnEl != null) {
+	        removeClass(prevColumnEl, 'active-column');
+	    }
+	    addClass(columnEl, 'active-column');
 	}
 
 	/*

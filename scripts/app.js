@@ -49,7 +49,6 @@ function setListeners(appData) {
     */
     document.getElementById('cardForm').addEventListener('submit', function(event) {
         event.preventDefault();
-        // addCard(createCard(event.target.cardInput.value), appData);
         let card = addCardToBoardInModel(
             createCard(event.target.cardInput.value),
             appData.selectedBoard.cards);
@@ -71,8 +70,6 @@ function setListeners(appData) {
 
     document.getElementById('boardDeleteBtn').addEventListener('click', function(event) {
         event.preventDefault();
-
-        let targ = event.target;
         if(Object.keys(appData.boards).length > 1) {
                 delete appData.boards[appData.selectedBoard.name];
                 addClass(appData.selectedBoardEl, 'fadeout-el');
@@ -85,6 +82,19 @@ function setListeners(appData) {
                 alert('You only have one board left! Do not delete it!');
             }
     });
+
+    document.getElementById('addColumnBtn').addEventListener('click', function(event) {
+        event.preventDefault();
+        debugger;
+        let targetEl = event.target;
+        let boardName = targetEl.parentElement.firstElementChild.innerText;
+
+        let board = appData.boards[boardName];
+        let columnPos = board.columns.length;
+
+        let column = addColumnToBoardInModel(createColumn('Rename Me', columnPos), appData.boards, board);
+        addColumnToBoardView(column, columnPos);
+    })
     //All Board Listeners
     // document.getElementById('boardHeader').addEventListener('click', function(event) {
     //     event.preventDefault;
@@ -126,10 +136,14 @@ function setListeners(appData) {
                 //     appData);
                 //     break;
                 case 'cardDeleteBtn' :
-                debugger;
+                    debugger;
                     deleteCard(targ.parentElement.getAttribute('data-ar-pos'),
                     targ.parentElement,
                     appData.selectedBoard.cards);
+                    break;
+                case 'columnEl' :
+                    debugger;
+                    selectColumnInModel(targ.getAttribute('data-ar-pos'), targ, appData);
                     break;
             }
         }
@@ -458,12 +472,16 @@ Produces: a column html element
 */
 function columnToColumnEl(column, columnPosition) {
     let columnEl = document.createElement('div');
-    let columnTitleEl = document.createElement('h2');
+    //let columnTitleEl = document.createElement('h2');
+    let columnTitleEl = document.createElement('input');
     let columnCardListEl = document.createElement('ul');
 
     columnEl.setAttribute('data-el-type', 'columnEl');
     columnEl.setAttribute('id', 'column' + columnPosition);
+    columnEl.setAttribute('data-ar-pos', columnPosition);
     columnTitleEl.setAttribute('data-el-type', 'columnTitle');
+    columnTitleEl.setAttribute('id', 'title' + columnPosition);
+    columnTitleEl.disabled = true;
     columnCardListEl.setAttribute('data-el-type', 'columnCardListEl');
     columnCardListEl.setAttribute('id', 'ul' + columnPosition);
 
@@ -471,7 +489,7 @@ function columnToColumnEl(column, columnPosition) {
     addClass(columnTitleEl, 'column-header');
     addClass(columnEl, 'column');
 
-    columnTitleEl.innerHTML = column.columnName;
+    columnTitleEl.value = column.columnName;
 
     columnEl.appendChild(columnTitleEl);
     columnEl.appendChild(columnCardListEl);
@@ -490,7 +508,7 @@ Actions: adds column to the model
 
 function addColumnToBoardInModel(column, boards, board) {
     boards[board.name].columns.push(column);
-    return boards[board.name];
+    return column;
 }
 
 /*
@@ -595,6 +613,22 @@ function selectCardInModel(cardRank, cardEl, appData) {
     appData.selectedCardEl = cardEl;
 
     updateSelectedCardView(prevSelectedCardEl, cardEl);
+}
+
+function selectColumnInModel(columnPos, columnEl, appData) {
+    let prevSelectedColumnEl = appData.selectedColumnEl;
+
+    appData.selectedColumn = appData.selectedBoard.columns[columnPos];
+    appData.selectedColumnEl = columnEl;
+
+    updateSelectedColumnView(prevSelectedColumnEl, columnEl);
+}
+
+function updateSelectedColumnView(prevColumnEl, columnEl) {
+    if(prevColumnEl != null) {
+        removeClass(prevColumnEl, 'active-column');
+    }
+    addClass(columnEl, 'active-column');
 }
 
 /*

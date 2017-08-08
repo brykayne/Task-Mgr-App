@@ -145,7 +145,7 @@ main {
   transition: opacity 200ms ease-in;
   margin: 4px 2px; }
 
-.board-add-column-btn {
+.board-add-column-btn:hover {
   opacity: 1;
   transition: opacity 200ms ease-in;
   margin: 4px 2px; }
@@ -165,7 +165,7 @@ main {
   transition: opacity 200ms ease-in;
   margin: 4px 2px; }
 
-.board-remove-column-btn {
+.board-remove-column-btn:hover {
   opacity: 1;
   transition: opacity 200ms ease-in;
   margin: 4px 2px; }
@@ -262,11 +262,16 @@ main {
   vertical-align: top; }
 
 .column-header {
+  background: transparent;
+  border: none;
   font-size: 14px;
   color: #222222;
   line-height: 25px;
-  font-weight: 600;
-  text-align: center; }
+  font-weight: 600; }
+
+.column-header:hover {
+  border-color: #b4b4b4;
+  transition: border-color 200ms ease-in; }
 
 .column {
   height: 100%;
@@ -306,6 +311,17 @@ main {
 .active-card {
   color: #333333;
   background-color: #b4b4b4;
+  list-style: none;
+  text-align: center;
+  border-width: 2px;
+  border-style: solid;
+  border-color: #222222;
+  transition: border-color 200ms ease-in, opacity 200ms ease-in;
+  cursor: pointer; }
+
+.active-column {
+  color: #333333;
+  background-color: #add8e6;
   list-style: none;
   text-align: center;
   border-width: 2px;

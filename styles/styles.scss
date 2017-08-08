@@ -201,7 +201,7 @@ $BOARD-WIDTH: calc(100% - #{$MYBOARDS_WIDTH});
     margin: 4px 2px;
 }
 
-.board-add-column-btn {
+.board-add-column-btn:hover {
     opacity: 1;
     transition: opacity 200ms ease-in;
     margin: 4px 2px;
@@ -224,7 +224,7 @@ $BOARD-WIDTH: calc(100% - #{$MYBOARDS_WIDTH});
     margin: 4px 2px;
 }
 
-.board-remove-column-btn {
+.board-remove-column-btn:hover {
     opacity: 1;
     transition: opacity 200ms ease-in;
     margin: 4px 2px;
@@ -336,12 +336,20 @@ $BOARD-WIDTH: calc(100% - #{$MYBOARDS_WIDTH});
 }
 
 .column-header {
+    background: rgba(0,0,0,0);
+    border: none;
     font-size: 14px;
     color: $gray-darker;
     line-height: ($HEADER_HEIGHT / 2);
     font-weight: 600;
-    text-align: center;
+    // text-align: center;
 }
+
+.column-header:hover {
+    border-color: $gray-light;
+    transition: border-color 200ms ease-in;
+}
+
 
 .column {
     height: 100%;
@@ -388,6 +396,18 @@ $BOARD-WIDTH: calc(100% - #{$MYBOARDS_WIDTH});
 .active-card {
     color: $gray-dark;
     background-color: $gray-light;
+    list-style: none;
+    text-align: center;
+    border-width: 2px;
+    border-style: solid;
+    border-color: $gray-darker;
+    transition: border-color 200ms ease-in, opacity 200ms ease-in;
+    cursor: pointer;
+}
+
+.active-column {
+    color: $gray-dark;
+    background-color: $light-blue;
     list-style: none;
     text-align: center;
     border-width: 2px;
