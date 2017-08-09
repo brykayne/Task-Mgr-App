@@ -162,31 +162,7 @@
 	        deleteCard(selectedCardEl.getAttribute('data-ar-pos'), selectedCardEl, appData.selectedBoard.cards);
 	    });
 
-	    //All Board Listeners
-	    // document.getElementById('boardHeader').addEventListener('click', function(event) {
-	    //     event.preventDefault;
-	    //
-	    //     //DeleteBoard
-	    //
-	    //     //AddColumn
-	    //
-	    //     //Remove Column (if one remaining, do not delete)
-	    // })
-
-	    //All Card action Listeners
-	    // document.getElementById('cardButtons').addEventListener('click', function(event) {
-	    //     event.preventDefault;
-	    //
-	    //     //Card forward
-	    //
-	    //     //Card Backward
-	    //
-	    //     //Card Delete
-	    //
-	    // })
-
 	    //Select/Edit Card, Select/Edit Column
-
 	    document.getElementById('selectedBoardEl').addEventListener('click', function (event) {
 
 	        var targ = event.target;
@@ -195,13 +171,11 @@
 
 	            switch (targ.getAttribute('data-el-type')) {
 	                case 'cardEl':
+	                    debugger;
+	                    //passing in wrong value cardRank value
+	                    //data-ar-pos is for card rank in array to make changes to card
 	                    selectCardInModel(targ.getAttribute('data-ar-pos'), targ, appData);
 	                    break;
-	                // case 'cardName' :
-	                //     selectCardInModel(targ.parentElement.getAttribute('data-ar-pos'),
-	                //     targ.parentElement,
-	                //     appData);
-	                //     break;
 	                case 'columnEl':
 	                    debugger;
 	                    selectColumnInModel(targ.getAttribute('data-ar-pos'), targ, appData);
@@ -210,18 +184,14 @@
 	        }
 	    });
 
-	    // document.getElementById('selectedBoardEl').addEventListener('click', function(event) {
-	    //     let targ = event.target;
-	    //
+	    document.getElementById('cardForwardBtn').addEventListener('click', function (event) {
+	        event.preventDefault();
+	        console.log('forward clicked!');
+	        debugger;
 
-	    // });
-	    //
-	    // document.getElementById('cardForwardBtn').addEventListener('click', function(event) {
-	    //     event.preventDefault();
-	    //     console.log('forward clicked!');
-	    //     moveCardForward(appData.selectedCardEl, appData);
-	    // });
-	    //
+	        moveCardForward(appData.selectedCardEl, appData);
+	    });
+
 	    // document.getElementById('cardBackwardBtn').addEventListener('click', function(event) {
 	    //     event.preventDefault();
 	    //     console.log('Backward clicked!');
@@ -233,13 +203,13 @@
 	    var boards = {
 	        'Agenda': {
 	            name: 'Agenda',
-	            cards: [{ name: '1 Clean room.', rank: 0, column: 0, isComplete: false, isDeleted: false }, { name: '2 Clean room.', rank: 0, column: 1, isComplete: false, isDeleted: false }, { name: '3 Clean room.', rank: 0, column: 2, isComplete: false, isDeleted: false }, { name: '4 Clean room.', rank: 0, column: 0, isComplete: false, isDeleted: false }],
+	            cards: [{ name: '1 Clean room.', rank: 0, column: 0, isComplete: false, isDeleted: false }, { name: '2 Clean room.', rank: 1, column: 1, isComplete: false, isDeleted: false }, { name: '3 Clean room.', rank: 2, column: 2, isComplete: false, isDeleted: false }, { name: '4 Clean room.', rank: 3, column: 0, isComplete: false, isDeleted: false }],
 	            isDeleted: false,
 	            columns: [{ columnName: 'To Do', columnPosition: 0, columnIsDeleted: false }, { columnName: 'In Progress', columnPosition: 1, columnIsDeleted: false }, { columnName: 'Done', columnPosition: 2, columnIsDeleted: false }]
 	        },
 	        'List of Things': {
 	            name: 'List of Things',
-	            cards: [{ name: 'Do other things.', column: 0, rank: 0, isComplete: false, isDeleted: false }, { name: 'In progresssss.', column: 1, rank: 0, isComplete: false, isDeleted: false }, { name: 'Done!', column: 2, rank: 0, isComplete: true, isDeleted: false }],
+	            cards: [{ name: 'Do other things.', column: 0, rank: 0, isComplete: false, isDeleted: false }, { name: 'In progresssss.', column: 1, rank: 1, isComplete: false, isDeleted: false }, { name: 'Done!', column: 2, rank: 2, isComplete: true, isDeleted: false }],
 	            isDeleted: false,
 	            columns: [{ columnName: 'To Do', columnPosition: 0, columnIsDeleted: false }, { columnName: 'In Progress', columnPosition: 1, columnIsDeleted: false }, { columnName: 'Done', columnPosition: 2, columnIsDeleted: false }]
 	        }
@@ -447,7 +417,8 @@
 	column.
 	*/
 	function updateSelectedBoardColumnsCardsView(board) {
-
+	    debugger;
+	    //Find card ranks.
 	    var cardsToAddToView = [];
 
 	    //get uls of columns added to board.
@@ -471,7 +442,7 @@
 	        if (cardsToAddToView[i].isDeleted === false) {
 	            for (var j = 0, len2 = ulsEl.length; j < len2; j++) {
 	                if ('ul' + cardsToAddToView[i].column === ulsEl[j].id) {
-	                    ulsEl[j].appendChild(cardToCardEl(cardsToAddToView[i], i));
+	                    ulsEl[j].appendChild(cardToCardEl(cardsToAddToView[i], cardsToAddToView[i].rank));
 	                    len2 = ulsEl.length;
 	                }
 	            }
@@ -711,17 +682,33 @@
 	*/
 	function moveCardForward(cardEl, appData) {
 
-	    var currentCardPos = appData.selectedBoard.cards[cardEl.getAttribute('data-ar-pos')].column;
-	    //hard coding column count in if... for now...
-	    if (currentCardPos <= 1) {
-	        currentCardPos += 1;
-	    } else if (currentCardPos < 0) {
-	        currentCardPos = 0;
-	    } else if (currentCardPos >= 3) {
-	        currentCardPos = 2;
-	    };
-	    appData.selectedBoard.cards[cardEl.getAttribute('data-ar-pos')].column = currentCardPos;
-	    selectedBoardToView(appData);
+	    //let cardColumn = appData.selectedBoard.cards[cardEl.getAttribute('data-ar-pos')].column;
+	    var cardColumn = appData.selectedCard.column;
+	    var columnArray = appData.selectedBoard.columns;
+
+	    if (cardColumn < columnArray.length - 1) {
+	        cardColumn++;
+	    } else if (cardColumn < 0) {
+	        cardColumn = 0;
+	    } else if (cardColumn >= columnArray.length - 1) {
+	        cardColumn = columnArray.length - 1;
+	    }
+
+	    appData.selectedBoard.cards[cardEl.getAttribute('data-ar-pos')].column = cardColumn;
+	    addMovedCardToView(cardEl, cardColumn);
+	}
+
+	function addMovedCardToView(selectedCardEl, cardColumn) {
+	    var boardColumnsEl = document.getElementById('boardColumns');
+	    var ulsEl = boardColumns.querySelectorAll('ul');
+	    console.log('ulsEl', ulsEl);
+
+	    for (var j = 0, len2 = ulsEl.length; j < len2; j++) {
+	        if ('ul' + cardColumn === ulsEl[j].id) {
+	            ulsEl[j].appendChild(selectedCardEl);
+	            len2 = ulsEl.length;
+	        }
+	    }
 	}
 
 	/*

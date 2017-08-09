@@ -123,31 +123,7 @@ function setListeners(appData) {
         appData.selectedBoard.cards);
     })
 
-    //All Board Listeners
-    // document.getElementById('boardHeader').addEventListener('click', function(event) {
-    //     event.preventDefault;
-    //
-    //     //DeleteBoard
-    //
-    //     //AddColumn
-    //
-    //     //Remove Column (if one remaining, do not delete)
-    // })
-
-    //All Card action Listeners
-    // document.getElementById('cardButtons').addEventListener('click', function(event) {
-    //     event.preventDefault;
-    //
-    //     //Card forward
-    //
-    //     //Card Backward
-    //
-    //     //Card Delete
-    //
-    // })
-
     //Select/Edit Card, Select/Edit Column
-
     document.getElementById('selectedBoardEl').addEventListener('click', function(event) {
 
         let targ = event.target;
@@ -156,13 +132,11 @@ function setListeners(appData) {
 
             switch(targ.getAttribute('data-el-type')) {
                 case 'cardEl' :
+                    debugger;
+                    //passing in wrong value cardRank value
+                    //data-ar-pos is for card rank in array to make changes to card
                     selectCardInModel(targ.getAttribute('data-ar-pos'), targ, appData);
                     break;
-                // case 'cardName' :
-                //     selectCardInModel(targ.parentElement.getAttribute('data-ar-pos'),
-                //     targ.parentElement,
-                //     appData);
-                //     break;
                 case 'columnEl' :
                     debugger;
                     selectColumnInModel(targ.getAttribute('data-ar-pos'), targ, appData);
@@ -171,18 +145,15 @@ function setListeners(appData) {
         }
     });
 
-    // document.getElementById('selectedBoardEl').addEventListener('click', function(event) {
-    //     let targ = event.target;
-    //
+    document.getElementById('cardForwardBtn').addEventListener('click', function(event) {
+        event.preventDefault();
+        console.log('forward clicked!');
+        debugger;
 
-    // });
-    //
-    // document.getElementById('cardForwardBtn').addEventListener('click', function(event) {
-    //     event.preventDefault();
-    //     console.log('forward clicked!');
-    //     moveCardForward(appData.selectedCardEl, appData);
-    // });
-    //
+
+        moveCardForward(appData.selectedCardEl, appData);
+    });
+
     // document.getElementById('cardBackwardBtn').addEventListener('click', function(event) {
     //     event.preventDefault();
     //     console.log('Backward clicked!');
@@ -198,9 +169,9 @@ function getBoards() {
             name: 'Agenda',
             cards:[
                 {name: '1 Clean room.', rank: 0, column: 0, isComplete: false, isDeleted: false},
-                {name: '2 Clean room.', rank: 0, column: 1, isComplete: false, isDeleted: false},
-                {name: '3 Clean room.', rank: 0, column: 2, isComplete: false, isDeleted: false},
-                {name: '4 Clean room.', rank: 0, column: 0, isComplete: false, isDeleted: false}
+                {name: '2 Clean room.', rank: 1, column: 1, isComplete: false, isDeleted: false},
+                {name: '3 Clean room.', rank: 2, column: 2, isComplete: false, isDeleted: false},
+                {name: '4 Clean room.', rank: 3, column: 0, isComplete: false, isDeleted: false}
             ],
             isDeleted: false,
             columns: [
@@ -214,8 +185,8 @@ function getBoards() {
             name: 'List of Things',
             cards:[
                 {name: 'Do other things.', column: 0, rank: 0, isComplete: false, isDeleted: false},
-                {name: 'In progresssss.', column: 1, rank: 0, isComplete: false, isDeleted: false},
-                {name: 'Done!', column: 2, rank: 0, isComplete: true, isDeleted: false}
+                {name: 'In progresssss.', column: 1, rank: 1, isComplete: false, isDeleted: false},
+                {name: 'Done!', column: 2, rank: 2, isComplete: true, isDeleted: false}
             ],
             isDeleted: false,
             columns: [
@@ -431,7 +402,8 @@ to determine which values match each other from the columnPosition to the card's
 column.
 */
 function updateSelectedBoardColumnsCardsView(board) {
-
+    debugger;
+    //Find card ranks.
     let cardsToAddToView = [];
 
     //get uls of columns added to board.
@@ -455,7 +427,7 @@ function updateSelectedBoardColumnsCardsView(board) {
             if (cardsToAddToView[i].isDeleted === false) {
                 for (var j = 0, len2 = ulsEl.length; j < len2; j++) {
                     if (('ul' + cardsToAddToView[i].column) === ulsEl[j].id) {
-                        ulsEl[j].appendChild(cardToCardEl(cardsToAddToView[i], i));
+                        ulsEl[j].appendChild(cardToCardEl(cardsToAddToView[i], cardsToAddToView[i].rank));
                         len2=ulsEl.length;
                     }
                 }
@@ -695,19 +667,35 @@ Actions:
 */
 function moveCardForward(cardEl, appData) {
 
-    var currentCardPos = appData.selectedBoard.cards[cardEl.getAttribute('data-ar-pos')].column;
-    //hard coding column count in if... for now...
-    if (currentCardPos <= 1) {
-        currentCardPos += 1;
-    } else if (currentCardPos < 0) {
-        currentCardPos = 0
-    } else if (currentCardPos >= 3) {
-        currentCardPos = 2;
-    };
-    appData.selectedBoard.cards[cardEl.getAttribute('data-ar-pos')].column = currentCardPos;
-    selectedBoardToView(appData)
+    //let cardColumn = appData.selectedBoard.cards[cardEl.getAttribute('data-ar-pos')].column;
+    let cardColumn = appData.selectedCard.column;
+    let columnArray = appData.selectedBoard.columns;
+
+    if (cardColumn < columnArray.length - 1) {
+        cardColumn ++;
+    } else if (cardColumn < 0) {
+        cardColumn = 0;
+    } else if (cardColumn >= columnArray.length - 1) {
+        cardColumn = columnArray.length - 1;
+    }
+
+    appData.selectedBoard.cards[cardEl.getAttribute('data-ar-pos')].column = cardColumn;
+    addMovedCardToView(cardEl, cardColumn);
 }
 
+function addMovedCardToView(selectedCardEl, cardColumn) {
+    var boardColumnsEl = document.getElementById('boardColumns');
+    let ulsEl = boardColumns.querySelectorAll('ul');
+    console.log('ulsEl', ulsEl);
+
+    for (let j = 0, len2 = ulsEl.length; j < len2; j++) {
+        if (('ul' + cardColumn) === ulsEl[j].id) {
+            ulsEl[j].appendChild(selectedCardEl);
+            len2=ulsEl.length;
+        }
+    }
+
+}
 
 /*
 Purpose: To move a card backwards a column
