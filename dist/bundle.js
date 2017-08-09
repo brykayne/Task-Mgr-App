@@ -128,7 +128,7 @@
 
 	    document.getElementById('addColumnBtn').addEventListener('click', function (event) {
 	        event.preventDefault();
-	        debugger;
+
 	        var targetEl = event.target;
 	        var boardName = targetEl.parentElement.firstElementChild.innerText;
 
@@ -141,12 +141,44 @@
 
 	    document.getElementById('removeColumnBtn').addEventListener('click', function (event) {
 	        event.preventDefault();
-
+	        debugger;
 	        var boardName = event.target.parentElement.firstElementChild.innerText;
 	        var board = appData.boards[boardName];
+	        var columns = appData.boards[boardName].columns;
 
 	        var selectedColumn = appData.selectedColumn;
 	        var selectedColumnEl = appData.selectedColumnEl;
+	        var column = selectedColumn.columnPosition;
+
+	        if (Object.keys(columns).length > 1) {
+	            //Remove column from appData
+	            board.columns[column].isDeleted = true;
+	            //Update cards on that column to column - 1
+	            var cards = board.cards;
+	            //if card.column = column, subtract one from card.column
+	            console.log('cards before', cards);
+	            cards.forEach(function (card, i) {
+	                if (card.column === column && card.column > 0) {
+	                    card.column -= 1;
+	                } else if (card.column === column && card.column <= 0) {
+	                    card.column = 0;
+	                }
+	            });
+	            console.log('cards after', cards);
+	            updateSelectedBoardColumnsCardsView(board);
+	            //Add fadeout-el class
+	            //Move all of this to event listener
+	            addClass(appData.selectedColumnEl, 'fadeout-el');
+	            window.setTimeout(function () {
+	                appData.selectedColumnEl.remove();
+	                var myColumnEl = document.getElementById('boardColumns').firstElementChild;
+	                appData.selectedColumnEl = null;
+	                appData.selectedColumn = null;
+	            });
+	        } else {
+	            alert("You only have one column left! Do not delete it!");
+	        }
+	        //removeColumnFromBoardInModel(selectedColumn.columnPosition, columns, board);
 	    });
 
 	    document.getElementById('cardDeleteBtn').addEventListener('click', function (event) {
@@ -158,7 +190,6 @@
 	        var selectedCard = appData.selectedCard;
 	        var selectedCardEl = appData.selectedCardEl;
 
-	        debugger;
 	        deleteCard(selectedCardEl.getAttribute('data-ar-pos'), selectedCardEl, appData.selectedBoard.cards);
 	    });
 
@@ -171,13 +202,13 @@
 
 	            switch (targ.getAttribute('data-el-type')) {
 	                case 'cardEl':
-	                    debugger;
+
 	                    //passing in wrong value cardRank value
 	                    //data-ar-pos is for card rank in array to make changes to card
 	                    selectCardInModel(targ.getAttribute('data-ar-pos'), targ, appData);
 	                    break;
 	                case 'columnEl':
-	                    debugger;
+
 	                    selectColumnInModel(targ.getAttribute('data-ar-pos'), targ, appData);
 	                    break;
 	            }
@@ -187,16 +218,15 @@
 	    document.getElementById('cardForwardBtn').addEventListener('click', function (event) {
 	        event.preventDefault();
 	        console.log('forward clicked!');
-	        debugger;
-
 	        moveCardForward(appData.selectedCardEl, appData);
 	    });
 
-	    // document.getElementById('cardBackwardBtn').addEventListener('click', function(event) {
-	    //     event.preventDefault();
-	    //     console.log('Backward clicked!');
-	    //     moveCardBackward(appData.selectedCardEl, appData)
-	    // });
+	    document.getElementById('cardBackwardBtn').addEventListener('click', function (event) {
+	        event.preventDefault();
+	        console.log('Backward clicked!');
+	        debugger;
+	        moveCardBackward(appData.selectedCardEl, appData);
+	    });
 	};
 
 	function getBoards() {
@@ -417,7 +447,7 @@
 	column.
 	*/
 	function updateSelectedBoardColumnsCardsView(board) {
-	    debugger;
+
 	    //Find card ranks.
 	    var cardsToAddToView = [];
 
@@ -429,7 +459,9 @@
 
 	    for (var i = 0, len = board.columns.length; i < len; i++) {
 	        for (var j = 0, len2 = board.cards.length; j < len2; j++) {
-	            if (board.columns[i].columnPosition === board.cards[j].column) {
+	            if (board.columns[i].isDeleted === true) {
+	                continue;
+	            } else if (board.columns[i].columnPosition === board.cards[j].column) {
 	                cardsToAddToView.push(board.cards[j]);
 	                len2 = board.cards.length;
 	            }
@@ -518,6 +550,12 @@
 	function addColumnToBoardInModel(column, boards, board) {
 	    boards[board.name].columns.push(column);
 	    return column;
+	}
+	//columnPosition = number
+	//columns = array of board columns
+	//board = board column is on
+	function removeColumnFromBoardInModel(column, columns, board) {
+	    debugger;
 	}
 
 	/*
@@ -698,19 +736,6 @@
 	    addMovedCardToView(cardEl, cardColumn);
 	}
 
-	function addMovedCardToView(selectedCardEl, cardColumn) {
-	    var boardColumnsEl = document.getElementById('boardColumns');
-	    var ulsEl = boardColumns.querySelectorAll('ul');
-	    console.log('ulsEl', ulsEl);
-
-	    for (var j = 0, len2 = ulsEl.length; j < len2; j++) {
-	        if ('ul' + cardColumn === ulsEl[j].id) {
-	            ulsEl[j].appendChild(selectedCardEl);
-	            len2 = ulsEl.length;
-	        }
-	    }
-	}
-
 	/*
 	Purpose: To move a card backwards a column
 	Consumes: Card html element and appData
@@ -722,15 +747,32 @@
 	-- Updates board view
 	*/
 	function moveCardBackward(cardEl, appData) {
-	    var currentCardPos = appData.selectedBoard.cards[cardEl.getAttribute('data-ar-pos')].column;
-	    //hard coding column count for now...
-	    if (currentCardPos > 0) {
-	        currentCardPos -= 1;
-	    } else if (currentCardPos <= 0) {
-	        currentCardPos = 0;
-	    };
-	    appData.selectedBoard.cards[cardEl.getAttribute('data-ar-pos')].column = currentCardPos;
-	    selectedBoardToView(appData);
+	    var cardColumn = appData.selectedCard.column;
+	    var columnArray = appData.selectedBoard.columns;
+
+	    if (cardColumn > 0) {
+	        cardColumn--;
+	    } else if (cardColumn <= 0) {
+	        cardColumn = 0;
+	    } else if (cardColumn >= columnArray.length) {
+	        cardColumn = columnArray.length - 1;
+	    }
+
+	    appData.selectedBoard.cards[cardEl.getAttribute('data-ar-pos')].column = cardColumn;
+	    addMovedCardToView(cardEl, cardColumn);
+	}
+
+	function addMovedCardToView(selectedCardEl, cardColumn) {
+	    var boardColumnsEl = document.getElementById('boardColumns');
+	    var ulsEl = boardColumns.querySelectorAll('ul');
+	    console.log('ulsEl', ulsEl);
+
+	    for (var j = 0, len2 = ulsEl.length; j < len2; j++) {
+	        if ('ul' + cardColumn === ulsEl[j].id) {
+	            ulsEl[j].appendChild(selectedCardEl);
+	            len2 = ulsEl.length;
+	        }
+	    }
 	}
 
 /***/ })
