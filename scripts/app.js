@@ -770,8 +770,6 @@ Actions:
 -- Updates board view
 */
 function moveCardForward(cardEl, appData) {
-    debugger;
-    let moveForward = true;
     //let cardColumn = appData.selectedBoard.cards[cardEl.getAttribute('data-ar-pos')].column;
     let cardColumn = appData.selectedCard.column;
     let card = appData.selectedCard;
@@ -787,11 +785,17 @@ function moveCardForward(cardEl, appData) {
     //model logic
     //Determine next column based off of current columns that aren't deleted
     let nextColumn = 0;
+    let currentColsEndPos = currentColumns.length - 1;
     for (let p = 0; p < currentColumns.length; p++) {
-        if (moveForward === true && currentColumns[p].columnPosition > cardColumn) {
+        if(cardColumn >= currentColsEndPos) {
+            nextColumn = currentColsEndPos;
+            break;
+        }
+        if (currentColumns[p].columnPosition > cardColumn) {
             nextColumn = currentColumns[p].columnPosition;
             break;
         }
+        //IF CARDCOLUMN HITS CURRENTCOLUMNS.LENGTH, DO NOTHING
 
     }
 
@@ -812,7 +816,7 @@ function moveCardForward(cardEl, appData) {
     // }
 
 
-    debugger;
+
 
     // for (let k = 0, len2 = columns.length; k < len2; k++) {
     //     if (columns[k].columnIsDeleted === false) {
@@ -865,18 +869,42 @@ Actions:
 */
 function moveCardBackward(cardEl, appData) {
     let cardColumn = appData.selectedCard.column;
-    let columnArray = appData.selectedBoard.columns;
+    let card = appData.selectedCard;
+    let columns = appData.selectedBoard.columns;
 
-    if (cardColumn > 0) {
-        cardColumn --;
-    } else if (cardColumn <= 0) {
-        cardColumn = 0;
-    } else if (cardColumn >= columnArray.length) {
-        cardColumn = columnArray.length-1;
+    //currentColumns - model -- REPEATABLE CODE
+    let currentColumns = [];
+    columns.forEach((column, i) => {
+        if(column.columnIsDeleted === false) {
+            currentColumns.push(column);
+        }
+    });
+    //model logic
+    //Determine previous column based off of current columns that aren't deleted
+    let nextColumn = currentColumns.length-1;
+    for (let i = nextColumn; i >= -1; i--) {
+        if (i === -1) {
+            nextColumn = 0;
+            break;
+        }
+        if (currentColumns[i].columnPosition < cardColumn) {
+            nextColumn = currentColumns[i].columnPosition;
+
+            break;
+        }
     }
+    //
+    //
+    // if (cardColumn > 0) {
+    //     cardColumn --;
+    // } else if (cardColumn <= 0) {
+    //     cardColumn = 0;
+    // } else if (cardColumn >= columnArray.length) {
+    //     cardColumn = columnArray.length-1;
+    // }
 
-    appData.selectedBoard.cards[cardEl.getAttribute('data-ar-pos')].column = cardColumn;
-    addMovedCardToView(cardEl, cardColumn);
+    appData.selectedBoard.cards[cardEl.getAttribute('data-ar-pos')].column = nextColumn;
+    addMovedCardToView(cardEl, nextColumn);
 }
 
 function addMovedCardToView(selectedCardEl, cardColumn) {
