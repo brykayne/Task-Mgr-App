@@ -176,7 +176,12 @@
 	            console.log('cards before', cards);
 	            //Updates Model here:
 	            for (var i = 0; i < cards.length; i++) {
+	                //column = column Number;
+	                //Loop through card columns and see if they're equal to removed column.
 	                if (cards[i].column === column && cards[i].column >= 0) {
+	                    //if card's column is equal to a removed column,
+	                    //find a column that's not deleted and set the card's column
+	                    //equal to that column's position
 	                    var z = columns.length;
 	                    while (z--) {
 	                        if (columns[z].columnIsDeleted === false) {
@@ -196,38 +201,6 @@
 	                }
 	            }
 
-	            // cards.forEach((card, i) => {
-	            //     if (card.column === column && card.column > 0) {
-	            //card.column -= 1;
-	            //find column where column is not deleted
-	            //set card.column = to that column
-	            // let z = columns.length;
-	            // while(z--) {
-	            //     if(columns[z].columnIsDeleted === false) {
-	            //         card.column = columns[z].columnPosition;
-	            //     }
-	            // }
-
-	            //updatedCards.push(card);
-	            // cardElsArray.forEach((cardEl, i) => {
-	            //     let cardElPos = Number(cardEl.getAttribute('data-ar-pos'));
-	            //     if (cardElPos === card.rank) {
-	            //         updatedCardsEl.push(cardEl);
-	            //     };
-	            // });
-	            // console.log(updatedCardsEl);
-
-	            //cardElsArray[i].getAttribute('data-ar-pos')
-
-	            //NEED TO PUSH CARS EL
-	            // var dataArPos = cardElsArray[i].getAttribute('data-ar-pos')
-	            //
-	            // let updatedCardRank = card.rank;
-	            // updatedCardsEl.push()
-	            //     } else if (card.column === column && card.column <= 0) {
-	            //         card.column = 0;
-	            //     }
-	            // });
 	            console.log('cards after', cards);
 	            console.log('updatedCards', updatedCards);
 	            console.log('updatedCardsEl', updatedCardsEl);
@@ -802,29 +775,85 @@
 	-- Updates board view
 	*/
 	function moveCardForward(cardEl, appData) {
-
+	    debugger;
+	    var moveForward = true;
 	    //let cardColumn = appData.selectedBoard.cards[cardEl.getAttribute('data-ar-pos')].column;
 	    var cardColumn = appData.selectedCard.column;
-
-	    var currentColumnArray = [];
-	    var columnArray = appData.selectedBoard.columns;
-	    columnArray.forEach(function (column, i) {
+	    var card = appData.selectedCard;
+	    var columns = appData.selectedBoard.columns;
+	    //currentColumns - model
+	    var currentColumns = [];
+	    columns.forEach(function (column, i) {
 	        if (column.columnIsDeleted === false) {
-	            currentColumnArray.push(column);
+	            currentColumns.push(column);
 	        }
 	    });
-	    //
 
-	    if (cardColumn < columnArray.length - 1) {
-	        cardColumn++;
-	    } else if (cardColumn < 0) {
-	        cardColumn = 0;
-	    } else if (cardColumn >= columnArray.length - 1) {
-	        cardColumn = columnArray.length - 1;
+	    //model logic
+	    //Determine next column based off of current columns that aren't deleted
+	    var nextColumn = 0;
+	    for (var p = 0; p < currentColumns.length; p++) {
+	        if (moveForward === true && currentColumns[p].columnPosition > cardColumn) {
+	            nextColumn = currentColumns[p].columnPosition;
+	            break;
+	        }
 	    }
 
-	    appData.selectedBoard.cards[cardEl.getAttribute('data-ar-pos')].column = cardColumn;
-	    addMovedCardToView(cardEl, cardColumn);
+	    //model change
+	    //Set the card's new column value
+	    //card.column = nextColumn;
+
+
+	    //currentUls - view
+	    // var boardColumnsEl = document.getElementById('boardColumns');
+	    // let currentUlsElArray = boardColumnsEl.querySelectorAll('ul');
+	    // let currentUlsElArray = [];
+	    // if (moveForward === true) {
+	    //     for (i = 0; i<currentColumns.length; i++) {
+	    //         if (card.column )
+	    //     }
+	    //     moveForward === false;
+	    // }
+
+
+	    debugger;
+
+	    // for (let k = 0, len2 = columns.length; k < len2; k++) {
+	    //     if (columns[k].columnIsDeleted === false) {
+	    //         for (let j = 0, len = ulsElArray.length; j < len; j++) {
+	    //
+	    //             let ulId = ulsElArray[j].getAttribute('id');
+	    //             if (ulId = ("ul" + columns[k].columnPosition)) {
+	    //                 currentUlsElArray.push(ulsElArray[j]);
+	    //                 len2=columns.length;
+	    //             }
+	    //         }
+	    //     }
+	    // }
+
+	    console.log('currentColumns, ' + currentColumns);
+	    //console.log('currentUlsElArray, ' + currentUlsElArray);
+	    /*
+	    1. Find columns that are not deleted (data, els)
+	    2. Find card's current column
+	    3. If moving forward, find first column that's greater than
+	    card's current column that's not deleted and set card's column
+	    to that value.
+	    4. If moving backward, find first column that's less than
+	    card's current column that's not deleted and set card's column
+	    to that value.
+	     */
+
+	    // if (cardColumn < columnArray.length - 1) {
+	    //     cardColumn ++;
+	    // } else if (cardColumn < 0) {
+	    //     cardColumn = 0;
+	    // } else if (cardColumn >= columnArray.length - 1) {
+	    //     cardColumn = columnArray.length - 1;
+	    // }
+
+	    appData.selectedBoard.cards[cardEl.getAttribute('data-ar-pos')].column = nextColumn;
+	    addMovedCardToView(cardEl, nextColumn);
 	}
 
 	/*

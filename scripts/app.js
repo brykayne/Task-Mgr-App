@@ -136,7 +136,12 @@ function setListeners(appData) {
             console.log('cards before', cards);
             //Updates Model here:
             for (let i=0; i<cards.length; i++) {
+                //column = column Number;
+                //Loop through card columns and see if they're equal to removed column.
                 if(cards[i].column === column && cards[i].column >= 0) {
+                    //if card's column is equal to a removed column,
+                    //find a column that's not deleted and set the card's column
+                    //equal to that column's position
                     let z = columns.length;
                     while(z--) {
                         if(columns[z].columnIsDeleted === false) {
@@ -765,29 +770,87 @@ Actions:
 -- Updates board view
 */
 function moveCardForward(cardEl, appData) {
-
+    debugger;
+    let moveForward = true;
     //let cardColumn = appData.selectedBoard.cards[cardEl.getAttribute('data-ar-pos')].column;
     let cardColumn = appData.selectedCard.column;
-
-    let currentColumnArray = [];
-    let columnArray = appData.selectedBoard.columns;
-    columnArray.forEach((column, i) => {
+    let card = appData.selectedCard;
+    let columns = appData.selectedBoard.columns;
+    //currentColumns - model
+    let currentColumns = [];
+    columns.forEach((column, i) => {
         if(column.columnIsDeleted === false) {
-            currentColumnArray.push(column);
+            currentColumns.push(column);
         }
     });
-    //
 
-    if (cardColumn < columnArray.length - 1) {
-        cardColumn ++;
-    } else if (cardColumn < 0) {
-        cardColumn = 0;
-    } else if (cardColumn >= columnArray.length - 1) {
-        cardColumn = columnArray.length - 1;
+    //model logic
+    //Determine next column based off of current columns that aren't deleted
+    let nextColumn = 0;
+    for (let p = 0; p < currentColumns.length; p++) {
+        if (moveForward === true && currentColumns[p].columnPosition > cardColumn) {
+            nextColumn = currentColumns[p].columnPosition;
+            break;
+        }
+
     }
 
-    appData.selectedBoard.cards[cardEl.getAttribute('data-ar-pos')].column = cardColumn;
-    addMovedCardToView(cardEl, cardColumn);
+    //model change
+    //Set the card's new column value
+    //card.column = nextColumn;
+
+
+    //currentUls - view
+    // var boardColumnsEl = document.getElementById('boardColumns');
+    // let currentUlsElArray = boardColumnsEl.querySelectorAll('ul');
+    // let currentUlsElArray = [];
+    // if (moveForward === true) {
+    //     for (i = 0; i<currentColumns.length; i++) {
+    //         if (card.column )
+    //     }
+    //     moveForward === false;
+    // }
+
+
+    debugger;
+
+    // for (let k = 0, len2 = columns.length; k < len2; k++) {
+    //     if (columns[k].columnIsDeleted === false) {
+    //         for (let j = 0, len = ulsElArray.length; j < len; j++) {
+    //
+    //             let ulId = ulsElArray[j].getAttribute('id');
+    //             if (ulId = ("ul" + columns[k].columnPosition)) {
+    //                 currentUlsElArray.push(ulsElArray[j]);
+    //                 len2=columns.length;
+    //             }
+    //         }
+    //     }
+    // }
+
+    console.log('currentColumns, ' + currentColumns);
+    //console.log('currentUlsElArray, ' + currentUlsElArray);
+    /*
+    1. Find columns that are not deleted (data, els)
+    2. Find card's current column
+    3. If moving forward, find first column that's greater than
+    card's current column that's not deleted and set card's column
+    to that value.
+    4. If moving backward, find first column that's less than
+    card's current column that's not deleted and set card's column
+    to that value.
+
+    */
+
+    // if (cardColumn < columnArray.length - 1) {
+    //     cardColumn ++;
+    // } else if (cardColumn < 0) {
+    //     cardColumn = 0;
+    // } else if (cardColumn >= columnArray.length - 1) {
+    //     cardColumn = columnArray.length - 1;
+    // }
+
+    appData.selectedBoard.cards[cardEl.getAttribute('data-ar-pos')].column = nextColumn;
+    addMovedCardToView(cardEl, nextColumn);
 }
 
 /*
