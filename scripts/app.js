@@ -56,7 +56,6 @@ function setListeners(appData) {
             createCard(event.target.cardInput.value, cardRank),
             appData.selectedBoard.cards);
         let cardColumn = card.column;
-        //might want to change cardPos to column number and cardPos in column
         let cardEl = addCardToView(card, cardRank, cardColumn, appData.selectedBoard.columns);
 
         event.target.reset();
@@ -88,125 +87,43 @@ function setListeners(appData) {
 
     document.getElementById('addColumnBtn').addEventListener('click', function(event) {
         event.preventDefault();
-
-        let targetEl = event.target;
-        let boardName = targetEl.parentElement.firstElementChild.innerText;
-
-        let board = appData.boards[boardName];
-        let columnPos = board.columns.length;
-
-        let column = addColumnToBoardInModel(createColumn('Rename Me', columnPos), appData.boards, board);
+        let columnPos = appData.selectedBoard.columns.length;
+        let column = addColumnToBoardInModel(createColumn('Rename Me', columnPos),
+          appData.boards, appData.selectedBoard);
         addColumnToBoardView(column, columnPos);
     });
 
     document.getElementById('removeColumnBtn').addEventListener('click', function(event) {
         event.preventDefault();
-
-        let boardName = event.target.parentElement.firstElementChild.innerText;
-        let board = appData.boards[boardName];
-        let columns = appData.boards[boardName].columns;
-
-        let selectedColumn = appData.selectedColumn;
+        let columns = appData.selectedBoard.columns;
+        let cards = appData.selectedBoard.cards;
         let selectedColumnEl = appData.selectedColumnEl;
-        let column = selectedColumn.columnPosition;
+        let selectedColumnPos = appData.selectedColumn.columnPosition;
+        let currentColumns = getCurrentColumns(columns);
 
-
-        let x = columns.length;
-        let remainingColumns = [];
-        while(x--) {
-            if(columns[x].columnIsDeleted === false) {
-                remainingColumns.push(columns[x].columnPosition);
-            }
-        }
-        //1. Mark Column as 'columnIsDeleted'
-        //2. if cards where column = column that is deleted, subtract 1
-        //3. VIEW: Move updatedCards to Columns
-        if(Object.keys(remainingColumns).length > 1) {
-            //Remove column from appData
-            board.columns[column].columnIsDeleted = true;
-
-
-
-            //Update cards on that column to column - 1
-            let cards = board.cards;
-            let updatedCards = [];
-            let updatedCardsEl = [];
-            let cardElsArray = document.querySelectorAll('.card-el');
-            //if card.column = column, subtract one from card.column
-            console.log('cards before', cards);
-            //Updates Model here:
-            for (let i=0; i<cards.length; i++) {
-                //column = column Number;
-                //Loop through card columns and see if they're equal to removed column.
-                if(cards[i].column === column && cards[i].column >= 0) {
-                    //if card's column is equal to a removed column,
-                    //find a column that's not deleted and set the card's column
-                    //equal to that column's position
-                    let z = columns.length;
-                    while(z--) {
-                        if(columns[z].columnIsDeleted === false) {
-                            cards[i].column = columns[z].columnPosition;
-                        }
-                    }
-                    updatedCards.push(cards[i]);
-
-                    for (let j = 0; j<cardElsArray.length; j++) {
-                        let cardElPos = Number(cardElsArray[j].getAttribute('data-ar-pos'));
-                        if (cardElPos === cards[i].rank) {
-                            updatedCardsEl.push(cardElsArray[j]);
-                        };
-                    };
-
-                } else if (cards[i].column === column && cards[i].column <= 0) {
-                    cards[i].column = 0;
-                }
-            }
-
-            console.log('cards after', cards);
-            console.log('updatedCards', updatedCards);
-            console.log('updatedCardsEl', updatedCardsEl);
-
-
-            addChangedColumnCardsToView(updatedCards, updatedCardsEl);
-            //updateSelectedBoardColumnsCardsView(board, selectedColumnEl);
-            //Add fadeout-el class
-            //Move all of this to event listener
-            updatedCardsEl.forEach((cardEl, i) => {
-                addClass(cardEl, 'fadeout-el');
-            });
+        if(Object.keys(currentColumns).length > 1) {
+            removeColumnFromBoardInModel(selectedColumnPos, columns);
+            let newColumnPos = modifyRemovedColumnCardsInModel(cards, selectedColumnPos,
+              getCurrentColumns(columns));
+            let ulId = "ul" + selectedColumnEl.getAttribute('data-ar-pos');
+            let updatedCardsElArr = Array.from(appData.selectedColumnEl.children[ulId].children);
+            updateChangedColumnCardsToView(updatedCardsElArr, newColumnPos);
             addClass(appData.selectedColumnEl, 'fadeout-el');
             window.setTimeout(function() {
-                //columnPos, columnEl, appData
-                //board.columns.splice(column, 1);
-                //UPDATE COLUMNPOS OF ANY COLUMNS AFTER REMOVED
                 appData.selectedColumnEl.remove();
-
-
                 let myColumnEl = document.getElementById('boardColumns').firstElementChild;
-                updateSelectedColumnInModel(Object.keys(appData.selectedBoard.columns)[0], myColumnEl, appData);
-
+                updateSelectedColumnInModel(newColumnPos, myColumnEl, appData);
             })
         } else {
             alert("You only have one column left! Do not delete it!")
         }
-        //removeColumnFromBoardInModel(selectedColumn.columnPosition, columns, board);
     })
-
-
 
     document.getElementById('cardDeleteBtn').addEventListener('click', function(event) {
         event.preventDefault();
-
-        let boardName = event.target.parentElement.firstElementChild.innerText;
-        let board = appData.boards[boardName];
-
-        let selectedCard = appData.selectedCard;
-        let selectedCardEl = appData.selectedCardEl;
-
-
-        deleteCard(selectedCardEl.getAttribute('data-ar-pos'),
-        selectedCardEl,
-        appData.selectedBoard.cards);
+        deleteCard(appData.selectedCardEl.getAttribute('data-ar-pos'),
+            appData.selectedCardEl,
+            appData.selectedBoard.cards);
     })
 
     //Select/Edit Card, Select/Edit Column
@@ -218,13 +135,9 @@ function setListeners(appData) {
 
             switch(targ.getAttribute('data-el-type')) {
                 case 'cardEl' :
-
-                    //passing in wrong value cardRank value
-                    //data-ar-pos is for card rank in array to make changes to card
                     selectCardInModel(targ.getAttribute('data-ar-pos'), targ, appData);
                     break;
                 case 'columnEl' :
-
                     updateSelectedColumnInModel(targ.getAttribute('data-ar-pos'), targ, appData);
                     break;
             }
@@ -233,15 +146,20 @@ function setListeners(appData) {
 
     document.getElementById('cardForwardBtn').addEventListener('click', function(event) {
         event.preventDefault();
-        console.log('forward clicked!');
-        moveCardForward(appData.selectedCardEl, appData);
+        let direction = true;
+        let nextColumn = moveCardInModel(direction, appData.selectedCard,
+          getCurrentColumns(appData.selectedBoard.columns));
+        //moveCardForward(appData.selectedCardEl, appData);
+        updateChangedColumnCardsToView([appData.selectedCardEl], nextColumn);
     });
 
     document.getElementById('cardBackwardBtn').addEventListener('click', function(event) {
         event.preventDefault();
-        console.log('Backward clicked!');
-
-        moveCardBackward(appData.selectedCardEl, appData)
+        let direction = false;
+        let nextColumn = moveCardInModel(direction, appData.selectedCard,
+          getCurrentColumns(appData.selectedBoard.columns));
+        //moveCardBackward(appData.selectedCardEl, appData)
+        updateChangedColumnCardsToView([appData.selectedCardEl], nextColumn);
     });
 };
 
@@ -472,16 +390,11 @@ function updateSelectedBoardView(board) {
     updateSelectedBoardColumnsCardsView(board);
 }
 
-function addChangedColumnCardsToView(updatedCardsArr, updatedCardsElArr) {
-    //updatedCardsArr contains cards who's column was changed (data)
-    //updatedCardsElArr contains card html el's
-
-
-    updatedCardsArr.forEach((card, i) => {
-        let newCardEl = cardToCardEl(card, card.rank);
-        let columnUlId = 'ul' + card.column;
-        let columnEl = document.getElementById(columnUlId);
-        columnEl.appendChild(newCardEl);
+function updateChangedColumnCardsToView(updatedCardsElArr, newColumnPos) {
+    let newColumnEl = document.getElementById('ul' + newColumnPos);
+    updatedCardsElArr.forEach((cardEl, i) => {
+      addClass(cardEl, 'fade-in');
+      newColumnEl.appendChild(cardEl);
     });
 
 
@@ -612,8 +525,30 @@ function addColumnToBoardInModel(column, boards, board) {
 //columnPosition = number
 //columns = array of board columns
 //board = board column is on
-function removeColumnFromBoardInModel(column, columns, board) {
+function removeColumnFromBoardInModel(column, columns) {
+  columns[column].columnIsDeleted = true;
+}
 
+function modifyRemovedColumnCardsInModel(cards, column, currentColumns) {
+  let updatedCards = [];
+  let newColumnPos;
+  for (let i=0; i<cards.length; i++) {
+      if(cards[i].column === column && cards[i].column >= 0) {
+          let z = currentColumns.length - 1;
+          while(z >= 0) {
+              if(currentColumns[z].columnIsDeleted === false) {
+                  cards[i].column = currentColumns[z].columnPosition;
+                  newColumnPos = cards[i].column;
+              }
+              z--;
+          };
+          updatedCards.push(cards[i]);
+      } else if (cards[i].column === column && cards[i].column <= 0) {
+          cards[i].column = 0;
+      };
+      //If no cards are on the column??
+  };
+  return newColumnPos;
 }
 
 /*
@@ -631,11 +566,6 @@ function addColumnToBoardView(column, columnPosition) {
     window.setTimeout(function(){removeClass(columnEl, 'fade-in')}, 200);
     return columnEl;
 }
-
-/*
-COME BACK TO THIS POST CARD-REMAKE
-Purpose: update the selected column in the model and trigger view changes
-*/
 
 
 //////////////////////////////////////////////
@@ -759,128 +689,35 @@ function deleteCard(cardRank, cardEl, cards) {
     window.setTimeout(function(){cardEl.remove();},500);
 }
 
-/*
-Purpose: To move a card forward
-Consumes: Card html element and appData
-Produces: nothing
-Actions:
--- gets current card position (NEEDS FIXING)
--- Modifies card position based on columns (NEEDS FIXING)
--- Updates appData with card's new columnPosition (NEEDS FIXING)
--- Updates board view
-*/
-function moveCardForward(cardEl, appData) {
-    //let cardColumn = appData.selectedBoard.cards[cardEl.getAttribute('data-ar-pos')].column;
-    let cardColumn = appData.selectedCard.column;
-    let card = appData.selectedCard;
-    let columns = appData.selectedBoard.columns;
-    //currentColumns - model
-    let currentColumns = [];
-    columns.forEach((column, i) => {
-        if(column.columnIsDeleted === false) {
-            currentColumns.push(column);
-        }
-    });
 
-    //model logic
-    //Determine next column based off of current columns that aren't deleted
-    let nextColumn = 0;
-    let currentColsEndPos = currentColumns.length - 1;
+
+function moveCardInModel(direction, card, currentColumns) {
+  let cardColumn = card.column;
+  debugger;
+  //true = forward
+  if (direction === true) {
+    let nextColumn;
+    let currentColsEndPos = currentColumns.length;
     for (let p = 0; p < currentColumns.length; p++) {
-        if(cardColumn >= currentColsEndPos) {
-            nextColumn = currentColsEndPos;
+        if(cardColumn > currentColsEndPos) {
+            nextColumn = currentColumns[currentColsEndPos - 1].columnPosition;
             break;
         }
-        if (currentColumns[p].columnPosition > cardColumn) {
+        if(currentColumns[p].columnPosition > cardColumn) {
             nextColumn = currentColumns[p].columnPosition;
             break;
         }
-        //IF CARDCOLUMN HITS CURRENTCOLUMNS.LENGTH, DO NOTHING
 
-    }
-
-    //model change
-    //Set the card's new column value
-    //card.column = nextColumn;
-
-
-    //currentUls - view
-    // var boardColumnsEl = document.getElementById('boardColumns');
-    // let currentUlsElArray = boardColumnsEl.querySelectorAll('ul');
-    // let currentUlsElArray = [];
-    // if (moveForward === true) {
-    //     for (i = 0; i<currentColumns.length; i++) {
-    //         if (card.column )
-    //     }
-    //     moveForward === false;
-    // }
-
-
-
-
-    // for (let k = 0, len2 = columns.length; k < len2; k++) {
-    //     if (columns[k].columnIsDeleted === false) {
-    //         for (let j = 0, len = ulsElArray.length; j < len; j++) {
-    //
-    //             let ulId = ulsElArray[j].getAttribute('id');
-    //             if (ulId = ("ul" + columns[k].columnPosition)) {
-    //                 currentUlsElArray.push(ulsElArray[j]);
-    //                 len2=columns.length;
-    //             }
-    //         }
-    //     }
-    // }
-
-    console.log('currentColumns, ' + currentColumns);
-    //console.log('currentUlsElArray, ' + currentUlsElArray);
-    /*
-    1. Find columns that are not deleted (data, els)
-    2. Find card's current column
-    3. If moving forward, find first column that's greater than
-    card's current column that's not deleted and set card's column
-    to that value.
-    4. If moving backward, find first column that's less than
-    card's current column that's not deleted and set card's column
-    to that value.
-
-    */
-
-    // if (cardColumn < columnArray.length - 1) {
-    //     cardColumn ++;
-    // } else if (cardColumn < 0) {
-    //     cardColumn = 0;
-    // } else if (cardColumn >= columnArray.length - 1) {
-    //     cardColumn = columnArray.length - 1;
-    // }
-
-    appData.selectedBoard.cards[cardEl.getAttribute('data-ar-pos')].column = nextColumn;
-    addMovedCardToView(cardEl, nextColumn);
-}
-
-/*
-Purpose: To move a card backwards a column
-Consumes: Card html element and appData
-Produces: nothing
-Actions:
--- gets current card position (NEEDS FIXING)
--- Modifies card position based on columns (NEEDS FIXING)
--- Updates appData with card's new columnPosition (NEEDS FIXING)
--- Updates board view
-*/
-function moveCardBackward(cardEl, appData) {
-    let cardColumn = appData.selectedCard.column;
-    let card = appData.selectedCard;
-    let columns = appData.selectedBoard.columns;
-
-    //currentColumns - model -- REPEATABLE CODE
-    let currentColumns = [];
-    columns.forEach((column, i) => {
-        if(column.columnIsDeleted === false) {
-            currentColumns.push(column);
+        if((currentColumns[p].columnPosition === cardColumn) && (p === currentColsEndPos - 1)) {
+          nextColumn = currentColumns[p].columnPosition;
+          break;
         }
-    });
-    //model logic
-    //Determine previous column based off of current columns that aren't deleted
+    }
+    card.column = nextColumn;
+    return nextColumn;
+  }
+  //false = backwards
+  if (direction === false) {
     let nextColumn = currentColumns.length-1;
     for (let i = nextColumn; i >= -1; i--) {
         if (i === -1) {
@@ -889,34 +726,10 @@ function moveCardBackward(cardEl, appData) {
         }
         if (currentColumns[i].columnPosition < cardColumn) {
             nextColumn = currentColumns[i].columnPosition;
-
             break;
         }
     }
-    //
-    //
-    // if (cardColumn > 0) {
-    //     cardColumn --;
-    // } else if (cardColumn <= 0) {
-    //     cardColumn = 0;
-    // } else if (cardColumn >= columnArray.length) {
-    //     cardColumn = columnArray.length-1;
-    // }
-
-    appData.selectedBoard.cards[cardEl.getAttribute('data-ar-pos')].column = nextColumn;
-    addMovedCardToView(cardEl, nextColumn);
-}
-
-function addMovedCardToView(selectedCardEl, cardColumn) {
-    var boardColumnsEl = document.getElementById('boardColumns');
-    let ulsEl = boardColumns.querySelectorAll('ul');
-    console.log('ulsEl', ulsEl);
-
-    for (let j = 0, len2 = ulsEl.length; j < len2; j++) {
-        if (('ul' + cardColumn) === ulsEl[j].id) {
-            ulsEl[j].appendChild(selectedCardEl);
-            len2=ulsEl.length;
-        }
-    }
-
+    card.column = nextColumn
+    return nextColumn;
+  }
 }

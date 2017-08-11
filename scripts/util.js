@@ -26,6 +26,18 @@ function ascendingOrder(array) {
     });
 }
 
+//Pulls in columns that are not in an 'isDeleted' status
+function getCurrentColumns(columns) {
+  let x = 0;
+  let currentColumns = [];
+  while(x < columns.length) {
+      if(columns[x].columnIsDeleted === false) {
+          currentColumns.push(columns[x]);
+      }
+      x++;
+  }
+  return currentColumns;
+}
 
 //Purpose: to console log cards that are added to view for testing purposes.
 function logCardsToAddToView(cardsToAddToView) {
