@@ -40,6 +40,7 @@ function setListeners(appData) {
 
   document.getElementById('cardForm').addEventListener('submit', function(event) {
     event.preventDefault();
+    debugger;
 
     let cardRank = appData.selectedBoard.cards.length;
 
@@ -158,6 +159,57 @@ function setListeners(appData) {
         getCurrentColumns(appData.selectedBoard.columns));
         updateChangedColumnCardsToView([appData.selectedCardEl], nextColumn);
       }
+  });
+
+  document.getElementById('boardColumns').addEventListener('dblclick', function(event) {
+    event.preventDefault();
+    debugger;
+    let targ = event.target;
+    let columnTitleEl = document.getElementById(targ.id);
+
+    if(targ.hasAttribute('data-el-type')) {
+
+      switch(targ.getAttribute('data-el-type')) {
+        case 'columnTitle' :
+          toggleColumnTitleToEditView(targ.id);
+          debugger;
+          //let newColumnTitle = getColumnTitleInputValueFromView(targ.id);
+          //pdateColumnTitleInModel(newColumnTitle, targ.id, boardName, appData);
+        break;
+      }
+    }
+  });
+
+  document.getElementById('columnForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    debugger;
+    let targ = event.target;
+    let colId = targ.parentElement.id;
+    let newColumnTitle = event.target.columnTitleInput.value;
+
+    if(!appData.selectedBoard.hasOwnProperty(newColumnTitle)) {
+      updateColumnTitleInModel(newColumnTitle, colId, appData);
+    } else {
+      alert("You already have a column with that name, choose again.");
+    }
+
+  });
+
+  document.getElementById('boardsExpand').addEventListener('click', function(event) {
+    event.preventDefault();
+    let myBoardsEl = document.getElementById('myBoardsNav');
+    if (myBoardsEl.style.display === '') {
+      myBoardsEl.style.display = 'inline-block';
+      addClass(myBoardsEl, 'myboards-nav-mobile');
+    }
+    else if (myBoardsEl.style.display !== 'none') {
+      myBoardsEl.style.display = 'none';
+    }
+    else {
+      myBoardsEl.style.display = 'inline-block';
+      addClass(myBoardsEl, 'myboards-nav-mobile');
+    }
+
   });
 };
 
@@ -350,21 +402,28 @@ function updateSelectedBoardColumnsView(board) {
 //Purpose: To create a board column HTML element
 function columnToColumnEl(column, columnPosition) {
   let columnEl = document.createElement('div');
+  let formEl = document.createElement('form');
   let columnTitleEl = document.createElement('input');
   let columnCardListEl = document.createElement('ul');
   columnEl.setAttribute('data-el-type', 'columnEl');
   columnEl.setAttribute('id', 'column' + columnPosition);
   columnEl.setAttribute('data-ar-pos', columnPosition);
+  formEl.setAttribute('id', 'columnForm');
+  formEl.setAttribute('type', 'text');
+  formEl.setAttribute('autocomplete', 'off');
   columnTitleEl.setAttribute('data-el-type', 'columnTitle');
   columnTitleEl.setAttribute('id', 'title' + columnPosition);
   columnTitleEl.disabled = true;
+  columnTitleEl.name = 'columnTitleInput';
   columnCardListEl.setAttribute('data-el-type', 'columnCardListEl');
   columnCardListEl.setAttribute('id', 'ul' + columnPosition);
   addClass(columnCardListEl, 'column-el');
   addClass(columnTitleEl, 'column-header');
   addClass(columnEl, 'column');
   columnTitleEl.value = column.columnName;
-  columnEl.appendChild(columnTitleEl);
+
+  formEl.appendChild(columnTitleEl);
+  columnEl.appendChild(formEl);
   columnEl.appendChild(columnCardListEl);
   return columnEl;
 };
@@ -406,6 +465,26 @@ function updateSelectedColumnView(prevColumnEl, columnEl) {
   }
   addClass(columnEl, 'active-column');
 };
+
+function toggleColumnTitleToEditView(columnId) {
+  let columnTitleEl = document.getElementById(columnId);
+  if (columnTitleEl.disabled === true) {
+    columnTitleEl.disabled = false;
+  } else {
+    columnTitleEl.disabled = true;
+  }
+}
+
+function getColumnTitleInputValueFromView(columnId) {
+  return document.getElementById(columnId).value;
+}
+
+function updateColumnTitleInModel(newColumnTitle, columnTitleId, appData) {
+  let currentColumns = getCurrentColumns(appData.selectedBoard.columns);
+  for (let i = 0; i<currentColumns.length; i++) {
+    break;
+  }
+}
 
 //////////////////////////////////////////////
 ////////////////CARD FUNCTIONS////////////////

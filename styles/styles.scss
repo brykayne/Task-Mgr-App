@@ -39,6 +39,16 @@ main {
 // HEADER STYLES
 
 .header-title {
+  height: $HEADER_HEIGHT;
+  margin: 0px;
+  padding-left: 20px;
+  font-size: 24px;
+  display: inline-block;
+}
+
+.header {
+    height: $HEADER_HEIGHT;
+    margin: 0px;
     color: $gray-darker;
     font-size: 24px;
     margin: 0px;
@@ -48,10 +58,18 @@ main {
     font-weight: 100;
 }
 
-.header {
-    background-color: $light-blue;
-    height: $HEADER_HEIGHT;
-    margin: 0px;
+.boards-expand {
+  -webkit-appearance: none;
+  background:white;
+  text-transform:uppercase;
+  font-size:24px;
+  height: 50px;
+  padding: 10px 10px;
+  border:none;
+  outline:none;
+  transition: all 0.2s;
+  cursor:pointer;
+  float: right;
 }
 
 // MYBOARDS NAV
@@ -67,6 +85,15 @@ $MYBOARDS_WIDTH: 220px;
     height: 100%;
     float: left;
     overflow-y: auto;
+}
+
+.myboards-nav-mobile {
+  display: inline-block;
+  width: 100%;
+  overflow-y: scroll;
+  height: auto;
+  max-height: 30%;
+  padding-bottom: 15px;
 }
 
 .myboards-header {
@@ -409,7 +436,6 @@ $BOARD-WIDTH: calc(100% - #{$MYBOARDS_WIDTH});
     color: $gray-dark;
     background-color: $light-blue;
     list-style: none;
-    text-align: center;
     border-width: 2px;
     border-style: solid;
     border-color: $gray-darker;
@@ -424,6 +450,8 @@ $BOARD-WIDTH: calc(100% - #{$MYBOARDS_WIDTH});
 .pull-left {
     float: left;
 }
+
+
 
 @keyframes fadein {
     0% {opacity:0;}
@@ -452,17 +480,67 @@ $BOARD-WIDTH: calc(100% - #{$MYBOARDS_WIDTH});
         float: left;
         overflow-y: auto;
     }
+    .boards-expand {
+      display: none;
+    }
     .board {
         width: calc(100% - #{$MYBOARDS_WIDTH});
         float: right;
         height: 100%;
         overflow-y: auto;
+        overflow-x: auto;
     }
 }
 
 @media (max-width: 650px) {
     .myboards-nav {
+      display: none;
 
+    }
+    .boards-expand {
+      display:inline-block;
+      border: 1px darkgray solid;
+      padding: 10px;
+      height: auto;
+    }
+
+    .board-header {
+      height: auto;
+      float: none;
+    }
+
+    .board-delete-btn {
+      float: none;
+    }
+
+    .board-add-column-btn {
+      float: none;
+    }
+
+    .board-remove-column-btn {
+      float: none;
+    }
+
+    .board-tray {
+      height: auto;
+    }
+
+    .card-input {
+      box-sizing: content-box;
+      float: none;
+      margin-bottom: 15px;
+    }
+
+    .card-buttons {
+      float: none;
+      text-align: center;
+
+    }
+
+    .board-title {
+      line-height: 20px;
+      display: block;
+      padding: 5px;
     }
     .board {
         padding: 10px;
