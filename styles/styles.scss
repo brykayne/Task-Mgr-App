@@ -397,6 +397,11 @@ $BOARD-WIDTH: calc(100% - #{$MYBOARDS_WIDTH});
     padding: 0;
 }
 
+.edit-column-title {
+  background-color: rgba(0, 0, 0, .25);
+  color: $white;
+}
+
 .card-el {
     width: 100%;
     height: auto;
