@@ -164,35 +164,16 @@ function setListeners(appData) {
   document.getElementById('boardColumns').addEventListener('dblclick', function(event) {
     event.preventDefault();
     debugger;
-    let targ = event.target;
-    let columnTitleEl = document.getElementById(targ.id);
+    let targEl = event.target;
 
-    if(targ.hasAttribute('data-el-type')) {
+    if(targEl.hasAttribute('data-el-type')) {
 
-      switch(targ.getAttribute('data-el-type')) {
+      switch(targEl.getAttribute('data-el-type')) {
         case 'columnTitle' :
-          toggleColumnTitleToEditView(targ.id);
-          debugger;
-          //let newColumnTitle = getColumnTitleInputValueFromView(targ.id);
-          //pdateColumnTitleInModel(newColumnTitle, targ.id, boardName, appData);
+          handleColumnTitleUpdate(targEl.id, appData);
         break;
       }
     }
-  });
-
-  document.getElementById('columnForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-    debugger;
-    let targ = event.target;
-    let colId = targ.parentElement.id;
-    let newColumnTitle = event.target.columnTitleInput.value;
-
-    if(!appData.selectedBoard.hasOwnProperty(newColumnTitle)) {
-      updateColumnTitleInModel(newColumnTitle, colId, appData);
-    } else {
-      alert("You already have a column with that name, choose again.");
-    }
-
   });
 
   document.getElementById('boardsExpand').addEventListener('click', function(event) {
@@ -408,9 +389,10 @@ function columnToColumnEl(column, columnPosition) {
   columnEl.setAttribute('data-el-type', 'columnEl');
   columnEl.setAttribute('id', 'column' + columnPosition);
   columnEl.setAttribute('data-ar-pos', columnPosition);
-  formEl.setAttribute('id', 'columnForm');
+  formEl.setAttribute('id', 'columnForm' + columnPosition);
   formEl.setAttribute('type', 'text');
   formEl.setAttribute('autocomplete', 'off');
+  formEl.setAttribute('data-el-type', 'columnForm');
   columnTitleEl.setAttribute('data-el-type', 'columnTitle');
   columnTitleEl.setAttribute('id', 'title' + columnPosition);
   columnTitleEl.disabled = true;
@@ -466,24 +448,28 @@ function updateSelectedColumnView(prevColumnEl, columnEl) {
   addClass(columnEl, 'active-column');
 };
 
-function toggleColumnTitleToEditView(columnId) {
-  let columnTitleEl = document.getElementById(columnId);
+function handleColumnTitleUpdate(columnTitleId, appData) {
+  let columnTitleEl = document.getElementById(columnTitleId);
   if (columnTitleEl.disabled === true) {
     columnTitleEl.disabled = false;
+    columnTitleEl.addEventListener('blur', function(event) {
+      event.preventDefault();
+      console.log(event);
+      debugger;
+      let newColumnTitle = event.target.value;
+      let columnPos = event.target.parentElement.parentElement.getAttribute('data-ar-pos');
+      updateColumnTitleInModel(newColumnTitle, columnPos, appData);
+      handleColumnTitleUpdate(columnTitleId);
+    });
   } else {
     columnTitleEl.disabled = true;
   }
 }
 
-function getColumnTitleInputValueFromView(columnId) {
-  return document.getElementById(columnId).value;
-}
+function updateColumnTitleInModel(newColumnTitle, colPos, appData) {
+  appData.selectedBoard.columns[colPos].columnName = newColumnTitle;
+  return appData.selectedBoard.columns[colPos].name;
 
-function updateColumnTitleInModel(newColumnTitle, columnTitleId, appData) {
-  let currentColumns = getCurrentColumns(appData.selectedBoard.columns);
-  for (let i = 0; i<currentColumns.length; i++) {
-    break;
-  }
 }
 
 //////////////////////////////////////////////
