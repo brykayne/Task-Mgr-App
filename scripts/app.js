@@ -170,7 +170,12 @@ function setListeners(appData) {
 
       switch(targEl.getAttribute('data-el-type')) {
         case 'columnTitle' :
-          handleColumnTitleUpdate(targEl.id, appData);
+          toggleColumnTitleView(targEl.id);
+          debugger;
+          targEl.addEventListener('blur', handleBlurEventForInput, false);
+          targEl.appData = appData;
+          //targEl.removeEventListener('blur', handleBlurEventForInput);
+
         break;
       }
     }
@@ -383,7 +388,7 @@ function updateSelectedBoardColumnsView(board) {
 //Purpose: To create a board column HTML element
 function columnToColumnEl(column, columnPosition) {
   let columnEl = document.createElement('div');
-  //let formEl = document.createElement('form');
+  let formEl = document.createElement('form');
   let columnTitleEl = document.createElement('input');
   let columnCardListEl = document.createElement('ul');
   columnEl.setAttribute('data-el-type', 'columnEl');
@@ -399,6 +404,8 @@ function columnToColumnEl(column, columnPosition) {
   columnTitleEl.name = 'columnTitleInput';
   columnCardListEl.setAttribute('data-el-type', 'columnCardListEl');
   columnCardListEl.setAttribute('id', 'ul' + columnPosition);
+  //columnCardListEl.addEventListener('onchange', false);
+  //columnTitleEl.addEventListener('blur', handleBlurEventForInput);
   addClass(columnCardListEl, 'column-el');
   addClass(columnTitleEl, 'column-header');
   addClass(columnEl, 'column');
@@ -449,28 +456,29 @@ function updateSelectedColumnView(prevColumnEl, columnEl) {
   addClass(columnEl, 'active-column');
 };
 
-function handleColumnTitleUpdate(columnTitleId, appData) {
+function toggleColumnTitleView(columnTitleId) {
   let columnTitleEl = document.getElementById(columnTitleId);
-
+  debugger;
   if (columnTitleEl.disabled === true) {
     columnTitleEl.disabled = false;
     addClass(columnTitleEl, 'edit-column-title');
-
-    columnTitleEl.addEventListener('blur', function(event) {
-      event.preventDefault();
-      console.log(event);
-      let newColumnTitle = event.target.value;
-      let columnPos = event.target.parentElement.getAttribute('data-ar-pos');
-      updateColumnTitleInModel(newColumnTitle, columnPos, appData);
-      columnTitleEl.disabled = true;
-      removeClass(columnTitleEl, 'edit-column-title');
-      //debugger;
-      //event.target.removeEventListener(event.type, arguments.callee);
-      });
   } else {
     columnTitleEl.disabled = true;
     removeClass(columnTitleEl, 'edit-column-title');
   }
+}
+
+function handleBlurEventForInput(event) {
+  debugger;
+  console.log(event);
+  let appData = event.target.appData;
+  let newColumnTitle = event.target.value;
+  let columnPos = event.target.parentElement.getAttribute('data-ar-pos');
+  updateColumnTitleInModel(newColumnTitle, columnPos, appData);
+  debugger;
+  event.target.disabled = true;
+  removeClass(event.target, 'edit-column-title');
+  event.target.removeEventListener('blur', handleBlurEventForInput);
 }
 
 function updateColumnTitleInModel(newColumnTitle, colPos, appData) {
