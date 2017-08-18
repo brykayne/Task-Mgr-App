@@ -21,34 +21,58 @@ function main() {
   setListeners(appData);
 }
 
+function getBoards() {
+  if(typeof(Storage) !== 'undefined') {
+    let boards = getLocalStore('boards');
+    if(boards !== null && Object.keys(boards).length > 0) {
+      return boards;
+    }
+  }
+  let boards =
+  {
+    'Agenda':
+    {
+      name: 'Agenda',
+      cards:[
+        {name: 'Clean Room', rank: 0, column: 0, isComplete: false, isDeleted: false},
+        {name: 'Take a Shower', rank: 1, column: 1, isComplete: false, isDeleted: false},
+        {name: 'Haircut', rank: 2, column: 2, isComplete: false, isDeleted: false},
+        {name: 'Cook Dinner', rank: 3, column: 0, isComplete: false, isDeleted: false}
+      ],
+      isDeleted: false,
+      columns: [
+        {columnName: 'To Do', columnPosition: 0, columnIsDeleted: false},
+        {columnName: 'In Progress', columnPosition: 1, columnIsDeleted: false},
+        {columnName: 'Done', columnPosition: 2, columnIsDeleted: false}
+      ]
+    }
+  };
+
+  return boards;
+}
+
 function setListeners(appData) {
   document.getElementById('myBoardsForm').addEventListener('submit', function(event) {
     event.preventDefault();
     let boardName = event.target.myboardsInput.value;
     if(!appData.boards.hasOwnProperty(boardName)) {
-      let myBoard = addBoardToBoardsInModel(
-        createBoard(boardName),
-        appData.boards);
-        let myColumn = addColumnToBoardInModel(createColumn('To Do', 0), appData.boards, myBoard);
-        let myBoardEl = addBoardToMyBoardsListView(myBoard);
-        updateSelectedBoardInModel(myBoard.name, myBoardEl, appData);
-        event.target.reset();
+      handleNewBoard(boardName, appData.boards, appData);
+      event.target.reset();
       } else {
         alert('You already have a board with this name!');
       }
-  });
+    });
 
   document.getElementById('cardForm').addEventListener('submit', function(event) {
     event.preventDefault();
-    debugger;
-
     let cardRank = appData.selectedBoard.cards.length;
-
-    let card = addCardToBoardInModel(
-      createCard(event.target.cardInput.value, cardRank),
-      appData.selectedBoard.cards);
-      let cardColumn = card.column;
-      updateChangedColumnCardsToView([cardToCardEl(card, cardRank)], cardColumn);
+    let cardName = event.target.cardInput.value;
+    // let card = addCardToBoardInModel(
+    //   createCard(event.target.cardInput.value, cardRank),
+    //   appData.selectedBoard.cards);
+    //   let cardColumn = card.column;
+    //   updateChangedColumnCardsToView([cardToCardEl(card, cardRank)], cardColumn);
+    handleNewCard(cardName, cardRank, appData);
       event.target.reset();
     });
 
@@ -69,6 +93,7 @@ function setListeners(appData) {
         appData.selectedBoardEl.remove();
         let myBoardEl = document.getElementById('myBoardsListEl').firstElementChild;
         updateSelectedBoardInModel(Object.keys(appData.boards)[0], myBoardEl, appData);
+        saveBoardsToLocalStore(appData.boards);
       }, 500)
     } else {
       alert('You only have one board left! Do not delete it!');
@@ -81,6 +106,7 @@ function setListeners(appData) {
     let column = addColumnToBoardInModel(createColumn('Rename Me', columnPos),
     appData.boards, appData.selectedBoard);
     addColumnToBoardView(column, columnPos);
+    saveBoardsToLocalStore(appData.boards);
   });
 
   document.getElementById('removeColumnBtn').addEventListener('click', function(event) {
@@ -106,6 +132,7 @@ function setListeners(appData) {
             appData.selectedColumnEl.remove();
             let myColumnEl = document.getElementById('boardColumns').firstElementChild;
             updateSelectedColumnInModel(newColumnPos, myColumnEl, appData);
+            saveBoardsToLocalStore(appData.boards);
           })
         } else {
           alert("You only have one column left! Do not delete it!")
@@ -121,6 +148,7 @@ function setListeners(appData) {
       appData.selectedBoard.cards);
       appData.selectedCardEl = null;
       appData.selectedCard = null;
+      saveBoardsToLocalStore(appData.boards);
     }
   });
 
@@ -148,6 +176,7 @@ function setListeners(appData) {
       let nextColumn = moveCardInModel(direction, appData.selectedCard,
         getCurrentColumns(appData.selectedBoard.columns));
         updateChangedColumnCardsToView([appData.selectedCardEl], nextColumn);
+        saveBoardsToLocalStore(appData.boards);
       }
   });
 
@@ -158,6 +187,7 @@ function setListeners(appData) {
       let nextColumn = moveCardInModel(direction, appData.selectedCard,
         getCurrentColumns(appData.selectedBoard.columns));
         updateChangedColumnCardsToView([appData.selectedCardEl], nextColumn);
+        saveBoardsToLocalStore(appData.boards);
       }
   });
 
@@ -199,29 +229,7 @@ function setListeners(appData) {
   });
 };
 
-function getBoards() {
-  let boards =
-  {
-    'Agenda':
-    {
-      name: 'Agenda',
-      cards:[
-        {name: 'Clean Room', rank: 0, column: 0, isComplete: false, isDeleted: false},
-        {name: 'Take a Shower', rank: 1, column: 1, isComplete: false, isDeleted: false},
-        {name: 'Haircut', rank: 2, column: 2, isComplete: false, isDeleted: false},
-        {name: 'Cook Dinner', rank: 3, column: 0, isComplete: false, isDeleted: false}
-      ],
-      isDeleted: false,
-      columns: [
-        {columnName: 'To Do', columnPosition: 0, columnIsDeleted: false},
-        {columnName: 'In Progress', columnPosition: 1, columnIsDeleted: false},
-        {columnName: 'Done', columnPosition: 2, columnIsDeleted: false}
-      ]
-    }
-  };
 
-  return boards;
-}
 
 //////////////////////////////////////////////
 //////////////CREATE FUNCTIONS////////////////
@@ -273,6 +281,18 @@ function boardToMyBoardListEl(board) {
   addClass(boardEl, "myboards-el");
   return boardEl;
 };
+
+function handleNewBoard(boardName, boards, appData) {
+  let myBoard = addBoardToBoardsInModel(createBoard(boardName), appData.boards);
+  saveBoardsToLocalStore(boards);
+  let myColumn = addColumnToBoardInModel(createColumn('To Do', 0), appData.boards, myBoard);
+  let myBoardEl = addBoardToMyBoardsListView(myBoard);
+  updateSelectedBoardInModel(myBoard.name, myBoardEl, appData);
+}
+
+function saveBoardsToLocalStore(boards) {
+  setLocalStore('boards', boards);
+}
 
 //Purpose: To add board to boards in appData
 function addBoardToBoardsInModel(board, boards) {
@@ -385,6 +405,11 @@ function updateSelectedBoardColumnsView(board) {
 ////////////BOARD COLUMN FUNCTIONS////////////
 //////////////////////////////////////////////
 
+function handleNewColumnEl(columnPosition, appData) {
+
+}
+
+
 //Purpose: To create a board column HTML element
 function columnToColumnEl(column, columnPosition) {
   let columnEl = document.createElement('div');
@@ -479,6 +504,7 @@ function handleBlurEventForInput(event) {
   event.target.disabled = true;
   removeClass(event.target, 'edit-column-title');
   event.target.removeEventListener('blur', handleBlurEventForInput);
+  saveBoardsToLocalStore(appData.boards);
 }
 
 function updateColumnTitleInModel(newColumnTitle, colPos, appData) {
@@ -500,6 +526,15 @@ function cardToCardEl(card, cardRank) {
   addClass(cardEl, 'card-el');
   return cardEl;
 };
+
+function handleNewCard(cardName, cardRank, appData) {
+  let card = addCardToBoardInModel(
+    createCard(cardName, cardRank),
+    appData.selectedBoard.cards);
+  let cardColumn = card.column;
+  updateChangedColumnCardsToView([cardToCardEl(card, cardRank)], cardColumn);
+  saveBoardsToLocalStore(appData.boards);
+}
 
 //Purpose: to add a card to a board in the model.
 function addCardToBoardInModel(card, cards) {

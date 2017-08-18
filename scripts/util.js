@@ -45,3 +45,18 @@ function logCardsToAddToView(cardsToAddToView) {
         console.log("cardName:"+cardsToAddToView[i].name+" pos:"+ cardsToAddToView[i].column);
     }
 }
+
+function setLocalStore(key, obj) {
+  if(typeof(Storage) !== 'undefined') {
+    localStorage.setItem(key, JSON.stringify(obj));
+  }
+  return obj;
+}
+
+function getLocalStore(key, obj) {
+  if(typeof(Storage) !== 'undefined') {
+    return JSON.parse(localStorage.getItem(key));
+  } else {
+    return null;
+  }
+}
