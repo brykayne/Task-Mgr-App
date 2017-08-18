@@ -243,11 +243,11 @@ function createColumn(name, columnPos) {
   }
 };
 
-function createCard(name, rank) {
+function createCard(name, rank, column) {
   return {
     name: name,
     rank: rank,
-    column: 0,
+    column: column,
     isDeleted: false,
   }
 };
@@ -510,8 +510,10 @@ function cardToCardEl(card, cardRank) {
 };
 
 function handleNewCard(cardName, cardRank, appData) {
+  debugger;
+  let currentColumns = getCurrentColumns(appData.selectedBoard.columns);
   let card = addCardToBoardInModel(
-    createCard(cardName, cardRank),
+    createCard(cardName, cardRank, currentColumns[0].columnPosition),
     appData.selectedBoard.cards);
   let cardColumn = card.column;
   updateChangedColumnCardsToView([cardToCardEl(card, cardRank)], cardColumn);
