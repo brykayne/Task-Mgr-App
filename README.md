@@ -5,6 +5,8 @@ This is a create-your-own kanban application similar to that of [Trello](www.tre
 
 If you have any feedback, please leave a comment or find me on LinkedIn!
 
+To run this, git clone it and navigate to your directory in terminal. Then type 'npm run build-run'
+
 LinkedIn: www.linkedin.com/ln/brykayne
 
 ### Goals of this Project
