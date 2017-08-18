@@ -67,11 +67,6 @@ function setListeners(appData) {
     event.preventDefault();
     let cardRank = appData.selectedBoard.cards.length;
     let cardName = event.target.cardInput.value;
-    // let card = addCardToBoardInModel(
-    //   createCard(event.target.cardInput.value, cardRank),
-    //   appData.selectedBoard.cards);
-    //   let cardColumn = card.column;
-    //   updateChangedColumnCardsToView([cardToCardEl(card, cardRank)], cardColumn);
     handleNewCard(cardName, cardRank, appData);
       event.target.reset();
     });
@@ -204,8 +199,6 @@ function setListeners(appData) {
           debugger;
           targEl.addEventListener('blur', handleBlurEventForInput, false);
           targEl.appData = appData;
-          //targEl.removeEventListener('blur', handleBlurEventForInput);
-
         break;
       }
     }
@@ -228,8 +221,6 @@ function setListeners(appData) {
 
   });
 };
-
-
 
 //////////////////////////////////////////////
 //////////////CREATE FUNCTIONS////////////////
@@ -419,25 +410,16 @@ function columnToColumnEl(column, columnPosition) {
   columnEl.setAttribute('data-el-type', 'columnEl');
   columnEl.setAttribute('id', 'column' + columnPosition);
   columnEl.setAttribute('data-ar-pos', columnPosition);
-  //formEl.setAttribute('id', 'columnForm' + columnPosition);
-  //formEl.setAttribute('type', 'text');
-  //formEl.setAttribute('autocomplete', 'off');
-  //formEl.setAttribute('data-el-type', 'columnForm');
   columnTitleEl.setAttribute('data-el-type', 'columnTitle');
   columnTitleEl.setAttribute('id', 'title' + columnPosition);
   columnTitleEl.disabled = true;
   columnTitleEl.name = 'columnTitleInput';
   columnCardListEl.setAttribute('data-el-type', 'columnCardListEl');
   columnCardListEl.setAttribute('id', 'ul' + columnPosition);
-  //columnCardListEl.addEventListener('onchange', false);
-  //columnTitleEl.addEventListener('blur', handleBlurEventForInput);
   addClass(columnCardListEl, 'column-el');
   addClass(columnTitleEl, 'column-header');
   addClass(columnEl, 'column');
   columnTitleEl.value = column.columnName;
-
-  //formEl.appendChild(columnTitleEl);
-
   columnEl.appendChild(columnTitleEl);
   columnEl.appendChild(columnCardListEl);
   return columnEl;
