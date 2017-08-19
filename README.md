@@ -7,8 +7,9 @@ If you have any feedback, please leave a comment or find me on LinkedIn!
 
 - To see this app in *action*, see the live app here: [Task Manager App](https://taskmanagertrello.herokuapp.com/).
 - To run this locally, git clone it and navigate to your directory in terminal. Then type 'npm run build-run'
-- To see the 600+ lines of (not so clean) code that run this thing, look here [app.js](https://github.com/brykayne/Task-Mgr-App/blob/master/scripts/app.js).
+- To see the 600+ lines of (not so clean) code that run this thing, look here [app.js](https://github.com/brykayne/Task-Mgr-App/blob/master/scripts/app.js).  
 
+Social Links:  
 [LinkedIn](www.linkedin.com/ln/brykayne)  
 [Facebook](www.fb.me/brykaynecomedy)  
 [Instagram](www.instagram.com/brykayne)  
