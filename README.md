@@ -9,11 +9,6 @@ If you have any feedback, please leave a comment or find me on LinkedIn!
 - To run this locally, git clone it and navigate to your directory in terminal. Then type 'npm run build-run'
 - To see the 600+ lines of (not so clean) code that run this thing, look here [app.js](https://github.com/brykayne/Task-Mgr-App/blob/master/scripts/app.js).  
 
-Social Links:  
-- LinkedIn - www.linkedin.com/ln/brykayne
-- Facebook - www.fb.me/brykaynecomedy
-- Instagram - www.instagram.com/brykayne
-
 ### Goals of this Project
 - To experiment writing JavaScript in a functional style
 - To build a small application with no third party dependencies
@@ -32,3 +27,9 @@ From creating this project from scratch I learned an unbelievable amount about v
 - This project took me 1.5 months, about 25 hours per week.
 - I had no idea how difficult this would be when I started
 - I want to refactor this to use ES6 classes, but boy do I need a break... Until next time...
+
+
+###Find me here: 
+- LinkedIn - www.linkedin.com/ln/brykayne
+- Facebook - www.fb.me/brykaynecomedy
+- Instagram - www.instagram.com/brykayne
