@@ -1,11 +1,12 @@
 # Task Manager (Trello) App #
 ## By: Bryan Kayne
 
-This is a create-your-own kanban application similar to that of [Trello](www.trello.com "Trello"). I've developed this from scratch with functional, plain, vanilla javascript, I did not use any additional 3rd party packages or frameworks (except development).
+This is a create-your-own Kanban application inspired by [Trello](www.trello.com "Trello"). I've developed this from scratch with functional, plain, vanilla javascript, I did not use any additional 3rd party packages or frameworks (except development).
 
 If you have any feedback, please leave a comment or find me on LinkedIn!
 
-To run this, git clone it and navigate to your directory in terminal. Then type 'npm run build-run'
+To see this in *action*, see the live app here: [Task Manager App](https://taskmanagertrello.herokuapp.com/).
+To run this locally, git clone it and navigate to your directory in terminal. Then type 'npm run build-run'
 
 LinkedIn: www.linkedin.com/ln/brykayne
 
