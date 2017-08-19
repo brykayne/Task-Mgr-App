@@ -29,7 +29,7 @@ From creating this project from scratch I learned an unbelievable amount about v
 - I want to refactor this to use ES6 classes, but boy do I need a break... Until next time...
 
 
-###Find me here: 
+### Find me here: 
 - LinkedIn - www.linkedin.com/ln/brykayne
 - Facebook - www.fb.me/brykaynecomedy
 - Instagram - www.instagram.com/brykayne
